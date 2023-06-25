@@ -1,0 +1,79 @@
+@import '../../../../../../../styles/color';
+
+.container {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.main {
+	flex: 1;
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+}
+
+.head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-bottom: 24px;
+}
+
+.box_title {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+}
+
+.icon_title {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.title {
+	font-weight: 700;
+	font-size: 18px;
+	color: $t_neutrals;
+}
+
+.close {
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: 0.3s;
+
+	&:active {
+		transform: scale(0.9);
+	}
+}
+
+.list {
+	// flex: 1;
+	height: calc(100vh - 52px - 24px - 140px);
+	overflow-y: auto;
+}
+
+.bottom {
+	border-top: 1px solid #e6e6e6;
+	padding: 24px 60px;
+}
+
+.total_price {
+	text-align: right;
+	margin-bottom: 16px;
+	font-size: 16px;
+	font-weight: 700;
+	color: $t_neutrals_1;
+}
+
+.price {
+	font-size: 18px;
+	font-weight: 700;
+	color: $t_red;
+	margin-left: 6px;
+}

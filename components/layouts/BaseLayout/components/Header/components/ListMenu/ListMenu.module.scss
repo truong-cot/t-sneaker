@@ -1,0 +1,84 @@
+@import '../../../../../../../styles/color';
+
+.container {
+	padding: 8px;
+	background: #ffffff;
+	border: 1px solid rgba(199, 229, 255, 0.5);
+	box-shadow: 0px 24px 32px -3px rgba(3, 9, 50, 0.04);
+	border-radius: 8px;
+
+	.mainMenu {
+		padding-bottom: 12px;
+	}
+
+	.itemMenu {
+		min-width: 240px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 12px;
+		font-size: 16px;
+		cursor: pointer;
+		user-select: none;
+		border-radius: 6px;
+
+		&.active {
+			background-color: $bg_primary_2;
+			color: $t_light;
+
+			&:hover {
+				background-color: $bg_primary_2;
+			}
+
+			.iconItem {
+				color: $t_light;
+			}
+
+			.name {
+				color: $t_light;
+			}
+		}
+
+		&:hover {
+			background-color: rgba(199, 229, 255, 0.25);
+		}
+	}
+
+	.iconItem {
+		color: #8496ac;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.name {
+		color: #788a9b;
+	}
+
+	.btnLogout {
+		cursor: pointer;
+		user-select: none;
+		border-top: 1px solid rgba(199, 229, 255, 0.25);
+		padding-top: 12px;
+
+		.btn {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: #788a9b;
+			padding: 10px 0;
+			border-radius: 6px;
+
+			&:hover {
+				background-color: rgba(199, 229, 255, 0.25);
+			}
+
+			.icon {
+				margin-right: 8px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		}
+	}
+}

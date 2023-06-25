@@ -1,0 +1,86 @@
+@import '../../../../../styles/color';
+@import '../../../../../styles/variables';
+
+.container {
+	padding: 48px 0;
+	background-color: #0060af;
+}
+
+.main {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 42px;
+}
+
+.logo {
+	width: 240px;
+	height: 48px;
+}
+
+.des {
+	margin-top: 20px;
+	font-weight: 500;
+	color: $t_secondary;
+	font-size: 14px;
+
+	span {
+		font-size: 16px;
+		color: $t_light;
+		font-weight: 600;
+	}
+}
+
+.item {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	padding-left: 32px;
+}
+
+.title {
+	font-size: 16px;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: #f8f8f8;
+	margin-bottom: 28px;
+}
+
+.link {
+	font-size: 14px;
+	font-weight: 500;
+	color: $t_secondary;
+	transition: 0.3s;
+	display: block;
+
+	& + .link {
+		margin-top: 16px;
+	}
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+@media (max-width: $widthTablet) {
+	.main {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 42px;
+	}
+
+	.item {
+		padding-left: 0;
+	}
+}
+
+@media (max-width: $widthMobile) {
+	.main {
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		gap: 42px;
+	}
+
+	.item {
+		padding-left: 0;
+	}
+}

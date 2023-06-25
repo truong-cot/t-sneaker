@@ -1,0 +1,208 @@
+@import '../../../styles/color';
+
+.container {
+	outline: none;
+	border: none;
+	width: 100%;
+	background-color: transparent;
+	user-select: none;
+}
+
+.btn {
+	text-decoration: none;
+	user-select: none;
+	white-space: nowrap;
+	color: $t_light;
+	background-color: #ccc;
+	outline: none;
+	border: none;
+	padding: 10px 24px;
+	transition: 0.3s;
+	font-size: 14px;
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	white-space: nowrap;
+	gap: 12px;
+	font-weight: 500;
+
+	&:hover {
+		opacity: 0.8;
+		cursor: pointer;
+	}
+
+	&:active {
+		transform: scale(0.9);
+	}
+}
+
+.btn.flex {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.btn.disable {
+	color: $t_light !important;
+	background-color: $bg_secondary_1 !important;
+	border-color: $bg_secondary_1;
+	cursor: no-drop !important;
+	opacity: 0.8;
+
+	&:active {
+		transform: scale(1);
+	}
+}
+
+.icon {
+	width: 18px;
+	height: 18px;
+	position: relative;
+}
+
+.text {
+	flex: 1;
+	text-align: center;
+}
+
+.btn.small {
+	padding: 8px 24px;
+	font-size: 12px;
+}
+
+.btn.maxContent {
+	max-width: max-content;
+}
+
+//**********************
+//* CUSTOM STYLE FONT WEIGHT
+//**********************
+.bold {
+	font-weight: 600;
+}
+
+.bold_lest {
+	font-weight: 500;
+}
+
+//**********************
+//* CUSTOM STYLE ROUNDED
+//**********************
+.rounded_32 {
+	border-radius: 32px;
+}
+
+.rounded_24 {
+	border-radius: 24px;
+}
+
+.rounded_20 {
+	border-radius: 20px;
+}
+
+.rounded_16 {
+	border-radius: 12px;
+}
+
+.rounded_12 {
+	border-radius: 12px;
+}
+
+.rounded_8 {
+	border-radius: 8px;
+}
+
+.rounded_6 {
+	border-radius: 6px;
+}
+
+.rounded_4 {
+	border-radius: 4px;
+}
+
+.shadow {
+	box-shadow: 2px 3px 6px rgba(252, 198, 97, 0.3);
+}
+
+.px_0 {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.p_2_9 {
+	padding: 2px 9px;
+}
+
+.p_4_12 {
+	padding: 4px 12px;
+}
+
+.p_6_12 {
+	padding: 6px 12px;
+}
+
+.p_10_20 {
+	padding: 10px 20px;
+}
+
+.p_10_24 {
+	padding: 10px 24px;
+}
+
+.p_8_24 {
+	padding: 8px 24px;
+}
+
+.p_8_40 {
+	padding: 8px 40px;
+}
+.w_fit {
+	width: fit-content;
+}
+
+//**********************
+//* COLOR STYLE PRIMARY
+//**********************
+.unbg {
+	background-color: transparent;
+	color: $t_secondary_2;
+
+	&:hover {
+		background-color: $bg_secondary_2;
+		color: $bg_dark;
+	}
+}
+
+.primary_line {
+	background-color: transparent;
+	color: $t_primary;
+	border: 1px solid $t_primary;
+}
+
+.primary {
+	background-color: $bg_primary;
+	color: $t_light;
+	border: 1px solid transparent;
+}
+
+.secondary {
+	background-color: $bg_secondary;
+	color: $t_light;
+	border: 1px solid transparent;
+}
+
+.dark {
+	background-color: $bg_dark;
+	color: $t_light;
+}
+
+@media screen and (max-width: 764px) {
+	.btn.rps_small {
+		padding: 6px 12px;
+		font-size: 13px;
+	}
+}
+
+//**********************
+//* CUSTOM COLOR
+//**********************

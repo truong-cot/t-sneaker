@@ -1,0 +1,68 @@
+@import '../../../styles/color';
+
+.title_des {
+	font-weight: 600;
+	font-size: 28px;
+	color: $neutral_1;
+	margin-bottom: 10px;
+}
+
+.des {
+	position: relative;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-word;
+	transition: 0.3s;
+
+	&.hidden {
+		&::after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			height: 100px;
+			background: linear-gradient(
+				0deg,
+				#ffffff 0%,
+				rgba(255, 255, 255, 0) 35.5%
+			);
+		}
+	}
+
+	&.seemore {
+		display: block;
+
+		&::after {
+			display: none;
+		}
+	}
+}
+
+.see_more {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin-top: 4px;
+
+	.text_see_more {
+		user-select: none;
+		cursor: pointer;
+		font-weight: 500;
+		font-size: 16px;
+		color: #788a9b;
+		font-style: italic;
+		transition: 0.2s;
+
+		&:hover {
+			color: #5b636a;
+		}
+
+		&:active {
+			transform: scale(0.9);
+		}
+	}
+}

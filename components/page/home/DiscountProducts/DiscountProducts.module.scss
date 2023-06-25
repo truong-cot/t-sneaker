@@ -1,0 +1,25 @@
+.container {
+	padding: 24px 0;
+}
+
+.head {
+	padding: 10px 12px;
+	border-radius: 5px;
+	background: linear-gradient(to bottom, #2d0798, #035aad);
+	border-bottom: 1px solid rgb(244, 244, 244);
+	display: flex;
+	align-items: center;
+	gap: 0px;
+	margin-bottom: 20px;
+}
+
+.flash {
+	width: 28px;
+	height: 28px;
+}
+
+.title {
+	font-size: 24px;
+	font-weight: 600;
+	color: rgb(255, 107, 26);
+}

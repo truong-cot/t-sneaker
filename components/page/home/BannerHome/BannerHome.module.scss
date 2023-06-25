@@ -1,0 +1,48 @@
+.container {
+	padding: 24px 0;
+	z-index: 1;
+}
+
+.prev {
+	width: 44px;
+	height: 44px;
+	left: 20px !important;
+	position: absolute;
+	top: 50%;
+	transform: translate(0, -50%);
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #ffffff;
+	border-radius: 50%;
+	z-index: 10;
+}
+
+.next {
+	width: 44px;
+	height: 44px;
+	right: 20px !important;
+	position: absolute;
+	top: 50%;
+	transform: translate(0, -50%);
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #ffffff;
+	border-radius: 50%;
+}
+
+.container_image {
+	width: 100%;
+	height: 0;
+	padding-top: 42%;
+	position: relative;
+}
+
+.item,
+.container_image,
+.image {
+	border-radius: 20px;
+}

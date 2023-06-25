@@ -1,0 +1,28 @@
+@import '../../../styles/color';
+@import '../../../styles/variables';
+
+.header {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 10;
+	transition: top 0.4s;
+
+	&.active {
+		box-shadow: 0px 4px 4px rgba(210, 210, 210, 0.25);
+		background-color: $bg_light;
+	}
+
+	&.scroll {
+		top: calc(($heightHeader) * -1);
+	}
+}
+
+.main {
+	position: relative;
+	z-index: 1;
+	min-height: 90vh;
+	margin-top: calc($heightHeader);
+	background-color: #f6fbff;
+}
