@@ -12,7 +12,7 @@ import MenuLogin from './components/MenuLogin/MenuLogin';
 import MenuLogged from './components/MenuLogged/MenuLogged';
 
 function Header({isScroll}: PropsHeader) {
-	const isLogin = false;
+	const isLogin = true;
 	const router = useRouter();
 	const refActive = useRef<any>(null);
 	const currentRoute = router.pathname.split('/')[1];

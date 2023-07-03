@@ -31,7 +31,7 @@ function MenuLogin({}: PropsMenuLogin) {
 			</div>
 			{openCart && (
 				<div
-					className={styles.overlay}
+					className={'overlay'}
 					onClick={() => setOpenCart(false)}
 				></div>
 			)}

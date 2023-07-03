@@ -7,6 +7,9 @@ import Image from 'next/image';
 import icons from '~/constants/images/icons';
 import GridColumn from '~/components/layouts/GridColumn/GridColumn';
 import CartProduct from '~/components/common/CartProduct/CartProduct';
+import SkeletonLoading from '~/components/common/SkeletonLoading';
+import SkeletonCardProduct from '~/components/common/SkeletonCardProduct';
+import LoadingData from '~/components/protected/LoadingData';
 
 function DiscountProducts({}: PropsDiscountProducts) {
 	return (
@@ -22,13 +25,26 @@ function DiscountProducts({}: PropsDiscountProducts) {
 					<Image src={icons.homnay} alt='hom nay' />
 				</div>
 				<div className={styles.list}>
-					<GridColumn col_3>
-						<CartProduct />
-						<CartProduct />
-						<CartProduct />
-						<CartProduct />
-						<CartProduct />
-					</GridColumn>
+					<LoadingData
+						isLoading={false}
+						// text='abc'
+						// load={
+						// 	<GridColumn col_3>
+						// 		<SkeletonLoading
+						// 			Item={SkeletonCardProduct}
+						// 			count={6}
+						// 		/>
+						// 	</GridColumn>
+						// }
+					>
+						<GridColumn col_3>
+							<CartProduct />
+							<CartProduct />
+							<CartProduct />
+							<CartProduct />
+							<CartProduct />
+						</GridColumn>
+					</LoadingData>
 				</div>
 			</div>
 		</LayoutGrid>

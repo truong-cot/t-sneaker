@@ -16,6 +16,7 @@ import 'lightgallery/css/lg-zoom.css';
 import 'lightgallery/css/lg-thumbnail.css';
 import 'lightgallery/scss/lightgallery.scss';
 import 'lightgallery/scss/lg-zoom.scss';
+import 'react-loading-skeleton/dist/skeleton.css';
 import '~/styles/globals.scss';
 
 // Khai báo type page

@@ -16,8 +16,8 @@
 }
 
 .list {
-	padding: 12 px 0;
-	border-radius: 20px;
+	// padding: 12 px 0;
+	// border-radius: 20px;
 	margin-top: 20px;
 	// background: #ffffff;
 	// border: 1px solid #cef0fa;
@@ -25,8 +25,14 @@
 	display: flex;
 	// justify-content: center;
 	align-items: center;
-	flex-wrap: wrap;
-	gap: 36px;
+	overflow-x: auto;
+	// flex-wrap: wrap;
+	gap: 24px;
+
+	/* width */
+	&::-webkit-scrollbar {
+		height: 8px;
+	}
 }
 
 .item {
