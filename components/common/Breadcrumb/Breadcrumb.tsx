@@ -20,14 +20,14 @@ function Breadcrumb({titles, listHref}: PropsTagPage) {
 							{v}
 						</span>
 					) : (
-						<Link href={listHref?.[i] ? listHref[i] : '/'} key={i}>
-							<a
-								className={clsx(styles.item, {
-									[styles.last]: i == titles.length - 1,
-								})}
-							>
-								{v}
-							</a>
+						<Link
+							href={listHref?.[i] ? listHref[i] : '/'}
+							key={i}
+							className={clsx(styles.item, {
+								[styles.last]: i == titles.length - 1,
+							})}
+						>
+							{v}
 						</Link>
 					)}
 				</Fragment>

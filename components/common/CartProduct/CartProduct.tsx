@@ -91,7 +91,9 @@ function CartProduct({}: PropsCartProduct) {
 			</div>
 			<div className={styles.bottom}>
 				<Button primary_line>Thêm vào giỏ hàng</Button>
-				<Button primary>Xem chi tiết</Button>
+				<Button href='/product/123' primary>
+					Xem chi tiết
+				</Button>
 			</div>
 			<div className={styles.new}>
 				<p className={styles.text_sale}>NEW</p>

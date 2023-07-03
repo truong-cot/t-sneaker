@@ -1,21 +1,21 @@
-import React, {ReactElement} from 'react';
+import {ReactElement} from 'react';
 import BaseLayout from '~/components/layouts/BaseLayout';
 import LayoutGrid from '~/components/layouts/LayoutGrid';
 import Page from '~/components/layouts/Page';
-import MainShop from '~/components/page/shop/MainShop';
+import MainCategory from '~/components/page/category/MainCategory';
 
-function Shop() {
+function Category() {
 	return (
-		<Page disabledEffect title='Cửa hàng'>
+		<Page disabledEffect title='Giày Nike'>
 			<LayoutGrid>
-				<MainShop />
+				<MainCategory />
 			</LayoutGrid>
 		</Page>
 	);
 }
 
-export default Shop;
+export default Category;
 
-Shop.getLayout = function (page: ReactElement) {
+Category.getLayout = function (page: ReactElement) {
 	return <BaseLayout>{page}</BaseLayout>;
 };

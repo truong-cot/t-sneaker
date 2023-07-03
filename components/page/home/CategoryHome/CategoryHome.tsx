@@ -14,25 +14,25 @@ function CategoryHome({}: PropsCategoryHome) {
 					Phong cách mới, trải nghiệm với <span>T - Sneaker</span>
 				</h4>
 				<div className={styles.list}>
-					<Link href={'/'} className={styles.item}>
+					<Link href={'/category/123'} className={styles.item}>
 						<div className={styles.box_image}>
 							<ImageFill fullHeight className={styles.image} />
 						</div>
 						<p className={styles.name}>nike</p>
 					</Link>
-					<Link href={'/'} className={styles.item}>
+					<Link href={'/category/123'} className={styles.item}>
 						<div className={styles.box_image}>
 							<ImageFill fullHeight className={styles.image} />
 						</div>
 						<p className={styles.name}>nike</p>
 					</Link>
-					<Link href={'/'} className={styles.item}>
+					<Link href={'/category/123'} className={styles.item}>
 						<div className={styles.box_image}>
 							<ImageFill fullHeight className={styles.image} />
 						</div>
 						<p className={styles.name}>nike</p>
 					</Link>
-					<Link href={'/'} className={styles.item}>
+					<Link href={'/category/123'} className={styles.item}>
 						<div className={styles.box_image}>
 							<ImageFill fullHeight className={styles.image} />
 						</div>

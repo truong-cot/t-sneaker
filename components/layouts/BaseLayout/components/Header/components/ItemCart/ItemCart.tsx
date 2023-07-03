@@ -47,7 +47,7 @@ function ItemCart({}: PropsItemCart) {
 					<div className={styles.clear}>
 						<Trash size={20} className={styles.trash} />
 					</div>
-					<Button primary p_6_12 rounded_20>
+					<Button href='/product/123' primary p_6_12 rounded_20>
 						Xem chi tiết
 					</Button>
 				</div>

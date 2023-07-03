@@ -18,7 +18,7 @@ function FormRegister({}: PropsFormRegister) {
 					</Link>
 				</div>
 				<div className={styles.main}>
-					<h4 className={styles.title}>Đăng nhập</h4>
+					<h4 className={styles.title}>Đăng ký</h4>
 					<p className={styles.des}>
 						Đăng ký để sử dụng đầy đủ chức năng!
 					</p>
