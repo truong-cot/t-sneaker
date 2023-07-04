@@ -7,8 +7,6 @@ import Image from 'next/image';
 import icons from '~/constants/images/icons';
 import GridColumn from '~/components/layouts/GridColumn/GridColumn';
 import CartProduct from '~/components/common/CartProduct/CartProduct';
-import SkeletonLoading from '~/components/common/SkeletonLoading';
-import SkeletonCardProduct from '~/components/common/SkeletonCardProduct';
 import LoadingData from '~/components/protected/LoadingData';
 
 function DiscountProducts({}: PropsDiscountProducts) {
