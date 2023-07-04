@@ -1,3 +1,5 @@
+@import '../../../../styles/variables';
+
 .container {
 	padding: 24px 0;
 }
@@ -5,6 +7,19 @@
 .main {
 	margin-top: 40px;
 	display: grid;
-	grid-template-columns: 320px 1fr;
-	gap: 40px;
+	grid-template-columns: 280px 1fr;
+	gap: 44px;
+}
+
+.list {
+	margin-top: 24px;
+}
+
+@media (max-width: $widthTablet) {
+	.main {
+		margin-top: 40px;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0px;
+	}
 }

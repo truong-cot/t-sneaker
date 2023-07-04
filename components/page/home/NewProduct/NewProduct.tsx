@@ -12,7 +12,9 @@ function NewProduct({}: PropsNewProduct) {
 			<div className={styles.container}>
 				<h4 className={styles.title}>SẢN PHẨM MỚI NHẤT</h4>
 				<div className={styles.list}>
-					<GridColumn col_3>
+					<GridColumn col_4>
+						<CartProduct />
+						<CartProduct />
 						<CartProduct />
 						<CartProduct />
 						<CartProduct />

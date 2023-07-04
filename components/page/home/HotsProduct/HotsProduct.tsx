@@ -14,7 +14,9 @@ function HotsProduct({}: PropsHotsProduct) {
 					SẢN PHẨM ĐANG HOT CỦA T - Sneaker
 				</h4>
 				<div className={styles.list}>
-					<GridColumn col_3>
+					<GridColumn col_4>
+						<CartProduct />
+						<CartProduct />
 						<CartProduct />
 						<CartProduct />
 						<CartProduct />

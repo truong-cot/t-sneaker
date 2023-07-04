@@ -9,17 +9,18 @@ import {AiFillStar} from 'react-icons/ai';
 import {DollarCircle, Task} from 'iconsax-react';
 import {convertCoin} from '~/common/func/convertCoin';
 import Button from '~/components/controls/Button';
+import Link from 'next/link';
 
 function CartProduct({}: PropsCartProduct) {
 	return (
-		<div className={styles.container}>
+		<Link href={'product/123'} className={styles.container}>
 			<div className={styles.box_image}>
 				<ImageFill
 					src='https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=1600'
 					className={styles.image}
 				/>
 			</div>
-			<div className={styles.list_image}>
+			{/* <div className={styles.list_image}>
 				<ListImage
 					max={4}
 					width={60}
@@ -34,7 +35,7 @@ function CartProduct({}: PropsCartProduct) {
 						'https://images.pexels.com/photos/631986/pexels-photo-631986.jpeg?auto=compress&cs=tinysrgb&w=1600',
 					]}
 				/>
-			</div>
+			</div> */}
 			<div className={styles.content}>
 				<h5 className={styles.name}>
 					Giày Gucci Men’s Screener GG Sneaker Like Auth Giày Gucci
@@ -89,19 +90,13 @@ function CartProduct({}: PropsCartProduct) {
 					</h4>
 				</div>
 			</div>
-			<div className={styles.bottom}>
-				<Button primary_line>Thêm vào giỏ hàng</Button>
-				<Button href='/product/123' primary>
-					Xem chi tiết
-				</Button>
-			</div>
 			<div className={styles.new}>
 				<p className={styles.text_sale}>NEW</p>
 			</div>
 			<div className={styles.sale}>
 				<p className={styles.text_sale}>20%</p>
 			</div>
-		</div>
+		</Link>
 	);
 }
 

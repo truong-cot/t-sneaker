@@ -2,10 +2,16 @@
 
 .container {
 	position: relative;
-	padding: 12px;
+	padding: 16px 12px;
 	border: 1px solid #e3edf6;
 	border-radius: 8px;
 	background-color: $bg_light;
+
+	&:hover {
+		.name {
+			color: #0060af;
+		}
+	}
 }
 
 .box_image {
@@ -97,7 +103,8 @@
 	padding-top: 12px;
 	display: flex;
 	align-items: center;
-	gap: 12px;
+	// flex-wrap: wrap;
+	gap: 10px;
 }
 
 .sale {
