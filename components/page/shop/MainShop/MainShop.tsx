@@ -10,6 +10,8 @@ import GridColumn from '~/components/layouts/GridColumn';
 import CartProduct from '~/components/common/CartProduct';
 import SkeletonLoading from '~/components/common/SkeletonLoading';
 import SkeletonCardProduct from '~/components/common/SkeletonCardProduct';
+import {httpRequest} from '~/services';
+import productServices from '~/services/productServices';
 
 function MainShop({}: PropsMainShop) {
 	const [page, setPage] = useState(1);
@@ -43,7 +45,28 @@ function MainShop({}: PropsMainShop) {
 		};
 	}, []);
 
-	console.log(page);
+	// Call api
+	useEffect(() => {
+		httpRequest({
+			http: productServices.getAllProduct({
+				page: 1,
+				limit: 10,
+				keyWord: '',
+				categoryUuids: ['1'],
+				pricePrev: 0,
+				priceNext: 10000000,
+				status: [1],
+				sortBy: {
+					type: 1,
+					sort: true,
+				},
+			}),
+		}).then((data) => {
+			if (data) {
+				console.log(data);
+			}
+		});
+	}, []);
 
 	return (
 		<div className={styles.container}>

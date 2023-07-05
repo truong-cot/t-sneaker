@@ -9,12 +9,9 @@ import axios from 'axios';
 import {delay} from '~/common/func/delay';
 
 const axiosClient = axios.create({
-	headers: {
-		'content-type': 'application/json',
-	},
-	baseURL: process.env.NEXT_PUBLIC_IS_DEV
-		? process.env.NEXT_PUBLIC_API_URL_DEV
-		: process.env.NEXT_PUBLIC_API_URL_PRODUCTION,
+	headers: {'Content-Type': 'application/json'},
+	baseURL: 'https://192.168.0.174:6001/api',
+	// paramsSerializer: (params: any) => queryString.stringify(params),
 	timeout: 15000,
 	timeoutErrorMessage: 'Timeout error request',
 });
@@ -46,6 +43,7 @@ export const httpRequest = async ({
 	http,
 	dispatch,
 	setLoading,
+	setError,
 	msgSuccess = 'Thành công',
 	showMessage = false,
 	onError,
@@ -53,13 +51,14 @@ export const httpRequest = async ({
 	http: any;
 	dispatch?: any;
 	setLoading?: (any: any) => void;
+	setError?: (any: any) => void;
 	onError?: () => void;
 	showMessage?: boolean;
 	msgSuccess?: string;
 }) => {
 	setLoading && setLoading(() => true);
 	try {
-		await delay(500);
+		// await delay(500);
 		const res: any = await http;
 
 		if (res.error.code === 0) {
@@ -76,13 +75,16 @@ export const httpRequest = async ({
 	} catch (err: any) {
 		if (!!dispatch && err?.error?.code === 401) {
 			showMessage && toastError({msg: 'Hết hạn đăng nhập'});
-			setLoading && setLoading(() => false);
+			// setLoading && setLoading(() => false);
 		} else if (typeof err == 'string') {
 			showMessage && toastWarn({msg: err || 'Có lỗi đã xảy ra'});
 			setLoading && setLoading(() => false);
 		} else if (err.code == 'ERR_NETWORK' || err.code == 'ECONNABORTED') {
 			showMessage && toastInfo({msg: 'Kiểm tra kết nối internet'});
 			setLoading && setLoading(() => false);
+		}
+		if (setError) {
+			setError(err);
 		}
 	}
 };
