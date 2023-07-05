@@ -20,24 +20,6 @@ function CategoryHome({}: PropsCategoryHome) {
 						</div>
 						<p className={styles.name}>nike</p>
 					</Link>
-					<Link href={'/category/123'} className={styles.item}>
-						<div className={styles.box_image}>
-							<ImageFill fullHeight className={styles.image} />
-						</div>
-						<p className={styles.name}>nike</p>
-					</Link>
-					<Link href={'/category/123'} className={styles.item}>
-						<div className={styles.box_image}>
-							<ImageFill fullHeight className={styles.image} />
-						</div>
-						<p className={styles.name}>nike</p>
-					</Link>
-					<Link href={'/category/123'} className={styles.item}>
-						<div className={styles.box_image}>
-							<ImageFill fullHeight className={styles.image} />
-						</div>
-						<p className={styles.name}>nike</p>
-					</Link>
 				</div>
 			</div>
 		</LayoutGrid>

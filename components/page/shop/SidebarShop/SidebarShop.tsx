@@ -87,6 +87,63 @@ function SidebarShop({}: PropsSidebarShop) {
 				</div>
 			</div>
 
+			{/* Trạng thái sản phẩm */}
+			<div className={styles.price}>
+				<h4 className={styles.title}>Trạng thái sản phẩm</h4>
+				<div className={styles.item_category}>
+					<input
+						className={styles.checkbox}
+						type='checkbox'
+						id='status_0'
+						name='status'
+						value='status 0'
+						onChange={() => handleGetValueStatus('status 0')}
+					/>
+					<label className={styles.label} htmlFor='status_0'>
+						Sản phẩm mới
+					</label>
+				</div>
+				<div className={styles.item_category}>
+					<input
+						className={styles.checkbox}
+						type='checkbox'
+						id='status_1'
+						name='status'
+						value='status 1'
+						onChange={() => handleGetValueStatus('status 1')}
+					/>
+					<label className={styles.label} htmlFor='status_1'>
+						Sản phẩm được giảm giá
+					</label>
+				</div>
+				<div className={styles.item_category}>
+					<input
+						className={styles.checkbox}
+						type='checkbox'
+						id='status_2'
+						name='status'
+						value='status 2'
+						onChange={() => handleGetValueStatus('status 2')}
+					/>
+					<label className={styles.label} htmlFor='status_2'>
+						Sản phẩm đang HOT
+					</label>
+				</div>
+				<div className={styles.item_category}>
+					<input
+						className={styles.checkbox}
+						type='checkbox'
+						id='status_3'
+						name='status'
+						value='status 3'
+						onChange={() => handleGetValueStatus('status 3')}
+					/>
+					<label className={styles.label} htmlFor='status_3'>
+						Sản phẩm đang TRENDT
+					</label>
+				</div>
+			</div>
+
 			{/* Giá sản phẩm */}
 			<div className={styles.price}>
 				<h4 className={styles.title}>Giá sản phẩm</h4>
@@ -144,50 +201,6 @@ function SidebarShop({}: PropsSidebarShop) {
 					/>
 					<label className={styles.label} htmlFor='price_4'>
 						Trên {convertCoin(3000000)}đ
-					</label>
-				</div>
-			</div>
-
-			{/* Trạng thái sản phẩm */}
-			<div className={styles.price}>
-				<h4 className={styles.title}>Trạng thái sản phẩm</h4>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						id='status_1'
-						name='status'
-						value='status 1'
-						onChange={() => handleGetValueStatus('status 1')}
-					/>
-					<label className={styles.label} htmlFor='status_1'>
-						Sản phẩm được giảm giá
-					</label>
-				</div>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						id='status_2'
-						name='status'
-						value='status 2'
-						onChange={() => handleGetValueStatus('status 2')}
-					/>
-					<label className={styles.label} htmlFor='status_2'>
-						Sản phẩm đang HOT
-					</label>
-				</div>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						id='status_3'
-						name='status'
-						value='status 3'
-						onChange={() => handleGetValueStatus('status 3')}
-					/>
-					<label className={styles.label} htmlFor='status_3'>
-						Sản phẩm đang TRENDT
 					</label>
 				</div>
 			</div>

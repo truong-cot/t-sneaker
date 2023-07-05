@@ -15,25 +15,32 @@ function MainShop({}: PropsMainShop) {
 	const [page, setPage] = useState(1);
 	const loaderRef = useRef(null);
 
+	// Xử lý khi loaderRef xuất hiện
 	const handleObserver = (entries: any) => {
 		const target = entries[0];
 
+		// Xử lý sự kiện khi loaderRef xuất hiện trên màn hình
 		if (target.isIntersecting) {
-			fetchItems();
+			setPage((prev) => prev + 1);
 		}
-	};
-
-	const fetchItems = () => {
-		setPage((prev) => prev + 1);
 	};
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(handleObserver, {
-			threshold: 1, // Khi loaderRef trở nên hoàn toàn hiển thị
+			root: null, // Kiểm tra sự xuất hiện trong viewport
+			rootMargin: '-100px', // Không áp dụng margin thêm vào viewport
+			threshold: 1, // Khi phần trăm hiển thị của loaderRef đạt 10%
 		});
+
 		if (loaderRef.current) {
 			observer.observe(loaderRef.current);
 		}
+
+		return () => {
+			if (loaderRef.current) {
+				observer.unobserve(loaderRef.current);
+			}
+		};
 	}, []);
 
 	console.log(page);
