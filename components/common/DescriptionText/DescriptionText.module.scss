@@ -1,12 +1,5 @@
 @import '../../../styles/color';
 
-.title_des {
-	font-weight: 600;
-	font-size: 28px;
-	color: $neutral_1;
-	margin-bottom: 10px;
-}
-
 .des {
 	position: relative;
 	display: -webkit-box;
@@ -15,6 +8,9 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	word-break: break-word;
+	color: #000;
+	font-size: 18px;
+	font-weight: 500;
 	transition: 0.3s;
 
 	&.hidden {

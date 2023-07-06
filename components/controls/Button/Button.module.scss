@@ -200,6 +200,16 @@
 	color: $t_light;
 }
 
+.purple {
+	background-color: #b255fb;
+	color: $t_light;
+}
+
+.bright_red {
+	background-color: #fd6060;
+	color: $t_light;
+}
+
 @media screen and (max-width: 764px) {
 	.btn.rps_small {
 		padding: 6px 12px;

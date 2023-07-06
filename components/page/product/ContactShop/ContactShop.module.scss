@@ -1,0 +1,73 @@
+@import '../../../../styles/variables';
+
+.box_3__top,
+.box_3__bottom {
+	background: #fff;
+	padding: 16px 12px;
+	border-radius: 10px;
+	box-shadow: rgb(242 242 242) 1px 1px 0 0 inset,
+		rgb(242 242 242) -1px -1px 0 0 inset;
+}
+
+.box_3__bottom {
+	margin-top: 20px;
+}
+
+.logo {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-bottom: 1px solid rgb(242 242 242);
+	padding-bottom: 12px;
+}
+
+.box_3__main {
+	margin-top: 12px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
+}
+
+.box_3__main__item {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.box_3__main__icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.box_3__main__text {
+	margin-top: 8px;
+	text-align: center;
+	font-size: 16px;
+}
+
+.box_3__bottom__text {
+	text-align: center;
+	font-size: 18px;
+}
+
+.text_phone {
+	margin-top: 2px;
+	text-align: center;
+	font-size: 22px;
+	font-weight: 600;
+	letter-spacing: 0.1;
+	color: #f14203;
+}
+
+.text_des {
+	text-align: center;
+	font-size: 16px;
+	margin-top: 2px;
+}
+
+@media (max-width: $widthTablet) {
+	.box_3 {
+		display: none;
+	}
+}

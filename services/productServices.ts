@@ -9,10 +9,10 @@ const productServices = {
 			page: number;
 			limit: number;
 			keyWord: string;
-			categoryUuids: Array<string>;
+			categoryUuids: Array<string> | null;
 			pricePrev: number;
 			priceNext: number;
-			status: Array<number>;
+			status: Array<number> | null;
 			sortBy: {
 				type: number;
 				sort: boolean;

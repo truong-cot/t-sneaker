@@ -12,61 +12,62 @@ import SkeletonLoading from '~/components/common/SkeletonLoading';
 import SkeletonCardProduct from '~/components/common/SkeletonCardProduct';
 import {httpRequest} from '~/services';
 import productServices from '~/services/productServices';
+import {TbLoader} from 'react-icons/tb';
 
 function MainShop({}: PropsMainShop) {
-	const [page, setPage] = useState(1);
-	const loaderRef = useRef(null);
+	// const [page, setPage] = useState(1);
+	// const loaderRef = useRef(null);
 
-	// Xử lý khi loaderRef xuất hiện
-	const handleObserver = (entries: any) => {
-		const target = entries[0];
+	// // Xử lý khi loaderRef xuất hiện
+	// const handleObserver = (entries: any) => {
+	// 	const target = entries[0];
 
-		// Xử lý sự kiện khi loaderRef xuất hiện trên màn hình
-		if (target.isIntersecting) {
-			setPage((prev) => prev + 1);
-		}
-	};
+	// 	// Xử lý sự kiện khi loaderRef xuất hiện trên màn hình
+	// 	if (target.isIntersecting) {
+	// 		setPage((prev) => prev + 1);
+	// 	}
+	// };
 
-	useEffect(() => {
-		const observer = new IntersectionObserver(handleObserver, {
-			root: null, // Kiểm tra sự xuất hiện trong viewport
-			rootMargin: '-100px', // Không áp dụng margin thêm vào viewport
-			threshold: 1, // Khi phần trăm hiển thị của loaderRef đạt 10%
-		});
+	// useEffect(() => {
+	// 	const observer = new IntersectionObserver(handleObserver, {
+	// 		root: null, // Kiểm tra sự xuất hiện trong viewport
+	// 		rootMargin: '-100px', // Không áp dụng margin thêm vào viewport
+	// 		threshold: 1, // Khi phần trăm hiển thị của loaderRef đạt 10%
+	// 	});
 
-		if (loaderRef.current) {
-			observer.observe(loaderRef.current);
-		}
+	// 	if (loaderRef.current) {
+	// 		observer.observe(loaderRef.current);
+	// 	}
 
-		return () => {
-			if (loaderRef.current) {
-				observer.unobserve(loaderRef.current);
-			}
-		};
-	}, []);
+	// 	return () => {
+	// 		if (loaderRef.current) {
+	// 			observer.unobserve(loaderRef.current);
+	// 		}
+	// 	};
+	// }, []);
 
 	// Call api
-	useEffect(() => {
-		httpRequest({
-			http: productServices.getAllProduct({
-				page: 1,
-				limit: 10,
-				keyWord: '',
-				categoryUuids: ['1'],
-				pricePrev: 0,
-				priceNext: 10000000,
-				status: [1],
-				sortBy: {
-					type: 1,
-					sort: true,
-				},
-			}),
-		}).then((data) => {
-			if (data) {
-				console.log(data);
-			}
-		});
-	}, []);
+	// useEffect(() => {
+	// 	httpRequest({
+	// 		http: productServices.getAllProduct({
+	// 			page: 1,
+	// 			limit: 10,
+	// 			keyWord: '',
+	// 			categoryUuids: null,
+	// 			pricePrev: 0,
+	// 			priceNext: 10000000,
+	// 			status: null,
+	// 			sortBy: {
+	// 				type: 1,
+	// 				sort: true,
+	// 			},
+	// 		}),
+	// 	}).then((data) => {
+	// 		if (data) {
+	// 			console.log(data);
+	// 		}
+	// 	});
+	// }, []);
 
 	return (
 		<div className={styles.container}>
@@ -100,7 +101,17 @@ function MainShop({}: PropsMainShop) {
 							</GridColumn>
 						</LoadingData>
 					</div>
-					<div ref={loaderRef}></div>
+					<div className={styles.see_more}>
+						<div className={styles.btn}>
+							{/* <p className={styles.text_btn}>
+								Xem thêm 12 sản phẩm
+							</p> */}
+							<div className={styles.load}>
+								<TbLoader color='#b255fb' />
+							</div>
+						</div>
+					</div>
+					{/* <div ref={loaderRef}></div> */}
 				</div>
 			</div>
 		</div>

@@ -19,6 +19,7 @@
 
 	&.active {
 		color: $primary_2;
+
 		&::after {
 			content: '';
 			position: absolute;
