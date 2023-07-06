@@ -13,7 +13,7 @@ import Link from 'next/link';
 
 function CartProduct({}: PropsCartProduct) {
 	return (
-		<Link href={'product/123'} className={styles.container}>
+		<Link href={'/product/123'} className={styles.container}>
 			<div className={styles.box_image}>
 				<ImageFill
 					src='https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=1600'
