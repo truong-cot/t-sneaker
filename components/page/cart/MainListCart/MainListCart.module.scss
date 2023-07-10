@@ -1,0 +1,82 @@
+.main {
+	margin-top: 24px;
+}
+
+.top {
+	background: #f1f1f1;
+	padding: 10px 16px;
+	border-radius: 8px;
+}
+
+.item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.checkbox {
+	cursor: pointer;
+	width: 17px;
+	height: 17px;
+}
+
+.label {
+	user-select: none;
+	font-size: 16px;
+	font-weight: 500;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-word;
+	cursor: pointer;
+}
+
+.top {
+	display: flex;
+	align-items: center;
+}
+
+.left {
+	width: 40%;
+}
+
+.right {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex: 1;
+}
+
+.icon {
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: 0.3s;
+
+	&:active {
+		transform: scale(0.9);
+	}
+}
+
+.text {
+	color: rgb(36, 36, 36);
+	font-weight: 500;
+	font-size: 16px;
+}
+
+.trash {
+	font-size: 16px;
+	color: rgb(113, 113, 122);
+	transition: 0.3s;
+
+	&:hover {
+		color: rgb(239, 68, 68);
+	}
+}
+
+.list {
+	margin-top: 20px;
+}

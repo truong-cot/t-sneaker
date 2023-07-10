@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FaCartPlus} from 'react-icons/fa';
 import TippyHeadless from '@tippyjs/react/headless';
 
@@ -8,10 +8,17 @@ import Avatar from '~/components/common/Avatar';
 import ListMenu from '../ListMenu';
 import clsx from 'clsx';
 import BoxCart from '../BoxCart';
+import {useRouter} from 'next/router';
 
 function MenuLogin({}: PropsMenuLogin) {
+	const router = useRouter();
+
 	const [openCart, setOpenCart] = useState<boolean>(false);
 	const [openMenu, setOpenMenu] = useState<boolean>(false);
+
+	useEffect(() => {
+		setOpenCart(false);
+	}, [router]);
 
 	return (
 		<div className={styles.container}>

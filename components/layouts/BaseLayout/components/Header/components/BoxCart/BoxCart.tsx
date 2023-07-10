@@ -41,7 +41,7 @@ function BoxCart({onClose}: PropsBoxCart) {
 						{convertCoin(200000000)}đ
 					</span>
 				</h4>
-				<Button secondary bold>
+				<Button href='/cart' secondary bold>
 					Đến chi tiết giỏ hàng
 				</Button>
 			</div>
