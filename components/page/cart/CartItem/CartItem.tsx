@@ -25,6 +25,7 @@ function CartItem({data, plusNumber, minusNumber, deleteCart}: PropsCartItem) {
 		return priceSale * data?.qlt;
 	}, [data]);
 
+	// Hàm chọn sản phẩm vào giỏ hàng
 	const chosseCart = (item: TypeCart) => {
 		const isHave = context?.listCart?.some((v: any) => v.id == item.id);
 

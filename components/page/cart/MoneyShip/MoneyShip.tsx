@@ -1,4 +1,4 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useContext} from 'react';
 
 import {PropsMoneyShip} from './interfaces';
 import styles from './MoneyShip.module.scss';
@@ -50,13 +50,7 @@ function MoneyShip({}: PropsMoneyShip) {
 				</div>
 
 				{/* FREE_25 */}
-				<div
-					className={clsx(styles.line, {
-						[styles.line_active]:
-							context.totalPriceChosseCart > MONEY.FREE_15 &&
-							context.totalPriceChosseCart < MONEY.FREE_25,
-					})}
-				></div>
+				<div className={clsx(styles.line)}></div>
 
 				<div className={styles.item}>
 					<div className={styles.top}>
@@ -93,12 +87,7 @@ function MoneyShip({}: PropsMoneyShip) {
 				</div>
 
 				{/* FREE */}
-				<div
-					className={clsx(styles.line, {
-						[styles.line_active]:
-							context.totalPriceChosseCart > MONEY.FREE_25,
-					})}
-				></div>
+				<div className={clsx(styles.line)}></div>
 
 				<div className={styles.item}>
 					<div className={styles.top}>

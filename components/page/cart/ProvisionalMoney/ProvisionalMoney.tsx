@@ -12,22 +12,28 @@ function ProvisionalMoney({}: PropsProvisionalMoney) {
 	// Gọi context
 	const context = useContext<TypeContext>(ContextCart);
 
-	// Tính khuyễn mãi vận chuyển
+	// Tính khuyến mãi vận chuyển
 	const priceShipping = useMemo(() => {
 		if (context.totalPriceChosseCart == 0) {
 			return 0;
 		}
+
+		// Đơn hàng từ 500 - 1tr5 ==> phí ship = 15k
 		if (
 			context.totalPriceChosseCart > MONEY.FREE_00 &&
 			context.totalPriceChosseCart < MONEY.FREE_15
 		) {
 			return PRICE_SHIPPING.SHIPPING_01;
-		} else if (
+		}
+		// Đơn hàng từ 1tr5 - 3tr ==> phí ship = 25k
+		else if (
 			context.totalPriceChosseCart > MONEY.FREE_15 &&
 			context.totalPriceChosseCart < MONEY.FREE_25
 		) {
 			return PRICE_SHIPPING.SHIPPING_02;
-		} else {
+		}
+		// Đơn hàng từ 3tr ==> free ship
+		else {
 			return PRICE_SHIPPING.SHIPPING_03;
 		}
 	}, [context.listCart]);
@@ -43,15 +49,15 @@ function ProvisionalMoney({}: PropsProvisionalMoney) {
 
 	// Hàm submit
 	const handleSubmit = () => {
-		if (context.listCart.length == 0) {
-			return toastWarn({msg: 'Vui lòng chọn sản phẩm để thanh toán!'});
-		} else {
+		if (context.listCart.length > 0) {
 			const dataSubmit = {
 				listProduct: context.listCart,
 				temporaryPrice: context.totalPriceChosseCart,
 				freeShipping: priceShipping,
 			};
 			console.log(dataSubmit);
+		} else {
+			return toastWarn({msg: 'Vui lòng chọn sản phẩm để thanh toán!'});
 		}
 	};
 

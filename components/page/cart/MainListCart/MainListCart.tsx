@@ -10,7 +10,7 @@ function MainListCart() {
 	// Gọi context
 	const context = useContext<TypeContext>(ContextCart);
 
-	// State
+	// State giỏ hàng ban đầu
 	const [carts, setCarts] = useState<TypeCart[]>([]);
 
 	// Lấy giỏ hàng ban đầu
@@ -28,7 +28,7 @@ function MainListCart() {
 			return v;
 		});
 
-		// Update mảng giở hàng được chọn
+		// Update mảng giỏ hàng được chọn
 		const updateChosseCart = context.listCart.map((v) => {
 			if (v.id == id) {
 				return {...v, qlt: v.qlt + 1};
@@ -50,7 +50,7 @@ function MainListCart() {
 			return v;
 		});
 
-		// Update mảng giở hàng được chọn
+		// Update mảng giỏ hàng được chọn
 		const updateChosseCart = context.listCart.map((v) => {
 			if (v.id == id) {
 				return {...v, qlt: v.qlt - 1};
@@ -64,7 +64,10 @@ function MainListCart() {
 
 	// Hàm xóa sản phẩm
 	const deleteCart = (id: string) => {
+		// Xóa giỏ hàng cho trước
 		const updateCart = carts.filter((v) => v.id != id);
+
+		// Nếu xóa đơn hàng nằm trong giỏ hàng được chọn thì xóa khỏi giỏ hàng được chọn
 		const updateChosseCart = context.listCart.filter((v) => v.id != id);
 
 		setCarts(updateCart);
@@ -87,7 +90,10 @@ function MainListCart() {
 
 	return (
 		<div className={styles.container}>
+			{/* Phí ship */}
 			<MoneyShip />
+
+			{/* Main */}
 			<div className={styles.main}>
 				<div className={styles.top}>
 					<div className={styles.left}>
@@ -104,7 +110,7 @@ function MainListCart() {
 								onClick={chosseAllCart}
 							/>
 							<label className={styles.label} htmlFor='all_cart'>
-								Tất cả (3)
+								Tất cả ({carts.length})
 							</label>
 						</div>
 					</div>
