@@ -5,7 +5,9 @@ export interface PropsCartItem {
 		name: string;
 		qlt: number;
 		sale: number;
-		price: number;
+		unitPrice: number;
 	};
 	plusNumber: (id: string) => void;
+	minusNumber: (id: string) => void;
+	deleteCart: (id: string) => void;
 }

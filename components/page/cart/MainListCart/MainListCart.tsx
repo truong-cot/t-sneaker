@@ -2,15 +2,87 @@ import {Trash} from 'iconsax-react';
 import MoneyShip from '../MoneyShip';
 import styles from './MainListCart.module.scss';
 import CartItem from '../CartItem';
-import {listCart} from '~/constants/mocks/data';
+import {TypeCart, listCart} from '~/constants/mocks/data';
+import {useContext, useEffect, useState} from 'react';
+import {ContextCart, TypeContext} from '../context';
 
 function MainListCart() {
+	// Gọi context
+	const context = useContext<TypeContext>(ContextCart);
+
+	// State
+	const [carts, setCarts] = useState<TypeCart[]>([]);
+
+	// Lấy giỏ hàng ban đầu
+	useEffect(() => {
+		setCarts(listCart);
+	}, [listCart]);
+
+	// Hàm tăng số lượng
 	const plusNumber = (id: string) => {
-		const item = listCart.find((v) => v.id == id);
-		if (item) {
-			console.log([...listCart, {...item, qlt: item?.qlt}]);
-			// return [...listCart, {...item, qlt: item?.qlt}];
+		// Update mảng giỏ hàng cho trước
+		const updateCart = carts.map((v) => {
+			if (v.id == id) {
+				return {...v, qlt: v.qlt + 1};
+			}
+			return v;
+		});
+
+		// Update mảng giở hàng được chọn
+		const updateChosseCart = context.listCart.map((v) => {
+			if (v.id == id) {
+				return {...v, qlt: v.qlt + 1};
+			}
+			return v;
+		});
+
+		setCarts(updateCart);
+		context.setListCart(updateChosseCart);
+	};
+
+	// Hàm giảm số lượng
+	const minusNumber = (id: string) => {
+		// Update mảng giỏ hàng cho trước
+		const updateCart = carts.map((v) => {
+			if (v.id == id) {
+				return {...v, qlt: v.qlt - 1};
+			}
+			return v;
+		});
+
+		// Update mảng giở hàng được chọn
+		const updateChosseCart = context.listCart.map((v) => {
+			if (v.id == id) {
+				return {...v, qlt: v.qlt - 1};
+			}
+			return v;
+		});
+
+		setCarts(updateCart);
+		context.setListCart(updateChosseCart);
+	};
+
+	// Hàm xóa sản phẩm
+	const deleteCart = (id: string) => {
+		const updateCart = carts.filter((v) => v.id != id);
+		const updateChosseCart = context.listCart.filter((v) => v.id != id);
+
+		setCarts(updateCart);
+		context.setListCart(updateChosseCart);
+	};
+
+	// Hàm chọn tất cả sản phẩm
+	const chosseAllCart = () => {
+		if (context.listCart.length == carts.length) {
+			context.setListCart([]);
+		} else {
+			context.setListCart(carts);
 		}
+	};
+
+	// Hàm xóa tất cả sản phẩm được chọn
+	const deleteAllChosseCart = () => {
+		context.setListCart([]);
 	};
 
 	return (
@@ -24,7 +96,12 @@ function MainListCart() {
 								className={styles.checkbox}
 								type='checkbox'
 								id='all_cart'
-								// checked
+								onChange={() => null}
+								defaultChecked={false}
+								checked={
+									context.listCart.length == carts.length
+								}
+								onClick={chosseAllCart}
 							/>
 							<label className={styles.label} htmlFor='all_cart'>
 								Tất cả (3)
@@ -36,15 +113,24 @@ function MainListCart() {
 						<p className={styles.text}>Số lượng</p>
 						<p className={styles.text}>Thành tiền</p>
 						<div>
-							<div className={styles.icon}>
+							<div
+								className={styles.icon}
+								onClick={deleteAllChosseCart}
+							>
 								<Trash className={styles.trash} />
 							</div>
 						</div>
 					</div>
 				</div>
 				<div className={styles.list}>
-					{listCart.map((v) => (
-						<CartItem key={v.id} data={v} plusNumber={plusNumber} />
+					{carts.map((v) => (
+						<CartItem
+							key={v.id}
+							data={v}
+							plusNumber={plusNumber}
+							minusNumber={minusNumber}
+							deleteCart={deleteCart}
+						/>
 					))}
 				</div>
 			</div>

@@ -15,6 +15,7 @@
 }
 
 .item {
+	position: relative;
 	border-top: 1px solid #e0dbdb;
 	display: flex;
 	align-items: center;
@@ -41,5 +42,14 @@
 }
 
 .btn {
-	margin-top: 12px;
+	margin-top: 16px;
+}
+
+.note {
+	position: absolute;
+	right: 0;
+	top: 44px;
+	color: rgb(113, 113, 122);
+	font-size: 12px;
+	font-weight: 500;
 }

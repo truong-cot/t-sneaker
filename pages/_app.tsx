@@ -1,8 +1,10 @@
-import type {NextPage} from 'next';
 import {AppProps} from 'next/app';
+import type {NextPage} from 'next';
+import {store} from '~/redux/store';
+import {Provider} from 'react-redux';
 import {ReactElement, ReactNode} from 'react';
 import {ToastContainer} from 'react-toastify';
-import UpdateRoute from '~/components/common/UpdateRoute';
+import UpdateRoute from '~/components/protected/UpdateRoute';
 import LoadingTopBar from '~/components/common/LoadingTopBar';
 import SplashScreen from '~/components/protected/SplashScreen';
 
@@ -32,13 +34,13 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
 	const getLayout = Component.getLayout ?? ((page) => page);
 
 	return (
-		<>
+		<Provider store={store}>
 			<ToastContainer autoClose={3000} />
 			<SplashScreen />
 			<LoadingTopBar />
 			<UpdateRoute />
 			{getLayout(<Component {...pageProps} />)}
-		</>
+		</Provider>
 	);
 }
 
