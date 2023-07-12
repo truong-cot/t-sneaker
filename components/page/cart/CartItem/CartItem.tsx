@@ -73,6 +73,9 @@ function CartItem({data, plusNumber, minusNumber, deleteCart}: PropsCartItem) {
 					</p>
 					<p className={styles.text}>{convertCoin(priceSale)}đ</p>
 				</div>
+				<div className={styles.box_size}>
+					<p className={styles.text}>{data.size}</p>
+				</div>
 				<div className={styles.quantity}>
 					<div
 						onClick={() => minusNumber(data.id)}
@@ -92,6 +95,7 @@ function CartItem({data, plusNumber, minusNumber, deleteCart}: PropsCartItem) {
 						<AiOutlinePlus color='#00000' size={16} />
 					</div>
 				</div>
+
 				<p className={styles.price}>{convertCoin(totalPrice)}đ</p>
 				<div>
 					<div

@@ -7,8 +7,12 @@ import Button from '~/components/controls/Button/Button';
 import {ContextCart, TypeContext} from '../context';
 import {MONEY, PRICE_SHIPPING} from '~/constants/mocks/enum';
 import {toastWarn} from '~/common/func/toast';
+import {useRouter} from 'next/router';
+import {signJWT} from '~/common/func/jwt';
 
 function ProvisionalMoney({}: PropsProvisionalMoney) {
+	const router = useRouter();
+
 	// Gọi context
 	const context = useContext<TypeContext>(ContextCart);
 
@@ -40,22 +44,18 @@ function ProvisionalMoney({}: PropsProvisionalMoney) {
 
 	// Tính tổng tiền tạm tính
 	const totalPrice = useMemo(() => {
-		if (priceShipping == PRICE_SHIPPING.SHIPPING_03) {
-			return context.totalPriceChosseCart - 0;
-		} else {
-			return context.totalPriceChosseCart - priceShipping;
-		}
+		return context.totalPriceChosseCart - priceShipping;
 	}, [context.totalPriceChosseCart, priceShipping]);
 
 	// Hàm submit
 	const handleSubmit = () => {
 		if (context.listCart.length > 0) {
-			const dataSubmit = {
+			const dataSubmit = signJWT({
 				listProduct: context.listCart,
 				temporaryPrice: context.totalPriceChosseCart,
 				freeShipping: priceShipping,
-			};
-			console.log(dataSubmit);
+			});
+			router.push(`/payment?cart=${dataSubmit}`, undefined);
 		} else {
 			return toastWarn({msg: 'Vui lòng chọn sản phẩm để thanh toán!'});
 		}
@@ -72,17 +72,7 @@ function ProvisionalMoney({}: PropsProvisionalMoney) {
 			</div>
 			<div className={styles.item}>
 				<p className={styles.text_1}>Khuyến mãi vận chuyển: </p>
-				<p className={styles.text_2}>
-					{priceShipping == PRICE_SHIPPING.SHIPPING_03 ? (
-						`${priceShipping}`
-					) : (
-						<>
-							<span>-</span>
-							{'  '}
-							{convertCoin(priceShipping)}đ
-						</>
-					)}
-				</p>
+				<p className={styles.text_2}>{convertCoin(priceShipping)}đ</p>
 			</div>
 			<div className={styles.item}>
 				<p className={styles.text_1}>Tổng tạm tính: </p>

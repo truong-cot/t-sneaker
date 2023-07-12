@@ -116,6 +116,7 @@ function MainListCart() {
 					</div>
 					<div className={styles.right}>
 						<p className={styles.text}>Đơn giá</p>
+						<p className={styles.text}>Kích cỡ</p>
 						<p className={styles.text}>Số lượng</p>
 						<p className={styles.text}>Thành tiền</p>
 						<div>

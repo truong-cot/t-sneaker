@@ -1,12 +1,7 @@
+import {TypeCart} from '~/constants/mocks/data';
+
 export interface PropsCartItem {
-	data: {
-		id: string;
-		image: string;
-		name: string;
-		qlt: number;
-		sale: number;
-		unitPrice: number;
-	};
+	data: TypeCart;
 	plusNumber: (id: string) => void;
 	minusNumber: (id: string) => void;
 	deleteCart: (id: string) => void;

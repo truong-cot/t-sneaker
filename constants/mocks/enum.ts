@@ -7,5 +7,5 @@ export enum MONEY {
 export enum PRICE_SHIPPING {
 	SHIPPING_01 = 15000,
 	SHIPPING_02 = 25000,
-	SHIPPING_03 = 'Free ship',
+	SHIPPING_03 = 0,
 }

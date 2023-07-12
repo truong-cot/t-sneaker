@@ -38,6 +38,7 @@ export interface TypeCart {
 	image: string;
 	name: string;
 	qlt: number;
+	size: string;
 	sale: number;
 	unitPrice: number;
 }
@@ -48,6 +49,7 @@ export const listCart: Array<TypeCart> = [
 		image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=1600',
 		name: 'Sản phẩm 1',
 		unitPrice: 1250000,
+		size: '38',
 		sale: 10,
 		qlt: 1,
 	},
@@ -56,6 +58,7 @@ export const listCart: Array<TypeCart> = [
 		image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=1600',
 		name: 'Sản phẩm 2',
 		unitPrice: 1500000,
+		size: '40',
 		sale: 15,
 		qlt: 1,
 	},
@@ -64,6 +67,7 @@ export const listCart: Array<TypeCart> = [
 		image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=1600',
 		name: 'Sản phẩm 3',
 		unitPrice: 1300000,
+		size: '39',
 		sale: 5,
 		qlt: 1,
 	},
