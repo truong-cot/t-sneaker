@@ -1,14 +1,17 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 
 import styles from './ListMenu.module.scss';
 import Link from 'next/link';
 import clsx from 'clsx';
 import {useRouter} from 'next/router';
-import {Logout} from 'iconsax-react';
+import {Logout, LogoutCurve} from 'iconsax-react';
 import {PropsListMenu} from './interfaces';
-import {listMenuAvatar} from '~/constants/mocks/data';
+import {listMenuProfile} from '~/constants/mocks/data';
 
 function ListMenu({onClose}: PropsListMenu) {
+	// STATE
+	const [showPopupSignOut, setShowPopupSignOut] = useState<boolean>(false);
+
 	const router = useRouter();
 	// Xử lý đăng xuất
 	// const handlerLogout = async () => {
@@ -26,34 +29,42 @@ function ListMenu({onClose}: PropsListMenu) {
 	// 	});
 	// };
 
+	const checkActive = useCallback(
+		(pathname: string) => {
+			const currentRoute = router.pathname;
+			return pathname == `${currentRoute}`;
+		},
+		[router]
+	);
+
 	return (
 		<div className={styles.container}>
-			<div className={styles.mainMenu}>
-				{listMenuAvatar.map((v, i) => (
-					<Link
-						key={i}
-						href={v.href}
-						onClick={onClose}
-						className={clsx(styles.itemMenu, {
-							[styles.active]:
-								v.href.split('/')[1] ==
-								router.pathname.split('/')[1],
-						})}
-					>
-						<div className={styles.iconItem}>
-							<v.icon size={24} />
-						</div>
-						<p className={styles.name}>{v.name}</p>
-					</Link>
-				))}
-			</div>
-			<div className={styles.btnLogout}>
-				<div className={styles.btn}>
+			{listMenuProfile.map((v, i) => (
+				<Link
+					href={v.href}
+					key={i}
+					className={clsx(styles.item, {
+						[styles.active]: checkActive(v.href),
+					})}
+					onClick={onClose}
+				>
 					<div className={styles.icon}>
-						<Logout />
+						<v.icon size={20} color='#4D5A66' />
 					</div>
-					<p>Đăng xuất</p>
+					<p className={styles.text}>{v.title}</p>
+				</Link>
+			))}
+			<div
+				className={styles.item}
+				onClick={() => {
+					setShowPopupSignOut(true);
+					onClose();
+				}}
+			>
+				<div className={styles.icon}>
+					<LogoutCurve size={20} color='#4D5A66' />
 				</div>
+				<p className={styles.text}>Đăng xuất</p>
 			</div>
 		</div>
 	);

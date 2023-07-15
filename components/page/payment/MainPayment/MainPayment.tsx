@@ -29,8 +29,6 @@ function MainPayment({}: PropsMainPayment) {
 		}
 	}, [cart]);
 
-	console.log(data);
-
 	return (
 		<div className={styles.container}>
 			<Breadcrumb

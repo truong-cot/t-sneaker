@@ -1,8 +1,15 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styles from './PaymentMethods.module.scss';
 import {PropsPaymentMethods} from './interfaces';
+import {ContextPayment} from '../context';
 
 function PaymentMethods({}: PropsPaymentMethods) {
+	const context = useContext<any>(ContextPayment);
+
+	const {data} = context;
+
+	console.log(data);
+
 	return (
 		<div className={styles.container}>
 			<h4 className={styles.title}>Hình thức thanh toán</h4>

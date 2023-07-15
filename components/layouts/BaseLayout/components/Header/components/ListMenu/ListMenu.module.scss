@@ -1,84 +1,49 @@
-@import '../../../../../../../styles/color';
-
 .container {
-	padding: 8px;
+	width: 172px;
+	padding: 12px;
 	background: #ffffff;
-	border: 1px solid rgba(199, 229, 255, 0.5);
-	box-shadow: 0px 24px 32px -3px rgba(3, 9, 50, 0.04);
-	border-radius: 8px;
+	margin-top: 6px;
+	box-shadow: 0px 71px 251px rgba(123, 142, 163, 0.07),
+		0px 29.6621px 114.189px rgba(123, 142, 163, 0.0529135),
+		0px 15.8588px 57.9577px rgba(123, 142, 163, 0.0470784),
+		0px 8.8903px 26.676px rgba(123, 142, 163, 0.0426209),
+		0px 4.72157px 9.28936px rgba(123, 142, 163, 0.0373072),
+		0px 1.96475px 1.20887px rgba(123, 142, 163, 0.028439);
+	border-radius: 10px;
+	z-index: 1000;
+}
 
-	.mainMenu {
-		padding-bottom: 12px;
+.item {
+	cursor: pointer;
+	user-select: none;
+	display: flex;
+	align-items: center;
+	padding: 6px 4px;
+	border-radius: 6px;
+	gap: 8px;
+	transition: 0.3s;
+
+	& + .item {
+		margin-top: 4px;
 	}
 
-	.itemMenu {
-		min-width: 240px;
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		padding: 10px 12px;
-		font-size: 16px;
-		cursor: pointer;
-		user-select: none;
-		border-radius: 6px;
-
-		&.active {
-			background-color: $bg_primary_2;
-			color: $t_light;
-
-			&:hover {
-				background-color: $bg_primary_2;
-			}
-
-			.iconItem {
-				color: $t_light;
-			}
-
-			.name {
-				color: $t_light;
-			}
-		}
-
-		&:hover {
-			background-color: rgba(199, 229, 255, 0.25);
-		}
+	&:hover {
+		background: #f8f8f8;
 	}
 
-	.iconItem {
-		color: #8496ac;
+	&.active {
+		background: #f8f8f8;
+	}
+
+	.icon {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
 
-	.name {
-		color: #788a9b;
-	}
-
-	.btnLogout {
-		cursor: pointer;
-		user-select: none;
-		border-top: 1px solid rgba(199, 229, 255, 0.25);
-		padding-top: 12px;
-
-		.btn {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			color: #788a9b;
-			padding: 10px 0;
-			border-radius: 6px;
-
-			&:hover {
-				background-color: rgba(199, 229, 255, 0.25);
-			}
-
-			.icon {
-				margin-right: 8px;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-			}
-		}
+	.text {
+		font-weight: 500;
+		font-size: 14px;
+		color: #303c4f;
 	}
 }

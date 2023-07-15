@@ -16,8 +16,12 @@ import ListImage from '~/components/controls/ListImage';
 import DescriptionProduct from '../DescriptionProduct';
 import ReviewsProduct from '../ReviewsProduct';
 import MayLikeProduct from '../MayLikeProduct';
+import {signJWT} from '~/common/func/jwt';
+import {useRouter} from 'next/router';
 
 function MainProduct({}: PropsMainProduct) {
+	const router = useRouter();
+
 	const [size, setSize] = useState<number>(0);
 	const [number, setNumber] = useState<number>(1);
 	const [care, setCare] = useState<boolean>(false);
@@ -35,6 +39,21 @@ function MainProduct({}: PropsMainProduct) {
 		if (number >= 1) {
 			setNumber(number - 1);
 		}
+	};
+
+	// Hàm xử lý mua sản phẩm
+	// Hàm submit
+	const handleSubmit = () => {
+		// if (context.listCart.length > 0) {
+		// const dataSubmit = signJWT({
+		// 	listProduct: listCart,
+		// 	temporaryPrice: totalPriceChosseCart,
+		// 	freeShipping: priceShipping,
+		// });
+		// router.push(`/payment?cart=${dataSubmit}`, undefined);
+		// } else {
+		// 	return toastWarn({msg: 'Vui lòng chọn sản phẩm để thanh toán!'});
+		// }
 	};
 
 	return (
@@ -160,7 +179,7 @@ function MainProduct({}: PropsMainProduct) {
 						<Button purple bold>
 							Thêm vào giỏ hàng
 						</Button>
-						<Button bright_red bold>
+						<Button bright_red bold onClick={handleSubmit}>
 							Mua ngay
 						</Button>
 						<div

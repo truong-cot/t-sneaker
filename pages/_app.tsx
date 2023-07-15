@@ -20,6 +20,7 @@ import 'lightgallery/scss/lightgallery.scss';
 import 'lightgallery/scss/lg-zoom.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '~/styles/globals.scss';
+import Script from 'next/script';
 
 // Khai báo type page
 type NextPageWithLayout = NextPage & {
@@ -34,13 +35,25 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
 	const getLayout = Component.getLayout ?? ((page) => page);
 
 	return (
-		<Provider store={store}>
-			<ToastContainer autoClose={3000} />
-			<SplashScreen />
-			<LoadingTopBar />
-			<UpdateRoute />
-			{getLayout(<Component {...pageProps} />)}
-		</Provider>
+		<>
+			<Script src='https://www.googletagmanager.com/gtag/js?id=G-BV6YMBNMXR' />
+			<Script id='google-analytics'>
+				{`
+          			window.dataLayer = window.dataLayer || [];
+          			function gtag(){dataLayer.push(arguments);}
+          			gtag('js', new Date());
+ 
+         			gtag('config', 'G-BV6YMBNMXR');
+       			`}
+			</Script>
+			<Provider store={store}>
+				<ToastContainer autoClose={3000} />
+				<SplashScreen />
+				<LoadingTopBar />
+				<UpdateRoute />
+				{getLayout(<Component {...pageProps} />)}
+			</Provider>
+		</>
 	);
 }
 

@@ -1,4 +1,4 @@
-import {UserOctagon} from 'iconsax-react';
+import {ProfileCircle, ShieldSecurity} from 'iconsax-react';
 
 export const linksNavHeader: Array<{link: string; name: string; menu?: any[]}> =
 	[
@@ -6,12 +6,22 @@ export const linksNavHeader: Array<{link: string; name: string; menu?: any[]}> =
 		{link: '/shop', name: 'Cửa hàng'},
 	];
 
-export const listMenuAvatar: Array<{icon: any; name: string; href: string}> = [
+export const listMenuProfile: Array<any> = [
 	{
+		title: 'Tài khoản của tôi',
+		icon: ProfileCircle,
 		href: '/profile',
-		icon: UserOctagon,
-		name: 'Thông tin cá nhân',
 	},
+	{
+		title: 'Đổi mật khẩu',
+		icon: ShieldSecurity,
+		href: '/profile/change-pass',
+	},
+	// {
+	// 	title: 'Cài đặt',
+	// 	icon: Setting3,
+	// 	href: '/profile/setting-notify',
+	// },
 ];
 
 export const listPolicy: Array<{name: string; link: string}> = [
