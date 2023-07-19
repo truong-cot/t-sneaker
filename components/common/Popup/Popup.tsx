@@ -34,10 +34,7 @@ function Overlay({open, notOutside, onClose, children}: props) {
 		<Fragment>
 			{open && (
 				<Portal>
-					<div
-						className={clsx(style.overlay)}
-						onClick={handleClose}
-					></div>
+					<div className={clsx(style.overlay)} onClick={handleClose}></div>
 					<div className={style.main}>{children}</div>
 				</Portal>
 			)}

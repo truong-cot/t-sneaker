@@ -21,7 +21,7 @@ function ResultPayment({}: PropsResultPayment) {
 					<p className={styles.text_4}>Số lượng</p>
 				</div>
 				{data?.listProduct.map((v, i) => (
-					<div className={styles.item_2}>
+					<div className={styles.item_2} key={i}>
 						<p className={styles.name_product}>{`${i + 1}. ${
 							v.name
 						}`}</p>

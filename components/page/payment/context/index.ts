@@ -1,5 +1,6 @@
 import {createContext} from 'react';
 import {TypeCart} from '~/constants/mocks/data';
+import {PropsAddress} from '../MainPayment/interfaces';
 
 export interface TypeContextPayment {
 	data: {
@@ -7,12 +8,8 @@ export interface TypeContextPayment {
 		temporaryPrice: number;
 		listProduct: TypeCart[];
 	};
+	address: PropsAddress;
+	setAddress: (any: any) => void;
 }
 
-export const ContextPayment = createContext<TypeContextPayment>({
-	data: {
-		freeShipping: 0,
-		temporaryPrice: 0,
-		listProduct: [],
-	},
-});
+export const ContextPayment = createContext<any>(null);

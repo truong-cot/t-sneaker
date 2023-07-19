@@ -9,3 +9,8 @@ export enum PRICE_SHIPPING {
 	SHIPPING_02 = 25000,
 	SHIPPING_03 = 0,
 }
+
+export enum TYPE_ADDRESS {
+	NHA_RIENG = 1,
+	VAN_PHONG = 2,
+}

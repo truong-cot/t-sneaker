@@ -2,7 +2,7 @@ import {AppProps} from 'next/app';
 import type {NextPage} from 'next';
 import {store} from '~/redux/store';
 import {Provider} from 'react-redux';
-import {ReactElement, ReactNode} from 'react';
+import {Fragment, ReactElement, ReactNode} from 'react';
 import {ToastContainer} from 'react-toastify';
 import UpdateRoute from '~/components/protected/UpdateRoute';
 import LoadingTopBar from '~/components/common/LoadingTopBar';
@@ -21,6 +21,8 @@ import 'lightgallery/scss/lg-zoom.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '~/styles/globals.scss';
 import Script from 'next/script';
+import Head from 'next/head';
+import icons from '~/constants/images/icons';
 
 // Khai báo type page
 type NextPageWithLayout = NextPage & {
@@ -35,17 +37,26 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
 	const getLayout = Component.getLayout ?? ((page) => page);
 
 	return (
-		<>
-			<Script src='https://www.googletagmanager.com/gtag/js?id=G-BV6YMBNMXR' />
-			<Script id='google-analytics'>
-				{`
-          			window.dataLayer = window.dataLayer || [];
-          			function gtag(){dataLayer.push(arguments);}
-          			gtag('js', new Date());
- 
-         			gtag('config', 'G-BV6YMBNMXR');
-       			`}
-			</Script>
+		<Fragment>
+			<Head>
+				<title>{process.env.NEXT_PUBLIC_TITLE_PAGE}</title>
+				<meta charSet='UTF-8' />
+				<meta httpEquiv='X-UA-Compatible' content='IE=edge' />
+				<meta property='og:type' content='website' />
+				<meta
+					name='description'
+					content={process.env.NEXT_PUBLIC_DES}
+				/>
+				<meta
+					name='viewport'
+					content='width=device-width, initial-scale=1, maximum-scale=1'
+				/>
+				<meta
+					property='og:title'
+					content={process.env.NEXT_PUBLIC_TITLE_PAGE}
+				/>
+				<meta property='og:image' content={icons.logo_small.src} />
+			</Head>
 			<Provider store={store}>
 				<ToastContainer autoClose={3000} />
 				<SplashScreen />
@@ -53,7 +64,7 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
 				<UpdateRoute />
 				{getLayout(<Component {...pageProps} />)}
 			</Provider>
-		</>
+		</Fragment>
 	);
 }
 

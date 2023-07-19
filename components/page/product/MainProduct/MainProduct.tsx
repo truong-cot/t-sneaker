@@ -65,7 +65,7 @@ function MainProduct({}: PropsMainProduct) {
 					'Giày Nike',
 					'Giày nike cổ cao',
 				]}
-				listHref={['/', '/shop', '/category/123']}
+				listHref={['/', '/shop', '/shop?category=category+1']}
 			/>
 			<div className={styles.main}>
 				<div className={styles.box_1}>

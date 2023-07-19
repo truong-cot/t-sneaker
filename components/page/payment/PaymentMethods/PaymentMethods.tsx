@@ -8,8 +8,6 @@ function PaymentMethods({}: PropsPaymentMethods) {
 
 	const {data} = context;
 
-	console.log(data);
-
 	return (
 		<div className={styles.container}>
 			<h4 className={styles.title}>Hình thức thanh toán</h4>

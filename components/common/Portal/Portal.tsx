@@ -14,9 +14,7 @@ function Portal({children}: any) {
 		};
 	}, []);
 
-	return portal.current
-		? ReactDOM.createPortal(children, portal.current)
-		: null;
+	return portal.current ? ReactDOM.createPortal(children, portal.current) : null;
 }
 
 export default Portal;

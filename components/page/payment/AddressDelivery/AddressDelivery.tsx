@@ -1,14 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import styles from './AddressDelivery.module.scss';
 import {PropsAddressDelivery} from './interfaces';
+import clsx from 'clsx';
+import ListAddressUser from '../ListAddressUser';
 
 function AddressDelivery({}: PropsAddressDelivery) {
+	const [openListAddress, setOpenListAddress] = useState<boolean>(false);
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.head}>
 				<h4 className={styles.title}>Thông tin người nhận hàng</h4>
-				<p className={styles.change}>Đổi địa chỉ</p>
+				<p className={styles.change} onClick={() => setOpenListAddress(true)}>
+					Đổi địa chỉ
+				</p>
+				<div
+					className={clsx(styles.list_address, {
+						[styles.open]: openListAddress,
+					})}
+				>
+					<ListAddressUser onCLoseListAddress={() => setOpenListAddress(false)} />
+				</div>
+				{openListAddress && <div className={'overlay'} onClick={() => setOpenListAddress(false)}></div>}
 			</div>
 			<div className={styles.content}>
 				<div className={styles.top}>
@@ -20,9 +34,7 @@ function AddressDelivery({}: PropsAddressDelivery) {
 					<div className={styles.category}>
 						<p className={styles.text}>Nhà riêng</p>
 					</div>
-					<p className={styles.address}>
-						Thôn Khánh Sơn, Xã Sơn Lộc, Huyện Can Lộc, Tỉnh Hà Tĩnh
-					</p>
+					<p className={styles.address}>Thôn Khánh Sơn, Xã Sơn Lộc, Huyện Can Lộc, Tỉnh Hà Tĩnh</p>
 				</div>
 			</div>
 		</div>

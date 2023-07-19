@@ -3,42 +3,66 @@ import {PropsSidebarShop} from './interfaces';
 
 import styles from './SidebarShop.module.scss';
 import {convertCoin} from '~/common/func/convertCoin';
+import {useRouter} from 'next/router';
 
 function SidebarShop({}: PropsSidebarShop) {
-	const [category, setCategory] = useState<any>([]);
-	const [valueRadio, setValueRadio] = useState<any>('');
-	const [status, setStatus] = useState<any>([]);
+	const router = useRouter();
+	const {category} = router.query;
 
-	// Set all value radio
-	useEffect(() => {
-		setValueRadio('all');
-	}, []);
+	// const [valueRadio, setValueRadio] = useState<any>('');
+	// const [status, setStatus] = useState<any>([]);
 
-	// Lấy danh sách loại sản phẩm
-	const handleGetValueCategory = (value: any) => {
-		if (category.includes(value)) {
-			// Nếu giá trị đã được chọn, hãy loại bỏ nó khỏi mảng
-			setCategory(category.filter((v: any) => v !== value));
-		} else {
-			// Nếu giá trị chưa được chọn, hãy thêm nó vào mảng
-			setCategory([...category, value]);
+	// // Set all value radio
+	// useEffect(() => {
+	// 	setValueRadio('all');
+	// }, []);
+
+	// // Lấy danh sách trạng thái sản phẩm
+	// const handleGetValueStatus = (value: any) => {
+	// 	if (status.includes(value)) {
+	// 		// Nếu giá trị đã được chọn, hãy loại bỏ nó khỏi mảng
+	// 		setStatus(status.filter((v: any) => v !== value));
+	// 	} else {
+	// 		// Nếu giá trị chưa được chọn, hãy thêm nó vào mảng
+	// 		setStatus([...status, value]);
+	// 	}
+	// };
+
+	// // Lấy value radio
+	// const handleRadioChange = (e: any) => {
+	// 	setValueRadio(e.target.value);
+	// };
+
+	// Hàm set value category param
+	const handleSetValueParam = (key: string, value: string | null) => {
+		const {[key]: str, ...rest} = router.query;
+
+		if (value == null) {
+			return router.replace(
+				{
+					query: {
+						...rest,
+					},
+				},
+				undefined,
+				{
+					scroll: false,
+				}
+			);
 		}
-	};
 
-	// Lấy danh sách trạng thái sản phẩm
-	const handleGetValueStatus = (value: any) => {
-		if (status.includes(value)) {
-			// Nếu giá trị đã được chọn, hãy loại bỏ nó khỏi mảng
-			setStatus(status.filter((v: any) => v !== value));
-		} else {
-			// Nếu giá trị chưa được chọn, hãy thêm nó vào mảng
-			setStatus([...status, value]);
-		}
-	};
-
-	// Lấy value radio
-	const handleRadioChange = (e: any) => {
-		setValueRadio(e.target.value);
+		return router.replace(
+			{
+				query: {
+					...router.query,
+					[key]: value,
+				},
+			},
+			undefined,
+			{
+				scroll: false,
+			}
+		);
 	};
 
 	return (
@@ -50,10 +74,30 @@ function SidebarShop({}: PropsSidebarShop) {
 					<input
 						className={styles.checkbox}
 						type='checkbox'
+						id='category'
+						name='category'
+						value='category all'
+						onChange={() => null}
+						defaultChecked
+						checked={category == null}
+						onClick={() => handleSetValueParam('category', null)}
+					/>
+					<label className={styles.label} htmlFor='category'>
+						Tất cả
+					</label>
+				</div>
+				<div className={styles.item_category}>
+					<input
+						className={styles.checkbox}
+						type='checkbox'
 						id='category_1'
 						name='category'
 						value='category 1'
-						onChange={() => handleGetValueCategory('category 1')}
+						onChange={() => null}
+						checked={category == 'category 1'}
+						onClick={() =>
+							handleSetValueParam('category', 'category 1')
+						}
 					/>
 					<label className={styles.label} htmlFor='category_1'>
 						category 1
@@ -66,7 +110,11 @@ function SidebarShop({}: PropsSidebarShop) {
 						id='category_2'
 						name='category'
 						value='category 2'
-						onChange={() => handleGetValueCategory('category 2')}
+						onChange={() => null}
+						checked={category == 'category 2'}
+						onClick={() =>
+							handleSetValueParam('category', 'category 2')
+						}
 					/>
 					<label className={styles.label} htmlFor='category_2'>
 						category 2
@@ -79,7 +127,11 @@ function SidebarShop({}: PropsSidebarShop) {
 						id='category_3'
 						name='category'
 						value='category 3'
-						onChange={() => handleGetValueCategory('category 3')}
+						onChange={() => null}
+						checked={category == 'category 3'}
+						onClick={() =>
+							handleSetValueParam('category', 'category 3')
+						}
 					/>
 					<label className={styles.label} htmlFor='category_3'>
 						category 3
@@ -88,7 +140,7 @@ function SidebarShop({}: PropsSidebarShop) {
 			</div>
 
 			{/* Trạng thái sản phẩm */}
-			<div className={styles.price}>
+			{/* <div className={styles.price}>
 				<h4 className={styles.title}>Trạng thái sản phẩm</h4>
 				<div className={styles.item_category}>
 					<input
@@ -142,10 +194,10 @@ function SidebarShop({}: PropsSidebarShop) {
 						Sản phẩm đang TRENDT
 					</label>
 				</div>
-			</div>
+			</div> */}
 
 			{/* Giá sản phẩm */}
-			<div className={styles.price}>
+			{/* <div className={styles.price}>
 				<h4 className={styles.title}>Giá sản phẩm</h4>
 				<div className={styles.item_category}>
 					<input
@@ -203,7 +255,7 @@ function SidebarShop({}: PropsSidebarShop) {
 						Trên {convertCoin(3000000)}đ
 					</label>
 				</div>
-			</div>
+			</div> */}
 		</div>
 	);
 }
