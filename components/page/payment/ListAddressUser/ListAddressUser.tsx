@@ -54,7 +54,7 @@ function ListAddressUser({onCLoseListAddress}: PropsListAddressUser) {
 			</div>
 
 			<Popup open={openPopup} onClose={() => setOpenPopup(false)}>
-				<PopupAddAddress />
+				<PopupAddAddress onClose={() => setOpenPopup(false)} />
 			</Popup>
 		</>
 	);

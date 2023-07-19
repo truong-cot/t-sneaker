@@ -10,8 +10,9 @@ import {removeVietnameseTones} from '~/common/func/optionConvert';
 import {FiChevronDown} from 'react-icons/fi';
 import {TYPE_ADDRESS} from '~/constants/mocks/enum';
 import Button from '~/components/controls/Button/Button';
+import {IoClose} from 'react-icons/io5';
 
-function PopupAddAddress({}: PropsPopupAddAddress) {
+function PopupAddAddress({onClose}: PropsPopupAddAddress) {
 	const router = useRouter();
 
 	const [typeAddress, setTypeAddress] = useState<number>(TYPE_ADDRESS.NHA_RIENG);
@@ -380,9 +381,19 @@ function PopupAddAddress({}: PropsPopupAddAddress) {
 				</div>
 			</div>
 
-			<div className={styles.list_btn}>
-				<Button>Hủy</Button>
-				<Button>Thêm thông tin</Button>
+			<div className={styles.box_btn}>
+				<div className={styles.list_btn}>
+					<Button purple rounded_8 onClick={onClose}>
+						Hủy
+					</Button>
+					<Button secondary rounded_8>
+						Thêm thông tin
+					</Button>
+				</div>
+			</div>
+
+			<div className={styles.close} onClick={onClose}>
+				<IoClose size={24} />
 			</div>
 		</div>
 	);

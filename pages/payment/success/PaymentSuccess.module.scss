@@ -1,0 +1,19 @@
+.container {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+.title {
+	font-size: 24px;
+	margin-top: 24px;
+	margin-bottom: 20px;
+}
+
+.list_btn {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}

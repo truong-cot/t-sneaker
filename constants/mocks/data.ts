@@ -1,10 +1,9 @@
-import {ProfileCircle, ShieldSecurity} from 'iconsax-react';
+import {ProfileCircle, ShieldSecurity, Location, ShoppingCart} from 'iconsax-react';
 
-export const linksNavHeader: Array<{link: string; name: string; menu?: any[]}> =
-	[
-		{link: '/', name: 'Trang chủ'},
-		{link: '/shop', name: 'Cửa hàng'},
-	];
+export const linksNavHeader: Array<{link: string; name: string; menu?: any[]}> = [
+	{link: '/', name: 'Trang chủ'},
+	{link: '/shop', name: 'Cửa hàng'},
+];
 
 export const listMenuProfile: Array<any> = [
 	{
@@ -22,6 +21,33 @@ export const listMenuProfile: Array<any> = [
 	// 	icon: Setting3,
 	// 	href: '/profile/setting-notify',
 	// },
+];
+
+export const listMenuSidebarProfile: Array<{
+	name: string;
+	link: string;
+	icon: any;
+}> = [
+	{
+		icon: ProfileCircle,
+		link: '/profile',
+		name: 'Thông tin cá nhân',
+	},
+	{
+		icon: Location,
+		link: '/profile/list-address',
+		name: 'Sổ địa chỉ',
+	},
+	{
+		icon: ShoppingCart,
+		link: '/profile/my-order',
+		name: 'Quản lý đơn hàng',
+	},
+	{
+		name: 'Đổi mật khẩu',
+		icon: ShieldSecurity,
+		link: '/profile/change-pass',
+	},
 ];
 
 export const listPolicy: Array<{name: string; link: string}> = [

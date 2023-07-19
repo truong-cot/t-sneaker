@@ -1,16 +1,24 @@
+@import '../../../styles/variables';
+
 .container {
 	padding: 24px 0;
 	background-color: #fff;
 }
 
 .main {
+	margin-top: 24px;
 	display: grid;
-	grid-template-columns: 400px 1fr;
+	grid-template-columns: $widthSideBarProfile 1fr;
 	gap: 24px;
 }
 
 .bg {
 	border-radius: 8px;
-	background-color: rgb(235, 235, 240);
-	padding: 32px 60px;
+	background-color: #ebebf0;
+	padding: 20px 32px;
+}
+
+.title {
+	margin-bottom: 12px;
+	font-size: 18px;
 }

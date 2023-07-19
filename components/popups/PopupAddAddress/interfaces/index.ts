@@ -1,1 +1,3 @@
-export interface PropsPopupAddAddress {}
+export interface PropsPopupAddAddress {
+	onClose: () => void;
+}

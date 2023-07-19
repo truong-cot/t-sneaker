@@ -18,6 +18,11 @@
 	}
 }
 
+.effectShow {
+	animation-name: fadeIn;
+	animation: fadeIn 0.3s linear forwards;
+}
+
 @keyframes fadeIn {
 	from {
 		opacity: 0;
@@ -26,8 +31,4 @@
 	to {
 		opacity: 1;
 	}
-}
-.effectShow {
-	animation-name: fadeIn;
-	animation: fadeIn 0.3s linear forwards;
 }
