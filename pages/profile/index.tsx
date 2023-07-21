@@ -11,8 +11,8 @@ function Profile() {
 		<Page disabledEffect title='Thông tin cá nhân'>
 			<LayoutGrid>
 				<LayoutProfile
-					breadcrumb={<Breadcrumb titles={['Trang chủ', 'Thông tin cá nhân']} listHref={['/']} />}
 					title='Thông tin cá nhân'
+					breadcrumb={<Breadcrumb titles={['Trang chủ', 'Thông tin cá nhân']} listHref={['/']} />}
 				>
 					<MainProfile />
 				</LayoutProfile>

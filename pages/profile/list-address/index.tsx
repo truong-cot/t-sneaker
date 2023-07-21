@@ -11,13 +11,13 @@ function ListAddress() {
 		<Page disabledEffect title='Sổ địa chỉ'>
 			<LayoutGrid>
 				<LayoutProfile
+					title='Sổ địa chỉ'
 					breadcrumb={
 						<Breadcrumb
 							titles={['Trang chủ', 'Thông tin cá nhân', 'Sổ địa chỉ']}
 							listHref={['/', '/profile']}
 						/>
 					}
-					title='Sổ địa chỉ'
 				>
 					<MainListAddress />
 				</LayoutProfile>

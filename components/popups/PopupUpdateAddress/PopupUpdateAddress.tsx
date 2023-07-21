@@ -1,6 +1,6 @@
 import {useRouter} from 'next/router';
-import styles from './PopupAddAddress.module.scss';
-import {PropsPopupAddAddress} from './interfaces';
+import styles from './PopupUpdateAddress.module.scss';
+import {PropsPopupUpdateAddress} from './interfaces';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 import {PATHS} from '~/constants/mocks/paths';
@@ -12,7 +12,7 @@ import {TYPE_ADDRESS} from '~/constants/mocks/enum';
 import Button from '~/components/controls/Button/Button';
 import {IoClose} from 'react-icons/io5';
 
-function PopupAddAddress({onClose}: PropsPopupAddAddress) {
+function PopupUpdateAddress({onClose}: PropsPopupUpdateAddress) {
 	const router = useRouter();
 
 	const [typeAddress, setTypeAddress] = useState<number>(TYPE_ADDRESS.NHA_RIENG);
@@ -101,7 +101,7 @@ function PopupAddAddress({onClose}: PropsPopupAddAddress) {
 
 	return (
 		<div className={clsx(styles.container, 'effectZoom')}>
-			<h4 className={styles.title}>Thêm thông tin nhận hàng</h4>
+			<h4 className={styles.title}>Chỉnh sửa thông tin nhận hàng</h4>
 			<div className={styles.form}>
 				<div className={styles.col_2}>
 					<div className={styles.item}>
@@ -387,7 +387,7 @@ function PopupAddAddress({onClose}: PropsPopupAddAddress) {
 						Hủy
 					</Button>
 					<Button secondary rounded_8>
-						Thêm thông tin
+						Chỉnh sửa
 					</Button>
 				</div>
 			</div>
@@ -399,4 +399,4 @@ function PopupAddAddress({onClose}: PropsPopupAddAddress) {
 	);
 }
 
-export default PopupAddAddress;
+export default PopupUpdateAddress;
