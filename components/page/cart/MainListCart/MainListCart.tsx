@@ -89,59 +89,56 @@ function MainListCart() {
 	};
 
 	return (
-		<div className={styles.container}>
-			{/* Phí ship */}
-			<MoneyShip />
+		<>
+			<div className={styles.container}>
+				{/* Phí ship */}
+				<MoneyShip />
 
-			{/* Main */}
-			<div className={styles.main}>
-				<div className={styles.top}>
-					<div className={styles.left}>
-						<div className={styles.item}>
-							<input
-								className={styles.checkbox}
-								type='checkbox'
-								id='all_cart'
-								onChange={() => null}
-								defaultChecked={false}
-								checked={
-									context.listCart.length == carts.length
-								}
-								onClick={chosseAllCart}
-							/>
-							<label className={styles.label} htmlFor='all_cart'>
-								Tất cả ({carts.length})
-							</label>
+				{/* Main */}
+				<div className={styles.main}>
+					<div className={styles.top}>
+						<div className={styles.left}>
+							<div className={styles.item}>
+								<input
+									className={styles.checkbox}
+									type='checkbox'
+									id='all_cart'
+									onChange={() => null}
+									defaultChecked={false}
+									checked={context.listCart.length == carts.length}
+									onClick={chosseAllCart}
+								/>
+								<label className={styles.label} htmlFor='all_cart'>
+									Tất cả ({carts.length})
+								</label>
+							</div>
 						</div>
-					</div>
-					<div className={styles.right}>
-						<p className={styles.text}>Đơn giá</p>
-						<p className={styles.text}>Kích cỡ</p>
-						<p className={styles.text}>Số lượng</p>
-						<p className={styles.text}>Thành tiền</p>
-						<div>
-							<div
-								className={styles.icon}
-								onClick={deleteAllChosseCart}
-							>
-								<Trash className={styles.trash} />
+						<div className={styles.right}>
+							<p className={styles.text}>Đơn giá</p>
+							<p className={styles.text}>Kích cỡ</p>
+							<p className={styles.text}>Số lượng</p>
+							<p className={styles.text}>Thành tiền</p>
+							<div>
+								<div className={styles.icon} onClick={() => deleteAllChosseCart}>
+									<Trash className={styles.trash} />
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div className={styles.list}>
-					{carts.map((v) => (
-						<CartItem
-							key={v.id}
-							data={v}
-							plusNumber={plusNumber}
-							minusNumber={minusNumber}
-							deleteCart={deleteCart}
-						/>
-					))}
+					<div className={styles.list}>
+						{carts.map((v) => (
+							<CartItem
+								key={v.id}
+								data={v}
+								plusNumber={plusNumber}
+								minusNumber={minusNumber}
+								deleteCart={deleteCart}
+							/>
+						))}
+					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 

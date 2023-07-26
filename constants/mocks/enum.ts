@@ -14,3 +14,9 @@ export enum TYPE_ADDRESS {
 	NHA_RIENG = 1,
 	VAN_PHONG = 2,
 }
+
+export enum GENDER {
+	NAM = 1,
+	NU = 2,
+	KHAC = 3,
+}

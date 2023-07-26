@@ -14,11 +14,78 @@ function CategoryHome({}: PropsCategoryHome) {
 					Phong cách mới, trải nghiệm với <span>T - Sneaker</span>
 				</h4>
 				<div className={styles.list}>
-					<Link href={'/category/123'} className={styles.item}>
+					<Link href={'/shop?category=category 1'} className={styles.item}>
 						<div className={styles.box_image}>
 							<ImageFill fullHeight className={styles.image} />
 						</div>
-						<p className={styles.name}>nike</p>
+						<div className={styles.info}>
+							<p className={styles.number}>12 sản phẩm</p>
+							<h4 className={styles.name}>ADIDAS</h4>
+						</div>
+					</Link>
+					<Link href={'/shop?category=category 1'} className={styles.item}>
+						<div className={styles.box_image}>
+							<ImageFill fullHeight className={styles.image} />
+						</div>
+						<div className={styles.info}>
+							<p className={styles.number}>12 sản phẩm</p>
+							<h4 className={styles.name}>ADIDAS</h4>
+						</div>
+					</Link>
+					<Link href={'/shop?category=category 1'} className={styles.item}>
+						<div className={styles.box_image}>
+							<ImageFill fullHeight className={styles.image} />
+						</div>
+						<div className={styles.info}>
+							<p className={styles.number}>12 sản phẩm</p>
+							<h4 className={styles.name}>ADIDAS</h4>
+						</div>
+					</Link>
+					<Link href={'/shop?category=category 1'} className={styles.item}>
+						<div className={styles.box_image}>
+							<ImageFill fullHeight className={styles.image} />
+						</div>
+						<div className={styles.info}>
+							<p className={styles.number}>12 sản phẩm</p>
+							<h4 className={styles.name}>ADIDAS</h4>
+						</div>
+					</Link>
+					<Link href={'/shop?category=category 1'} className={styles.item}>
+						<div className={styles.box_image}>
+							<ImageFill fullHeight className={styles.image} />
+						</div>
+						<div className={styles.info}>
+							<p className={styles.number}>12 sản phẩm</p>
+							<h4 className={styles.name}>ADIDAS</h4>
+						</div>
+					</Link>
+
+					<Link href={'/shop?category=category 1'} className={styles.item}>
+						<div className={styles.box_image}>
+							<ImageFill fullHeight className={styles.image} />
+						</div>
+						<div className={styles.info}>
+							<p className={styles.number}>12 sản phẩm</p>
+							<h4 className={styles.name}>ADIDAS</h4>
+						</div>
+					</Link>
+					<Link href={'/shop?category=category 1'} className={styles.item}>
+						<div className={styles.box_image}>
+							<ImageFill fullHeight className={styles.image} />
+						</div>
+						<div className={styles.info}>
+							<p className={styles.number}>12 sản phẩm</p>
+							<h4 className={styles.name}>ADIDAS</h4>
+						</div>
+					</Link>
+					<Link href={'/shop?category=category 1'} className={styles.item}>
+						<div className={styles.box_image}>
+							<ImageFill fullHeight className={styles.image} />
+						</div>
+						<div className={styles.info}>
+							<p className={styles.number}>12 sản phẩm</p>
+							<h4 className={styles.name}>ADIDAS</h4>
+						</div>
 					</Link>
 				</div>
 			</div>

@@ -10,10 +10,13 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import {ContextCart} from '../context';
 import {TypeCart} from '~/constants/mocks/data';
+import Dialog from '~/components/controls/Dialog/Dialog';
 
 function CartItem({data, plusNumber, minusNumber, deleteCart}: PropsCartItem) {
 	// Gọi context
 	const context = useContext<any>(ContextCart);
+
+	const [openDeteleCart, setOpenDeleteCart] = useState<boolean>(false);
 
 	// Tính giá theo giá gốc và khuyến mãi
 	const priceSale = useMemo(() => {
@@ -32,81 +35,87 @@ function CartItem({data, plusNumber, minusNumber, deleteCart}: PropsCartItem) {
 		if (!isHave) {
 			context.setListCart((prev: any) => [...prev, {...item}]);
 		} else {
-			context.setListCart((prev: any) =>
-				prev.filter((v: any) => v.id != item.id)
-			);
+			context.setListCart((prev: any) => prev.filter((v: any) => v.id != item.id));
 		}
 	};
 
-	return (
-		<div className={styles.container}>
-			<div className={styles.left}>
-				<div className={styles.item}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						onChange={() => null}
-						defaultChecked={false}
-						onClick={() => chosseCart(data)}
-						checked={context?.listCart?.some(
-							(v: any) => v.id == data.id
-						)}
-					/>
-					<div className={styles.info}>
-						<div className={styles.box_image}>
-							<ImageFill
-								fullHeight
-								className={styles.image}
-								src={data?.image}
-							/>
-						</div>
-						<Link href={'/product/123'} className={styles.name}>
-							{data?.name}
-						</Link>
-					</div>
-				</div>
-			</div>
-			<div className={styles.right}>
-				<div className={styles.box_price}>
-					<p className={styles.text_sale}>
-						{convertCoin(data?.unitPrice)}đ
-					</p>
-					<p className={styles.text}>{convertCoin(priceSale)}đ</p>
-				</div>
-				<div className={styles.box_size}>
-					<p className={styles.text}>{data.size}</p>
-				</div>
-				<div className={styles.quantity}>
-					<div
-						onClick={() => minusNumber(data.id)}
-						className={clsx(styles.quantity_item, {
-							[styles.disabled]: data?.qlt == 1,
-						})}
-					>
-						<AiOutlineMinus color='#00000' size={16} />
-					</div>
-					<div className={clsx(styles.qlt)}>{data?.qlt}</div>
-					<div
-						onClick={() => plusNumber(data.id)}
-						className={clsx(styles.quantity_item, {
-							[styles.disabled]: data?.qlt == 10,
-						})}
-					>
-						<AiOutlinePlus color='#00000' size={16} />
-					</div>
-				</div>
+	const handleDeleteCart = () => {};
 
-				<p className={styles.price}>{convertCoin(totalPrice)}đ</p>
-				<div>
-					<div
-						className={styles.icon}
-						onClick={() => deleteCart(data.id)}
-					>
-						<Trash className={styles.trash} />
+	return (
+		<>
+			<div className={styles.container}>
+				<div className={styles.left}>
+					<div className={styles.item}>
+						<input
+							className={styles.checkbox}
+							type='checkbox'
+							onChange={() => null}
+							defaultChecked={false}
+							onClick={() => chosseCart(data)}
+							checked={context?.listCart?.some((v: any) => v.id == data.id)}
+						/>
+						<div className={styles.info}>
+							<div className={styles.box_image}>
+								<ImageFill fullHeight className={styles.image} src={data?.image} />
+							</div>
+							<Link href={'/product/123'} className={styles.name}>
+								{data?.name}
+							</Link>
+						</div>
+					</div>
+				</div>
+				<div className={styles.right}>
+					<div className={styles.box_price}>
+						<p className={styles.text_sale}>{convertCoin(data?.unitPrice)}đ</p>
+						<p className={styles.text}>{convertCoin(priceSale)}đ</p>
+					</div>
+					<div className={styles.box_size}>
+						<p className={styles.text}>{data.size}</p>
+					</div>
+					<div className={styles.quantity}>
+						<div
+							onClick={() => minusNumber(data.id)}
+							className={clsx(styles.quantity_item, {
+								[styles.disabled]: data?.qlt == 1,
+							})}
+						>
+							<AiOutlineMinus color='#00000' size={16} />
+						</div>
+						<div className={clsx(styles.qlt)}>{data?.qlt}</div>
+						<div
+							onClick={() => plusNumber(data.id)}
+							className={clsx(styles.quantity_item, {
+								[styles.disabled]: data?.qlt == 10,
+							})}
+						>
+							<AiOutlinePlus color='#00000' size={16} />
+						</div>
+					</div>
+
+					<p className={styles.price}>{convertCoin(totalPrice)}đ</p>
+					<div>
+						<div
+							className={styles.icon}
+							onClick={() => {
+								// deleteCart(data.id);
+								setOpenDeleteCart(true);
+							}}
+						>
+							<Trash className={styles.trash} />
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+
+			{/* Popup */}
+			<Dialog
+				open={openDeteleCart}
+				onClose={() => setOpenDeleteCart(false)}
+				onSubmit={handleDeleteCart}
+				title='Xóa đơn hàng'
+				note='Bạn có chắc chắn muốn xóa đơn hàng này khỏi giỏ hàng?'
+			/>
+		</>
 	);
 }
 

@@ -1,0 +1,87 @@
+.avatar {
+	display: flex;
+	align-items: center;
+	margin: 24px 0;
+}
+
+.text {
+	margin-left: 16px;
+	p {
+		&:nth-child(1) {
+			font-size: 15px;
+		}
+		&:nth-child(2) {
+			font-size: 15px;
+			color: #777e90;
+		}
+	}
+}
+
+.titleGroup {
+	font-weight: 700;
+	font-size: 20px;
+	margin-bottom: 24px;
+}
+
+.col_1 {
+	margin-bottom: 24px;
+}
+
+.col_2 {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+
+	& + & {
+		margin-top: 24px;
+	}
+}
+
+.col_3 {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 20px;
+	margin: 24px 0;
+}
+
+.label {
+	display: block;
+	font-weight: 600;
+	color: #29303c;
+	margin-bottom: 8px;
+}
+
+.groupInputRadio {
+	display: flex;
+	gap: 40px;
+	align-items: center;
+	height: 50%;
+
+	input[type='radio'] {
+		border: 0px;
+		width: 20px;
+		height: 20px;
+		cursor: pointer;
+	}
+
+	.groupRadio {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		cursor: pointer;
+		user-select: none;
+	}
+}
+.box_btn {
+	margin-top: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.list_btn {
+	width: 50%;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
