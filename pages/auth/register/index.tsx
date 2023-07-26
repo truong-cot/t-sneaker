@@ -5,7 +5,7 @@ import FormRegister from '~/components/page/auth/FormRegister';
 function Register() {
 	return (
 		<Page disabledEffect title='Đăng kí'>
-			<FormRegister />;
+			<FormRegister />
 		</Page>
 	);
 }

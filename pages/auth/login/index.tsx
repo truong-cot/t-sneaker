@@ -5,7 +5,7 @@ import FormLogin from '~/components/page/auth/FormLogin';
 function Login() {
 	return (
 		<Page disabledEffect title='Đăng nhập'>
-			<FormLogin />;
+			<FormLogin />
 		</Page>
 	);
 }

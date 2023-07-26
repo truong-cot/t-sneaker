@@ -12,7 +12,7 @@ import MenuLogin from './components/MenuLogin/MenuLogin';
 import MenuLogged from './components/MenuLogged/MenuLogged';
 
 function Header({isScroll}: PropsHeader) {
-	const isLogin = false;
+	const isLogin = true;
 	const router = useRouter();
 	const refActive = useRef<any>(null);
 	const currentRoute = router.pathname.split('/')[1];
@@ -52,26 +52,16 @@ function Header({isScroll}: PropsHeader) {
 								href={v.link}
 								key={i}
 								className={clsx(styles.itemNav, {
-									[styles.active]:
-										v.link === `/${currentRoute}`,
+									[styles.active]: v.link === `/${currentRoute}`,
 								})}
-								ref={
-									v.link === `/${currentRoute}`
-										? refActive
-										: null
-								}
+								ref={v.link === `/${currentRoute}` ? refActive : null}
 							>
 								{v.name}
 							</Link>
 						))}
-						<div
-							className={styles.line}
-							style={{left: offset.left, width: offset.width}}
-						></div>
+						<div className={styles.line} style={{left: offset.left, width: offset.width}}></div>
 					</div>
-					<div className={styles.menu}>
-						{isLogin ? <MenuLogged /> : <MenuLogin />}
-					</div>
+					<div className={styles.menu}>{isLogin ? <MenuLogged /> : <MenuLogin />}</div>
 				</div>
 			</LayoutGrid>
 		</div>
