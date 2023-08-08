@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import {PropsMainShop} from './interfaces';
 
 import styles from './MainShop.module.scss';
@@ -10,8 +10,7 @@ import GridColumn from '~/components/layouts/GridColumn';
 import CartProduct from '~/components/common/CartProduct';
 import SkeletonLoading from '~/components/common/SkeletonLoading';
 import SkeletonCardProduct from '~/components/common/SkeletonCardProduct';
-import {httpRequest} from '~/services';
-import productServices from '~/services/productServices';
+
 import {TbLoader} from 'react-icons/tb';
 
 function MainShop({}: PropsMainShop) {
@@ -81,10 +80,7 @@ function MainShop({}: PropsMainShop) {
 							isLoading={false}
 							load={
 								<GridColumn col_4>
-									<SkeletonLoading
-										Item={SkeletonCardProduct}
-										count={8}
-									/>
+									<SkeletonLoading Item={SkeletonCardProduct} count={8} />
 								</GridColumn>
 							}
 						>

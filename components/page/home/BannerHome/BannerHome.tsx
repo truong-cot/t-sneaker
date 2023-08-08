@@ -1,15 +1,17 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Slider from 'react-slick';
-import Image from 'next/image';
 import {ArrowLeft2, ArrowRight2} from 'iconsax-react';
 
-import {PropsBannerHome} from './interfaces';
+import {IBbanner, PropsBannerHome} from './interfaces';
 import styles from './BannerHome.module.scss';
 import LayoutGrid from '~/components/layouts/LayoutGrid';
-import LoadingScreen from '~/components/protected/LoadingScreen';
+import {httpRequest} from '~/services';
+import bannerServices from '~/services/bannerServices';
+import ImageFill from '~/components/common/ImageFill/ImageFill';
 
 function SampleNextArrow(props: any) {
 	const {onClick} = props;
+
 	return (
 		<div className={styles.next} onClick={onClick}>
 			<ArrowRight2 />
@@ -27,42 +29,59 @@ function SamplePrevArrow(props: any) {
 }
 
 function BannerHome({}: PropsBannerHome) {
+	const [banners, setBanners] = useState<IBbanner[]>([]);
+
+	useEffect(() => {
+		httpRequest({
+			http: bannerServices.getBanners({
+				page: null,
+				limit: null,
+			}),
+		}).then((data) => {
+			if (data) {
+				setBanners(data.items);
+			}
+		});
+	}, []);
+
 	return (
 		<LayoutGrid>
-			{/* <LoadingScreen isLoading={true} /> */}
 			<div className={styles.container}>
-				<Slider
-					slidesToShow={1}
-					swipeToSlide
-					arrows
-					autoplay
-					autoplaySpeed={3000}
-					nextArrow={<SampleNextArrow />}
-					prevArrow={<SamplePrevArrow />}
-				>
-					<div className={styles.item}>
-						<div className={styles.container_image}>
-							<Image
-								src='https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=1600'
-								alt='Image'
-								layout='fill'
-								objectFit='cover'
-								className={styles.image}
-							/>
-						</div>
-					</div>
-					<div className={styles.item}>
-						<div className={styles.container_image}>
-							<Image
-								src='https://images.pexels.com/photos/631986/pexels-photo-631986.jpeg?auto=compress&cs=tinysrgb&w=1600'
-								alt='Image'
-								layout='fill'
-								objectFit='cover'
-								className={styles.image}
-							/>
-						</div>
-					</div>
-				</Slider>
+				{banners.length > 0 ? (
+					<Slider
+						slidesToShow={1}
+						swipeToSlide
+						arrows
+						autoplay
+						autoplaySpeed={3000}
+						nextArrow={<SampleNextArrow />}
+						prevArrow={<SamplePrevArrow />}
+					>
+						{banners.map((v) => (
+							<div className={styles.item} key={v.uuid}>
+								<div className={styles.container_image}>
+									<ImageFill
+										src={v.urlImage}
+										alt={v.name}
+										layout='fill'
+										objectFit='cover'
+										className={styles.image}
+									/>
+								</div>
+							</div>
+						))}
+					</Slider>
+				) : (
+					<ImageFill
+						src={
+							'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=1600'
+						}
+						alt={'banner default'}
+						layout='fill'
+						objectFit='cover'
+						className={styles.image}
+					/>
+				)}
 			</div>
 		</LayoutGrid>
 	);
