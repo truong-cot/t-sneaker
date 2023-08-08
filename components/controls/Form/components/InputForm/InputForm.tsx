@@ -24,6 +24,7 @@ function InputForm({
 	isPhone,
 	min,
 	max,
+	...props
 }: PropsInputForm) {
 	// Gọi context
 	const data = useContext<PropsContextForm>(ContextForm);
@@ -259,9 +260,10 @@ function InputForm({
 				{iconInput && <div className={styles.icon}>{iconInput}</div>}
 				<div className={styles.inputGroup}>
 					<input
+						{...props}
 						name={name}
 						autoComplete='off'
-						value={data.form[name]}
+						value={data.form[name] || ''}
 						type={showPass ? 'text' : type}
 						className={styles.inputElement}
 						placeholder={placeholder}

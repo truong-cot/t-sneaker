@@ -10,15 +10,12 @@ function UpdateRoute() {
 
 	useEffect(() => {
 		return () => {
-			if (
-				router.asPath !== '/auth/login' &&
-				router.asPath !== '/auth/register'
-			) {
+			if (router.asPath !== '/auth/login' && router.asPath !== '/auth/register') {
 				dispatch(updateRouterPrev(router.asPath));
 			}
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [router]);
+	}, [router, dispatch]);
 	return null;
 }
 

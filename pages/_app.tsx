@@ -20,7 +20,7 @@ import 'lightgallery/scss/lightgallery.scss';
 import 'lightgallery/scss/lg-zoom.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 import '~/styles/globals.scss';
-import Script from 'next/script';
+
 import Head from 'next/head';
 import icons from '~/constants/images/icons';
 
@@ -43,18 +43,9 @@ function MyApp({Component, pageProps}: AppPropsWithLayout) {
 				<meta charSet='UTF-8' />
 				<meta httpEquiv='X-UA-Compatible' content='IE=edge' />
 				<meta property='og:type' content='website' />
-				<meta
-					name='description'
-					content={process.env.NEXT_PUBLIC_DES}
-				/>
-				<meta
-					name='viewport'
-					content='width=device-width, initial-scale=1, maximum-scale=1'
-				/>
-				<meta
-					property='og:title'
-					content={process.env.NEXT_PUBLIC_TITLE_PAGE}
-				/>
+				<meta name='description' content={process.env.NEXT_PUBLIC_DES} />
+				<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1' />
+				<meta property='og:title' content={process.env.NEXT_PUBLIC_TITLE_PAGE} />
 				<meta property='og:image' content={icons.logo_small.src} />
 			</Head>
 			<Provider store={store}>

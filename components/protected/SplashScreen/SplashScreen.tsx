@@ -1,60 +1,64 @@
 import {Fragment, useEffect} from 'react';
-import {getItemStorage, setItemStorage} from '~/common/func/localStorage';
-// import {setStateLogin, setToken} from '~/redux/reducer/auth';
-import {useDispatch, useSelector} from 'react-redux';
+
 import {PropsSplashScreen} from './interfaces';
 
-// import {KEY_STORE} from '~/constants/mock/enum';
 import Logo from '~/components/common/Logo';
-// import {RootState} from '~/redux/store';
-// import clsx from 'clsx';
-// import {setAccountId, setInfoUser} from '~/redux/reducer/user';
-// import {setCookie} from 'cookies-next';
-// import {setLoading} from '~/redux/reducer/site';
+
 import styles from './SplashScreen.module.scss';
 import clsx from 'clsx';
+import {RootState} from '~/redux/store';
+import {useDispatch, useSelector} from 'react-redux';
+import {getItemStorage, setItemStorage} from '~/common/func/localStorage';
+import {setCookie} from 'cookies-next';
+import {KEY_STORE} from '~/constants/configs';
+import {setStateLogin, setToken} from '~/redux/reducer/auth';
+import {setInfoUser, setUuidAccount, setUuidUser} from '~/redux/reducer/user';
+import {setLoading} from '~/redux/reducer/site';
 
 function SplashScreen({}: PropsSplashScreen) {
-	const loading = false;
-	// const dispatch = useDispatch();
-	// const {token, isLogin} = useSelector((state: RootState) => state.auth);
-	// const {accountId} = useSelector((state: RootState) => state.user);
-	// const {infoUser} = useSelector((state: RootState) => state.user);
-	// const {loading, location} = useSelector((state: RootState) => state.site);
+	const dispatch = useDispatch();
+	const {loading} = useSelector((state: RootState) => state.site);
 
-	// useEffect(() => {
-	// 	(async () => {
-	// 		// const state = await getItemStorage(KEY_STORE);
-	// 		if (!!state) {
-	// 			// setCookie(KEY_STORE, state);
-	// 			// dispatch(setToken(state.token));
-	// 			// dispatch(setAccountId(state.accountId));
-	// 			// dispatch(setInfoUser(state.infoUser));
-	// 			// dispatch(setStateLogin(state.isLogin));
-	// 		}
+	const {token, isLogin} = useSelector((state: RootState) => state.auth);
+	const {infoUser, uuidUser, uuidAccount} = useSelector((state: RootState) => state.user);
 
-	// 		// dispatch(setLoading(false));
-	// 	})();
-	// }, []);
+	// Lấy data ===> local storage + cookie
+	useEffect(() => {
+		(async () => {
+			const state = await getItemStorage(KEY_STORE);
 
+			if (!!state) {
+				setCookie(KEY_STORE, state);
+				dispatch(setToken(state.token));
+				dispatch(setStateLogin(state.isLogin));
+				dispatch(setInfoUser(state.infoUser));
+				dispatch(setUuidUser(state.uuidUser));
+				dispatch(setUuidAccount(state.uuidAccount));
+			}
+
+			dispatch(setLoading(false));
+		})();
+	}, [dispatch]);
+
+	// Set data ===> local storage + cookie
 	useEffect(() => {
 		if (!loading) {
-			// setItemStorage(KEY_STORE, {
-			// 	token: token,
-			// 	isLogin: isLogin,
-			// 	accountId: accountId,
-			// 	infoUser: infoUser,
-			// 	location,
-			// });
-			// setCookie(KEY_STORE, {
-			// 	token: token,
-			// 	isLogin: isLogin,
-			// 	infoUser: infoUser,
-			// 	accountId: accountId,
-			// 	location,
-			// });
+			setItemStorage(KEY_STORE, {
+				token: token,
+				isLogin: isLogin,
+				infoUser: infoUser,
+				uuid: uuidUser,
+				uuidAccount: uuidAccount,
+			});
+			setCookie(KEY_STORE, {
+				token: token,
+				isLogin: isLogin,
+				infoUser: infoUser,
+				uuid: uuidUser,
+				uuidAccount: uuidAccount,
+			});
 		}
-	}, []);
+	}, [token, isLogin, infoUser, uuidUser, uuidAccount]);
 
 	return (
 		<Fragment>

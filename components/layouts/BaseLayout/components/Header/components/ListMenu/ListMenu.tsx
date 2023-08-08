@@ -8,27 +8,16 @@ import {Logout, LogoutCurve} from 'iconsax-react';
 import {PropsListMenu} from './interfaces';
 import {listMenuProfile} from '~/constants/mocks/data';
 import Dialog from '~/components/controls/Dialog';
+import {useDispatch} from 'react-redux';
+import {setStateLogin, setToken} from '~/redux/reducer/auth';
+import {setInfoUser, setUuidAccount, setUuidUser} from '~/redux/reducer/user';
 
 function ListMenu({onClose}: PropsListMenu) {
+	const dispatch = useDispatch();
 	// STATE
 	const [showLogout, setShowLogout] = useState<boolean>(false);
 
 	const router = useRouter();
-	// Xử lý đăng xuất
-	// const handlerLogout = async () => {
-	// 	setShowPopupSignOut(false);
-
-	// 	httpRequest({
-	// 		setLoading: setIsLoading,
-	// 		http: accountService.logout({token: token!}),
-	// 	}).then(() => {
-	// 		dispatch(setStateLogin(false));
-	// 		dispatch(setInfoUser(null));
-	// 		dispatch(setAccountId(null));
-	// 		dispatch(setToken(null));
-	// 		router.replace('/', undefined, {scroll: false});
-	// 	});
-	// };
 
 	const checkActive = useCallback(
 		(pathname: string) => {
@@ -38,7 +27,15 @@ function ListMenu({onClose}: PropsListMenu) {
 		[router]
 	);
 
-	const handleLogout = () => {};
+	const handleLogout = async () => {
+		setShowLogout(false);
+
+		dispatch(setToken(null));
+		dispatch(setStateLogin(false));
+		dispatch(setInfoUser(null));
+		dispatch(setUuidUser(null));
+		dispatch(setUuidAccount(null));
+	};
 
 	return (
 		<>

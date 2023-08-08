@@ -1,17 +1,21 @@
-import {
-	toastError,
-	toastInfo,
-	toastSuccess,
-	toastWarn,
-} from '~/common/func/toast';
+import {toastInfo, toastSuccess, toastWarn} from '~/common/func/toast';
 
 import axios from 'axios';
+import {ERROR_CODE} from '~/constants/mocks/enum';
 import {delay} from '~/common/func/delay';
+import {store} from '~/redux/store';
+import {setStateLogin, setToken} from '~/redux/reducer/auth';
+import {setInfoUser, setUuidAccount, setUuidUser} from '~/redux/reducer/user';
 
+// Cấu hình axios
 const axiosClient = axios.create({
-	headers: {'Content-Type': 'application/json'},
-	baseURL: 'https://192.168.0.174:6001/api',
-	// paramsSerializer: (params: any) => queryString.stringify(params),
+	headers: {
+		'Content-Type': 'application/json',
+	},
+	baseURL:
+		process.env.NODE_ENV == 'development'
+			? process.env.NEXT_PUBLIC_API_URL_DEV
+			: process.env.NEXT_PUBLIC_API_URL_PRODUCTION,
 	timeout: 15000,
 	timeoutErrorMessage: 'Timeout error request',
 });
@@ -30,7 +34,7 @@ axiosClient.interceptors.response.use(
 	},
 	(error: any) => {
 		if (error.response && error.response.data) {
-			throw error.response.data;
+			throw error.response;
 		}
 
 		if (!axios.isCancel(error)) throw error;
@@ -41,50 +45,60 @@ export default axiosClient;
 
 export const httpRequest = async ({
 	http,
-	dispatch,
 	setLoading,
-	setError,
 	msgSuccess = 'Thành công',
 	showMessage = false,
-	onError,
+	timeDelay = 500,
 }: {
 	http: any;
-	dispatch?: any;
 	setLoading?: (any: any) => void;
-	setError?: (any: any) => void;
-	onError?: () => void;
 	showMessage?: boolean;
 	msgSuccess?: string;
+	timeDelay?: number;
 }) => {
+	// Bắt đầu call api
 	setLoading && setLoading(() => true);
+
 	try {
-		// await delay(500);
+		// Delay
+		timeDelay && (await delay(timeDelay));
+
+		// Bắt đầu gọi
 		const res: any = await http;
 
-		if (res.error.code === 0) {
-			showMessage &&
-				msgSuccess &&
-				toastSuccess({msg: msgSuccess && res?.error?.message});
+		// Gọi xong ===> Thành công
+		if (res.error.code === ERROR_CODE.THANH_CONG) {
+			showMessage && msgSuccess && toastSuccess({msg: msgSuccess && res?.error?.message});
 			setLoading && setLoading(() => false);
 			return res?.data || true;
 		} else {
 			setLoading && setLoading(() => false);
-			onError && onError();
 			throw res?.error?.message;
 		}
+
+		// ===> Có lỗi
 	} catch (err: any) {
-		if (!!dispatch && err?.error?.code === 401) {
-			showMessage && toastError({msg: 'Hết hạn đăng nhập'});
-			// setLoading && setLoading(() => false);
-		} else if (typeof err == 'string') {
-			showMessage && toastWarn({msg: err || 'Có lỗi đã xảy ra'});
+		// Code 401, 403 ===> Authorization
+		if (err?.status == 401 || err?.status == 403) {
+			// redirect login
+			store.dispatch(setToken(null));
+			store.dispatch(setStateLogin(false));
+			store.dispatch(setInfoUser(null));
+			store.dispatch(setUuidUser(null));
+			store.dispatch(setUuidAccount(null));
+		}
+		// Mất mạng
+		else if (err.code == 'ERR_NETWORK' || err.code == 'ECONNABORTED') {
 			setLoading && setLoading(() => false);
-		} else if (err.code == 'ERR_NETWORK' || err.code == 'ECONNABORTED') {
 			showMessage && toastInfo({msg: 'Kiểm tra kết nối internet'});
+		}
+		// Lỗi trả về từ server
+		else {
 			setLoading && setLoading(() => false);
+			showMessage && toastWarn({msg: err?.data?.error?.message || 'Có lỗi đã xảy ra'});
 		}
-		if (setError) {
-			setError(err);
-		}
+		// ===> Gọi xong
+	} finally {
+		setLoading && setLoading(() => false);
 	}
 };

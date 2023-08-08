@@ -10,17 +10,20 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import MenuLogin from './components/MenuLogin/MenuLogin';
 import MenuLogged from './components/MenuLogged/MenuLogged';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/redux/store';
 
 function Header({isScroll}: PropsHeader) {
-	const isLogin = false;
 	const router = useRouter();
 	const refActive = useRef<any>(null);
 	const currentRoute = router.pathname.split('/')[1];
 
 	const [offset, setOffset] = useState<any>({width: 0, left: 0});
 
+	const {isLogin} = useSelector((state: RootState) => state.auth);
+
 	useEffect(() => {
-		if (!!refActive.current) {
+		if (!!refActive?.current) {
 			const id = setTimeout(() => {
 				const {offsetWidth, offsetLeft} = refActive.current;
 				setOffset({
@@ -61,7 +64,7 @@ function Header({isScroll}: PropsHeader) {
 						))}
 						<div className={styles.line} style={{left: offset.left, width: offset.width}}></div>
 					</div>
-					<div className={styles.menu}>{isLogin ? <MenuLogged /> : <MenuLogin />}</div>
+					<div className={styles.menu}>{isLogin ? <MenuLogin /> : <MenuLogged />}</div>
 				</div>
 			</LayoutGrid>
 		</div>

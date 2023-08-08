@@ -1,12 +1,15 @@
 import React from 'react';
 import Page from '~/components/layouts/Page';
 import FormRegister from '~/components/page/auth/FormRegister';
+import RequiredLogout from '~/components/protected/RequiredLogout';
 
 function Register() {
 	return (
-		<Page disabledEffect title='Đăng kí'>
-			<FormRegister />
-		</Page>
+		<RequiredLogout>
+			<Page disabledEffect title='Đăng kí'>
+				<FormRegister />
+			</Page>
+		</RequiredLogout>
 	);
 }
 

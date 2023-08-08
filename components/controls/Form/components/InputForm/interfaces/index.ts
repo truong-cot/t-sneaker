@@ -16,6 +16,7 @@ export interface PropsInputForm {
 	isPhone?: boolean;
 	min?: number;
 	max?: number;
+	[props: string]: any;
 }
 
 export interface PropsContextForm {
