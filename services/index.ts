@@ -16,7 +16,7 @@ const axiosClient = axios.create({
 		process.env.NODE_ENV == 'development'
 			? process.env.NEXT_PUBLIC_API_URL_DEV
 			: process.env.NEXT_PUBLIC_API_URL_PRODUCTION,
-	timeout: 50000,
+	timeout: 15000,
 	timeoutErrorMessage: 'Timeout error request',
 });
 

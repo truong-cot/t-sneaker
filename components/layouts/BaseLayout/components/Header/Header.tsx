@@ -20,8 +20,7 @@ function Header({isScroll}: PropsHeader) {
 
 	const [offset, setOffset] = useState<any>({width: 0, left: 0});
 
-	// const {isLogin} = useSelector((state: RootState) => state.auth);
-	const isLogin = true;
+	const {isLogin} = useSelector((state: RootState) => state.auth);
 
 	useEffect(() => {
 		if (!!refActive?.current) {
