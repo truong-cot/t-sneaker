@@ -1,0 +1,12 @@
+@import '../../../../styles/color';
+
+.container {
+	& + & {
+		margin-top: 8px;
+	}
+
+	.item {
+		height: 32px;
+		border-radius: 4px;
+	}
+}

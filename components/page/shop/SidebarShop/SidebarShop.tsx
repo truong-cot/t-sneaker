@@ -1,37 +1,61 @@
 import React, {useEffect, useState} from 'react';
-import {PropsSidebarShop} from './interfaces';
+import {ICategory, IStatus, PropsSidebarShop} from './interfaces';
 
 import styles from './SidebarShop.module.scss';
 import {convertCoin} from '~/common/func/convertCoin';
 import {useRouter} from 'next/router';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/redux/store';
+import {httpRequest} from '~/services';
+import categoryServices from '~/services/categoryServices';
+import SkeletonLoading from '~/components/common/SkeletonLoading';
+import SkeletonCategoryFilter from '../SkeletonCategoryFilter';
+import statusServices from '~/services/statusServices';
 
 function SidebarShop({}: PropsSidebarShop) {
 	const router = useRouter();
-	const {category} = router.query;
 
-	// const [valueRadio, setValueRadio] = useState<any>('');
-	// const [status, setStatus] = useState<any>([]);
+	const {_category, _status} = router.query;
 
-	// // Set all value radio
-	// useEffect(() => {
-	// 	setValueRadio('all');
-	// }, []);
+	const {token} = useSelector((state: RootState) => state.auth);
 
-	// // Lấy danh sách trạng thái sản phẩm
-	// const handleGetValueStatus = (value: any) => {
-	// 	if (status.includes(value)) {
-	// 		// Nếu giá trị đã được chọn, hãy loại bỏ nó khỏi mảng
-	// 		setStatus(status.filter((v: any) => v !== value));
-	// 	} else {
-	// 		// Nếu giá trị chưa được chọn, hãy thêm nó vào mảng
-	// 		setStatus([...status, value]);
-	// 	}
-	// };
+	const [loading, setLoading] = useState<boolean>(false);
+	const [listCateory, setListCateory] = useState<ICategory[]>([]);
+	const [listStatus, setListStatus] = useState<IStatus[]>([]);
 
-	// // Lấy value radio
-	// const handleRadioChange = (e: any) => {
-	// 	setValueRadio(e.target.value);
-	// };
+	useEffect(() => {
+		(async () => {
+			Promise.all([
+				// Lấy danh sách thể loại
+				httpRequest({
+					setLoading,
+					http: categoryServices.getList({
+						page: null,
+						limit: null,
+						keyword: '',
+						token: token!,
+					}),
+				}),
+				// Lấy danh sách trạng thái
+				httpRequest({
+					setLoading,
+					http: statusServices.getList({
+						page: null,
+						limit: null,
+						keyword: '',
+						token: token!,
+					}),
+				}),
+			]).then(([category, status]) => {
+				if (category) {
+					setListCateory(category.items);
+				}
+				if (status) {
+					setListStatus(status?.items);
+				}
+			});
+		})();
+	}, [token]);
 
 	// Hàm set value category param
 	const handleSetValueParam = (key: string, value: string | null) => {
@@ -70,131 +94,88 @@ function SidebarShop({}: PropsSidebarShop) {
 			{/* Danh mục sản phẩm */}
 			<h4 className={styles.title}>Danh mục sản phẩm</h4>
 			<div className={styles.list_category}>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						id='category'
-						name='category'
-						value='category all'
-						onChange={() => null}
-						defaultChecked
-						checked={category == null}
-						onClick={() => handleSetValueParam('category', null)}
-					/>
-					<label className={styles.label} htmlFor='category'>
-						Tất cả
-					</label>
-				</div>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						id='category_1'
-						name='category'
-						value='category 1'
-						onChange={() => null}
-						checked={category == 'category 1'}
-						onClick={() =>
-							handleSetValueParam('category', 'category 1')
-						}
-					/>
-					<label className={styles.label} htmlFor='category_1'>
-						category 1
-					</label>
-				</div>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						id='category_2'
-						name='category'
-						value='category 2'
-						onChange={() => null}
-						checked={category == 'category 2'}
-						onClick={() =>
-							handleSetValueParam('category', 'category 2')
-						}
-					/>
-					<label className={styles.label} htmlFor='category_2'>
-						category 2
-					</label>
-				</div>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						id='category_3'
-						name='category'
-						value='category 3'
-						onChange={() => null}
-						checked={category == 'category 3'}
-						onClick={() =>
-							handleSetValueParam('category', 'category 3')
-						}
-					/>
-					<label className={styles.label} htmlFor='category_3'>
-						category 3
-					</label>
-				</div>
+				{loading ? (
+					<SkeletonLoading Item={SkeletonCategoryFilter} count={4} />
+				) : (
+					<>
+						<div className={styles.item_category}>
+							<input
+								className={styles.checkbox}
+								type='checkbox'
+								id='category'
+								name='category'
+								value='category all'
+								onChange={() => null}
+								checked={_category == null}
+								onClick={() => handleSetValueParam('_category', null)}
+							/>
+							<label className={styles.label} htmlFor='category'>
+								Tất cả
+							</label>
+						</div>
+						{listCateory.map((v) => (
+							<div key={v._id} className={styles.item_category}>
+								<input
+									className={styles.checkbox}
+									type='checkbox'
+									id={v.name}
+									name='category'
+									value={v._id}
+									onChange={() => null}
+									checked={_category == v._id}
+									onClick={() => handleSetValueParam('_category', v._id)}
+								/>
+								<label className={styles.label} htmlFor={v.name}>
+									{v.name}
+								</label>
+							</div>
+						))}
+					</>
+				)}
 			</div>
 
 			{/* Trạng thái sản phẩm */}
-			{/* <div className={styles.price}>
+			<div className={styles.price}>
 				<h4 className={styles.title}>Trạng thái sản phẩm</h4>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						id='status_0'
-						name='status'
-						value='status 0'
-						onChange={() => handleGetValueStatus('status 0')}
-					/>
-					<label className={styles.label} htmlFor='status_0'>
-						Sản phẩm mới
-					</label>
-				</div>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						id='status_1'
-						name='status'
-						value='status 1'
-						onChange={() => handleGetValueStatus('status 1')}
-					/>
-					<label className={styles.label} htmlFor='status_1'>
-						Sản phẩm được giảm giá
-					</label>
-				</div>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						id='status_2'
-						name='status'
-						value='status 2'
-						onChange={() => handleGetValueStatus('status 2')}
-					/>
-					<label className={styles.label} htmlFor='status_2'>
-						Sản phẩm đang HOT
-					</label>
-				</div>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='checkbox'
-						id='status_3'
-						name='status'
-						value='status 3'
-						onChange={() => handleGetValueStatus('status 3')}
-					/>
-					<label className={styles.label} htmlFor='status_3'>
-						Sản phẩm đang TRENDT
-					</label>
-				</div>
-			</div> */}
+				{loading ? (
+					<SkeletonLoading Item={SkeletonCategoryFilter} count={4} />
+				) : (
+					<>
+						<div className={styles.item_category}>
+							<input
+								className={styles.checkbox}
+								type='checkbox'
+								id='status'
+								name='status'
+								value='status all'
+								onChange={() => null}
+								checked={_status == null}
+								onClick={() => handleSetValueParam('_status', null)}
+							/>
+							<label className={styles.label} htmlFor='status'>
+								Tất cả
+							</label>
+						</div>
+						{listStatus.map((v) => (
+							<div key={v._id} className={styles.item_category}>
+								<input
+									className={styles.checkbox}
+									type='checkbox'
+									id={v._id}
+									name='status'
+									value={v._id}
+									onChange={() => null}
+									checked={_status == v._id}
+									onClick={() => handleSetValueParam('_status', v._id)}
+								/>
+								<label className={styles.label} htmlFor={v._id}>
+									{v.name}
+								</label>
+							</div>
+						))}
+					</>
+				)}
+			</div>
 
 			{/* Giá sản phẩm */}
 			{/* <div className={styles.price}>
