@@ -6,6 +6,7 @@ import placeholder from '../../public/static/images/placehokder-img.jpeg';
 import giasoc from '../../public/static/images/giasoc.svg';
 import homnay from '../../public/static/images/homnay.svg';
 import dealFlashIcon from '../../public/static/images/dealFlashIcon.svg';
+import NoItemsCart from '../../public/static/images/NoItemsCart.png';
 
 export default {
 	logo,
@@ -15,4 +16,5 @@ export default {
 	giasoc,
 	homnay,
 	dealFlashIcon,
+	NoItemsCart,
 };

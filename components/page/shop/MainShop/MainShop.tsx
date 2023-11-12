@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {PropsMainShop} from './interfaces';
 
 import styles from './MainShop.module.scss';
@@ -11,62 +11,53 @@ import CartProduct from '~/components/common/CartProduct';
 import SkeletonLoading from '~/components/common/SkeletonLoading';
 import SkeletonCardProduct from '~/components/common/SkeletonCardProduct';
 
-import {TbLoader} from 'react-icons/tb';
+import {httpRequest} from '~/services';
+import productServices from '~/services/productServices';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/redux/store';
+import {useRouter} from 'next/router';
+import Pagination from '~/components/controls/Pagination';
+import Image from 'next/image';
+import icons from '~/constants/images/icons';
 
 function MainShop({}: PropsMainShop) {
-	// const [page, setPage] = useState(1);
-	// const loaderRef = useRef(null);
+	const router = useRouter();
 
-	// // Xử lý khi loaderRef xuất hiện
-	// const handleObserver = (entries: any) => {
-	// 	const target = entries[0];
+	const pageSize = 9;
 
-	// 	// Xử lý sự kiện khi loaderRef xuất hiện trên màn hình
-	// 	if (target.isIntersecting) {
-	// 		setPage((prev) => prev + 1);
-	// 	}
-	// };
+	const {token} = useSelector((state: RootState) => state.auth);
 
-	// useEffect(() => {
-	// 	const observer = new IntersectionObserver(handleObserver, {
-	// 		root: null, // Kiểm tra sự xuất hiện trong viewport
-	// 		rootMargin: '-100px', // Không áp dụng margin thêm vào viewport
-	// 		threshold: 1, // Khi phần trăm hiển thị của loaderRef đạt 10%
-	// 	});
+	const {_category, _status, _priceFrom, _priceTo, _sortList, _sortType, page} = router.query;
 
-	// 	if (loaderRef.current) {
-	// 		observer.observe(loaderRef.current);
-	// 	}
-
-	// 	return () => {
-	// 		if (loaderRef.current) {
-	// 			observer.unobserve(loaderRef.current);
-	// 		}
-	// 	};
-	// }, []);
+	const [data, setData] = useState<any[]>([]);
+	const [total, setTotal] = useState<number>(0);
+	const [loading, setLoading] = useState<boolean>(false);
 
 	// Call api
-	// useEffect(() => {
-	// 	httpRequest({
-	// 		http: productServices.getAllProduct({
-	// 			page: 1,
-	// 			limit: 10,
-	// 			keyWord: '',
-	// 			categoryUuids: null,
-	// 			pricePrev: 0,
-	// 			priceNext: 10000000,
-	// 			status: null,
-	// 			sortBy: {
-	// 				type: 1,
-	// 				sort: true,
-	// 			},
-	// 		}),
-	// 	}).then((data) => {
-	// 		if (data) {
-	// 			console.log(data);
-	// 		}
-	// 	});
-	// }, []);
+	useEffect(() => {
+		httpRequest({
+			setLoading: setLoading,
+			http: productServices.getList({
+				token: token!,
+				categoryId: _category as string,
+				keyword: '',
+				limit: pageSize,
+				page: Number(page),
+				statusId: _status as string,
+				priceFrom: Number(_priceFrom),
+				priceTo: Number(_priceTo),
+				sort: {
+					sortList: _sortList ? Number(_sortList) : null,
+					sortType: _sortType ? Number(_sortType) : null,
+				},
+			}),
+		}).then((data) => {
+			if (data) {
+				setData(data?.items);
+				setTotal(data?.pagination?.totalCount);
+			}
+		});
+	}, [token, _category, _status, _priceFrom, _priceTo, _sortList, _sortType, page]);
 
 	return (
 		<div className={styles.container}>
@@ -77,37 +68,37 @@ function MainShop({}: PropsMainShop) {
 					<ArrangeShow />
 					<div className={styles.list}>
 						<LoadingData
-							isLoading={false}
+							isLoading={loading}
 							load={
-								<GridColumn col_4>
-									<SkeletonLoading Item={SkeletonCardProduct} count={8} />
+								<GridColumn col_3>
+									<SkeletonLoading Item={SkeletonCardProduct} count={6} />
 								</GridColumn>
 							}
 						>
-							<GridColumn col_3>
-								<CartProduct />
-								<CartProduct />
-								<CartProduct />
-								<CartProduct />
-								<CartProduct />
-								<CartProduct />
-								<CartProduct />
-								<CartProduct />
-								<CartProduct />
-							</GridColumn>
+							{data?.length > 0 ? (
+								<GridColumn col_3>
+									{data.map((v, i) => (
+										<CartProduct data={v} key={i} />
+									))}
+								</GridColumn>
+							) : (
+								<div className={styles.empty}>
+									<Image src={icons.NoItemsCart} alt='empty product' width={240} height={240} />
+									<h5 className={styles.text_empty}>Hiện tại chúng tôi chưa có sản phẩm nào!</h5>
+								</div>
+							)}
 						</LoadingData>
 					</div>
-					<div className={styles.see_more}>
-						<div className={styles.btn}>
-							{/* <p className={styles.text_btn}>
-								Xem thêm 12 sản phẩm
-							</p> */}
-							<div className={styles.load}>
-								<TbLoader color='#b255fb' />
-							</div>
+					{data?.length > pageSize && (
+						<div className={styles.pagination}>
+							<Pagination
+								total={total}
+								pageSize={pageSize}
+								currentPage={Number(page) || 1}
+								dependencies={[_category, _status, _priceFrom, _priceTo, _sortList, _sortType]}
+							/>
 						</div>
-					</div>
-					{/* <div ref={loaderRef}></div> */}
+					)}
 				</div>
 			</div>
 		</div>

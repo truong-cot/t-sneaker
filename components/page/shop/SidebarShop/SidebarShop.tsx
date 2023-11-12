@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ICategory, IStatus, PropsSidebarShop} from './interfaces';
+import {ICategory, IPrice, IStatus, PropsSidebarShop} from './interfaces';
 
 import styles from './SidebarShop.module.scss';
 import {convertCoin} from '~/common/func/convertCoin';
@@ -11,17 +11,19 @@ import categoryServices from '~/services/categoryServices';
 import SkeletonLoading from '~/components/common/SkeletonLoading';
 import SkeletonCategoryFilter from '../SkeletonCategoryFilter';
 import statusServices from '~/services/statusServices';
+import priceServices from '~/services/priceServices';
 
 function SidebarShop({}: PropsSidebarShop) {
 	const router = useRouter();
 
-	const {_category, _status} = router.query;
+	const {_category, _status, _priceFrom, _priceTo} = router.query;
 
 	const {token} = useSelector((state: RootState) => state.auth);
 
 	const [loading, setLoading] = useState<boolean>(false);
 	const [listCateory, setListCateory] = useState<ICategory[]>([]);
 	const [listStatus, setListStatus] = useState<IStatus[]>([]);
+	const [listPrice, setListPrice] = useState<IPrice[]>([]);
 
 	useEffect(() => {
 		(async () => {
@@ -46,12 +48,24 @@ function SidebarShop({}: PropsSidebarShop) {
 						token: token!,
 					}),
 				}),
-			]).then(([category, status]) => {
+				// Lấy danh sách khoảng giá
+				httpRequest({
+					setLoading,
+					http: priceServices.getList({
+						page: null,
+						limit: null,
+						token: token!,
+					}),
+				}),
+			]).then(([category, status, price]) => {
 				if (category) {
 					setListCateory(category.items);
 				}
 				if (status) {
 					setListStatus(status?.items);
+				}
+				if (price) {
+					setListPrice(price?.items);
 				}
 			});
 		})();
@@ -80,6 +94,38 @@ function SidebarShop({}: PropsSidebarShop) {
 				query: {
 					...router.query,
 					[key]: value,
+				},
+			},
+			undefined,
+			{
+				scroll: false,
+			}
+		);
+	};
+
+	const setParamPrice = (from: number | null, to: number | null) => {
+		const {_priceFrom, _priceTo, ...rest} = router.query;
+
+		if (from == null && to == null) {
+			return router.replace(
+				{
+					query: {
+						...rest,
+					},
+				},
+				undefined,
+				{
+					scroll: false,
+				}
+			);
+		}
+
+		return router.replace(
+			{
+				query: {
+					...router.query,
+					_priceFrom: from,
+					_priceTo: to,
 				},
 			},
 			undefined,
@@ -178,65 +224,48 @@ function SidebarShop({}: PropsSidebarShop) {
 			</div>
 
 			{/* Giá sản phẩm */}
-			{/* <div className={styles.price}>
+			<div className={styles.price}>
 				<h4 className={styles.title}>Giá sản phẩm</h4>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='radio'
-						id='price_1'
-						name='price'
-						value='all'
-						checked={valueRadio == 'all'}
-						onChange={handleRadioChange}
-					/>
-					<label className={styles.label} htmlFor='price_1'>
-						Tất cả
-					</label>
-				</div>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='radio'
-						id='price_2'
-						name='price'
-						value='price 1'
-						checked={valueRadio == 'price 1'}
-						onChange={handleRadioChange}
-					/>
-					<label className={styles.label} htmlFor='price_2'>
-						Dưới {convertCoin(1000000)}đ
-					</label>
-				</div>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='radio'
-						id='price_3'
-						name='price'
-						value='price 2'
-						checked={valueRadio == 'price 2'}
-						onChange={handleRadioChange}
-					/>
-					<label className={styles.label} htmlFor='price_3'>
-						{convertCoin(1000000)}đ - {convertCoin(3000000)}đ
-					</label>
-				</div>
-				<div className={styles.item_category}>
-					<input
-						className={styles.checkbox}
-						type='radio'
-						id='price_4'
-						name='price'
-						value='price 3'
-						checked={valueRadio == 'price 3'}
-						onChange={handleRadioChange}
-					/>
-					<label className={styles.label} htmlFor='price_4'>
-						Trên {convertCoin(3000000)}đ
-					</label>
-				</div>
-			</div> */}
+				{loading ? (
+					<SkeletonLoading Item={SkeletonCategoryFilter} count={4} />
+				) : (
+					<>
+						<div className={styles.item_category}>
+							<input
+								className={styles.checkbox}
+								type='checkbox'
+								id='price'
+								name='price'
+								value='price all'
+								onChange={() => null}
+								checked={_priceFrom == null && _priceTo == null}
+								onClick={() => setParamPrice(null, null)}
+							/>
+							<label className={styles.label} htmlFor='price'>
+								Tất cả
+							</label>
+						</div>
+
+						{listPrice.map((v) => (
+							<div key={v._id} className={styles.item_category}>
+								<input
+									className={styles.checkbox}
+									type='checkbox'
+									id={v._id}
+									name='status'
+									value={v._id}
+									onChange={() => null}
+									checked={Number(_priceFrom) == v.priceFrom && Number(_priceTo) == v.priceTo}
+									onClick={() => setParamPrice(v.priceFrom, v.priceTo)}
+								/>
+								<label className={styles.label} htmlFor={v._id}>
+									{v.priceFrom} VND - {v.priceTo} VND
+								</label>
+							</div>
+						))}
+					</>
+				)}
+			</div>
 		</div>
 	);
 }

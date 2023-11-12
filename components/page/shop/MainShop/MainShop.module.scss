@@ -33,7 +33,6 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	// padding: 10px 0;
 	transition: 0.3s;
 
 	&:active {
@@ -50,6 +49,17 @@
 .load {
 	font-size: 24px;
 	animation: rotate linear 0.5s infinite;
+}
+
+.empty {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.text_empty {
+	font-size: 16px;
 }
 
 @keyframes rotate {

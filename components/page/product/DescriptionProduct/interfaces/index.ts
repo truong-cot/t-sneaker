@@ -1,1 +1,3 @@
-export interface PropsDescriptionProduct {}
+export interface PropsDescriptionProduct {
+	des: string;
+}

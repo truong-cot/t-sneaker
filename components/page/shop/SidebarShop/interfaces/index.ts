@@ -17,3 +17,10 @@ export interface IStatus {
 	createdAt: string;
 	updatedAt: string;
 }
+export interface IPrice {
+	_id: string;
+	priceFrom: number;
+	priceTo: number;
+	createdAt: string;
+	updatedAt: string;
+}

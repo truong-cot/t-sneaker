@@ -46,7 +46,7 @@ function CategoryHome({}: PropsCategoryHome) {
 					) : (
 						<>
 							{category.map((v) => (
-								<Link key={v._id} href={`/shop?category=${v._id}`} className={styles.item}>
+								<Link key={v._id} href={`/shop?_category=${v._id}`} className={styles.item}>
 									<div className={styles.box_image}>
 										<ImageFill src={v.image} fullHeight className={styles.image} />
 									</div>

@@ -40,3 +40,13 @@ export enum STATUS_CODE {
 	NOT_FOUND = 404,
 	SERVER = 500,
 }
+
+export enum SORT_LIST {
+	PRICE = 1,
+	SALE = 2,
+}
+
+export enum SORT_TYPE {
+	ASC = 1,
+	DESC = 2,
+}
