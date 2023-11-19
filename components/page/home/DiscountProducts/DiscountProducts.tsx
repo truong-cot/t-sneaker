@@ -14,14 +14,10 @@ import SkeletonCardProduct from '~/components/common/SkeletonCardProduct';
 function DiscountProducts({}: PropsDiscountProducts) {
 	return (
 		<LayoutGrid>
-			<div className={styles.container}>
+			{/* <div className={styles.container}>
 				<div className={styles.head}>
 					<Image src={icons.giasoc} alt='gia soc' />
-					<Image
-						src={icons.dealFlashIcon}
-						alt='gia soc'
-						className={styles.flash}
-					/>
+					<Image src={icons.dealFlashIcon} alt='gia soc' className={styles.flash} />
 					<Image src={icons.homnay} alt='hom nay' />
 				</div>
 				<div className={styles.list}>
@@ -30,15 +26,12 @@ function DiscountProducts({}: PropsDiscountProducts) {
 						// text='abc'
 						load={
 							<GridColumn col_4>
-								<SkeletonLoading
-									Item={SkeletonCardProduct}
-									count={8}
-								/>
+								<SkeletonLoading Item={SkeletonCardProduct} count={8} />
 							</GridColumn>
 						}
 					>
 						<GridColumn col_4>
-							<CartProduct />
+							<CartProduct data={} />
 							<CartProduct />
 							<CartProduct />
 							<CartProduct />
@@ -47,7 +40,7 @@ function DiscountProducts({}: PropsDiscountProducts) {
 						</GridColumn>
 					</LoadingData>
 				</div>
-			</div>
+			</div> */}
 		</LayoutGrid>
 	);
 }
