@@ -6,20 +6,20 @@ import Avatar from '~/components/common/Avatar/Avatar';
 import {AiFillStar} from 'react-icons/ai';
 import clsx from 'clsx';
 
-function ReviewCart({}: PropsReviewCart) {
+function ReviewCart({avatarUser, nameUser, numberStar, content}: PropsReviewCart) {
 	const arr = [1, 2, 3, 4, 5];
 	return (
 		<div className={styles.container}>
 			<div className={styles.top}>
-				<Avatar className={styles.avatar} />
+				<Avatar src={avatarUser} className={styles.avatar} />
 				<div>
-					<p className={styles.name}>Đặng Bá Trường</p>
+					<p className={styles.name}>{nameUser}</p>
 					<div className={styles.list_star}>
 						{arr.map((v) => (
 							<div
 								key={v}
 								className={clsx(styles.icon_star, {
-									[styles.star_active]: v < 5,
+									[styles.star_active]: v <= numberStar,
 								})}
 							>
 								<AiFillStar size={24} />
@@ -28,12 +28,7 @@ function ReviewCart({}: PropsReviewCart) {
 					</div>
 				</div>
 			</div>
-			<p className={styles.content}>
-				I love these... they are soooooo comfortable and I want these in
-				lots of lots of colors. I have about 3 pairs now. I would
-				recommend getting a pair if you do not have one already :-) :-)
-				:-)
-			</p>
+			<p className={styles.content}>{content}</p>
 		</div>
 	);
 }

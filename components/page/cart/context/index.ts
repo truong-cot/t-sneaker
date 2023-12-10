@@ -1,14 +1,18 @@
 import {createContext} from 'react';
-import {TypeCart} from '~/constants/mocks/data';
+import {ICart} from '../MainListCart/interfaces';
 
 export interface TypeContext {
-	listCart: TypeCart[];
+	listCart: ICart[];
 	setListCart: (any: any) => void;
-	totalPriceChosseCart: number;
+	totalPriceCart: number;
+	discount: number;
+	setDiscount: (number: number) => void;
 }
 
 export const ContextCart = createContext<TypeContext>({
 	listCart: [],
 	setListCart: () => null,
-	totalPriceChosseCart: 0,
+	totalPriceCart: 0,
+	discount: 0,
+	setDiscount: () => 0,
 });

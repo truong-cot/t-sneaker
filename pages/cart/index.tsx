@@ -4,14 +4,17 @@ import BaseLayout from '~/components/layouts/BaseLayout';
 import LayoutGrid from '~/components/layouts/LayoutGrid';
 import Page from '~/components/layouts/Page';
 import MainCart from '~/components/page/cart/MainCart';
+import RequireAuth from '~/components/protected/RequiredAuth';
 
 function Cart() {
 	return (
-		<Page disabledEffect title='Giỏ hàng'>
-			<LayoutGrid>
-				<MainCart />
-			</LayoutGrid>
-		</Page>
+		<RequireAuth>
+			<Page disabledEffect title='Giỏ hàng'>
+				<LayoutGrid>
+					<MainCart />
+				</LayoutGrid>
+			</Page>
+		</RequireAuth>
 	);
 }
 

@@ -2,6 +2,7 @@ import {Fragment} from 'react';
 import Lottie from 'react-lottie';
 import * as loading from '../../../public/static/anim/loading.json';
 import styles from './LoadingScreen.module.scss';
+import Portal from '~/components/common/Portal';
 
 function LoadingScreen({isLoading}: {isLoading?: boolean}) {
 	const defaultOptions2 = {
@@ -15,11 +16,24 @@ function LoadingScreen({isLoading}: {isLoading?: boolean}) {
 	return (
 		<Fragment>
 			{isLoading && (
-				<div className={styles.container}>
-					<div className={styles.logo}>
-						<Lottie options={defaultOptions2} />
+				<Portal>
+					<div className={styles.container}>
+						<div className={styles.ldsSpinner}>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
 					</div>
-				</div>
+				</Portal>
 			)}
 		</Fragment>
 	);

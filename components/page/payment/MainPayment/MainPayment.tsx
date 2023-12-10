@@ -10,14 +10,34 @@ import AddressDelivery from '../AddressDelivery';
 import PaymentMethods from '../PaymentMethods';
 import ResultPayment from '../ResultPayment';
 import FormAddress from '../FormAddress';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/redux/store';
+import {IAddress} from '../../profile/MainListAddress/interfaces';
+import {httpRequest} from '~/services';
+import addressServices from '~/services/addressServices';
 
 function MainPayment({}: PropsMainPayment) {
 	const router = useRouter();
 	const {cart} = router.query;
 
-	const isAddress = true;
+	const {token} = useSelector((state: RootState) => state.auth);
+	const {infoUser} = useSelector((state: RootState) => state.user);
 
+	const [addressUser, setAddressUser] = useState<IAddress | null>(null);
+
+	const [listAddress, setListAddress] = useState<IAddress[]>([]);
 	const [data, setData] = useState<any>();
+	const [transportId, setTransportId] = useState<string>('');
+	const [priceShipping, setPriceShipping] = useState<number>(0);
+	const [infoReceiver, setInfoReceiver] = useState<{
+		name: string;
+		phone: string;
+		note: string;
+	}>({
+		name: '',
+		phone: '',
+		note: '',
+	});
 	const [address, setAddress] = useState<PropsAddress>({
 		province: {
 			id: null,
@@ -31,12 +51,26 @@ function MainPayment({}: PropsMainPayment) {
 			id: null,
 			name: '',
 		},
+		specific: '',
 	});
+
+	useEffect(() => {
+		httpRequest({
+			http: addressServices.getAddress({
+				token: token!,
+				userId: infoUser?._id!,
+			}),
+		}).then((data) => {
+			if (data) {
+				setListAddress(data);
+			}
+		});
+	}, [token, infoUser?._id, router]);
 
 	useEffect(() => {
 		if (cart) {
 			(async () => {
-				const res = await verifyJWT(cart as string, router);
+				const res: any = await verifyJWT(cart as string, router);
 				setData(res);
 			})();
 		}
@@ -45,10 +79,37 @@ function MainPayment({}: PropsMainPayment) {
 	return (
 		<div className={styles.container}>
 			<Breadcrumb titles={['Trang chủ', 'Giỏ hàng của bạn', 'Thanh toán đơn hàng']} listHref={['/', '/cart']} />
-			<ContextPayment.Provider value={{data: data, address: address, setAddress: setAddress}}>
+			<ContextPayment.Provider
+				value={{
+					data,
+					transportId,
+					setTransportId,
+					infoReceiver,
+					setInfoReceiver,
+					address,
+					setAddress,
+					priceShipping,
+					setPriceShipping,
+					addressUser,
+					setAddressUser,
+				}}
+			>
 				<div className={styles.wrapper}>
 					<div>
-						{isAddress ? <AddressDelivery /> : <FormAddress address={address} setAddress={setAddress} />}
+						{listAddress?.length > 0 ? (
+							<AddressDelivery
+								listAddress={listAddress}
+								infoReceiver={infoReceiver}
+								setInfoReceiver={setInfoReceiver}
+							/>
+						) : (
+							<FormAddress
+								infoReceiver={infoReceiver}
+								setInfoReceiver={setInfoReceiver}
+								address={address}
+								setAddress={setAddress}
+							/>
+						)}
 						<PaymentMethods />
 					</div>
 					<ResultPayment />

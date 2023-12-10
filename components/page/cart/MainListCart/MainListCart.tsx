@@ -1,37 +1,52 @@
-import {Trash} from 'iconsax-react';
 import MoneyShip from '../MoneyShip';
 import styles from './MainListCart.module.scss';
 import CartItem from '../CartItem';
-import {TypeCart, listCart} from '~/constants/mocks/data';
-import {useContext, useEffect, useState} from 'react';
+import {Fragment, useContext, useEffect, useState} from 'react';
 import {ContextCart, TypeContext} from '../context';
+import {useRouter} from 'next/router';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/redux/store';
+import {httpRequest} from '~/services';
+import cartServices from '~/services/cartServices';
+import {ICart, PropsMainListCart} from './interfaces';
 
-function MainListCart() {
+function MainListCart({}: PropsMainListCart) {
+	const router = useRouter();
+
+	const {token} = useSelector((state: RootState) => state.auth);
+	const {infoUser} = useSelector((state: RootState) => state.user);
+
 	// Gọi context
 	const context = useContext<TypeContext>(ContextCart);
 
 	// State giỏ hàng ban đầu
-	const [carts, setCarts] = useState<TypeCart[]>([]);
+	const [carts, setCarts] = useState<ICart[]>([]);
 
-	// Lấy giỏ hàng ban đầu
 	useEffect(() => {
-		setCarts(listCart);
-	}, [listCart]);
+		httpRequest({
+			http: cartServices.getListCart({
+				token: token!,
+				userId: infoUser?._id as string,
+			}),
+		}).then((data) => {
+			if (data) {
+				setCarts(data);
+			}
+		});
+	}, [token, infoUser?._id, router]);
 
 	// Hàm tăng số lượng
 	const plusNumber = (id: string) => {
-		// Update mảng giỏ hàng cho trước
 		const updateCart = carts.map((v) => {
-			if (v.id == id) {
-				return {...v, qlt: v.qlt + 1};
+			if (v._id == id) {
+				return {...v, quality: v.quality + 1};
 			}
 			return v;
 		});
 
-		// Update mảng giỏ hàng được chọn
 		const updateChosseCart = context.listCart.map((v) => {
-			if (v.id == id) {
-				return {...v, qlt: v.qlt + 1};
+			if (v._id == id) {
+				return {...v, quality: v.quality + 1};
 			}
 			return v;
 		});
@@ -42,33 +57,19 @@ function MainListCart() {
 
 	// Hàm giảm số lượng
 	const minusNumber = (id: string) => {
-		// Update mảng giỏ hàng cho trước
 		const updateCart = carts.map((v) => {
-			if (v.id == id) {
-				return {...v, qlt: v.qlt - 1};
+			if (v._id == id) {
+				return {...v, quality: v.quality - 1};
 			}
 			return v;
 		});
 
-		// Update mảng giỏ hàng được chọn
 		const updateChosseCart = context.listCart.map((v) => {
-			if (v.id == id) {
-				return {...v, qlt: v.qlt - 1};
+			if (v._id == id) {
+				return {...v, quality: v.quality - 1};
 			}
 			return v;
 		});
-
-		setCarts(updateCart);
-		context.setListCart(updateChosseCart);
-	};
-
-	// Hàm xóa sản phẩm
-	const deleteCart = (id: string) => {
-		// Xóa giỏ hàng cho trước
-		const updateCart = carts.filter((v) => v.id != id);
-
-		// Nếu xóa đơn hàng nằm trong giỏ hàng được chọn thì xóa khỏi giỏ hàng được chọn
-		const updateChosseCart = context.listCart.filter((v) => v.id != id);
 
 		setCarts(updateCart);
 		context.setListCart(updateChosseCart);
@@ -83,13 +84,8 @@ function MainListCart() {
 		}
 	};
 
-	// Hàm xóa tất cả sản phẩm được chọn
-	const deleteAllChosseCart = () => {
-		context.setListCart([]);
-	};
-
 	return (
-		<>
+		<Fragment>
 			<div className={styles.container}>
 				{/* Phí ship */}
 				<MoneyShip />
@@ -118,27 +114,16 @@ function MainListCart() {
 							<p className={styles.text}>Kích cỡ</p>
 							<p className={styles.text}>Số lượng</p>
 							<p className={styles.text}>Thành tiền</p>
-							<div>
-								<div className={styles.icon} onClick={() => deleteAllChosseCart}>
-									<Trash className={styles.trash} />
-								</div>
-							</div>
 						</div>
 					</div>
 					<div className={styles.list}>
 						{carts.map((v) => (
-							<CartItem
-								key={v.id}
-								data={v}
-								plusNumber={plusNumber}
-								minusNumber={minusNumber}
-								deleteCart={deleteCart}
-							/>
+							<CartItem key={v._id} data={v} plusNumber={plusNumber} minusNumber={minusNumber} />
 						))}
 					</div>
 				</div>
 			</div>
-		</>
+		</Fragment>
 	);
 }
 

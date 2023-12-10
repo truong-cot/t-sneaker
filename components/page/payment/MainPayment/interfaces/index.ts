@@ -13,4 +13,5 @@ export interface PropsAddress {
 		id: number | null;
 		name: string;
 	};
+	specific: string;
 }

@@ -1,45 +1,48 @@
-import React, {useContext, useMemo, useState} from 'react';
+import React, {useContext, useMemo} from 'react';
 import {PropsCartItem} from './interfaces';
 
 import styles from './CartItem.module.scss';
-import {Trash} from 'iconsax-react';
 import ImageFill from '~/components/common/ImageFill/ImageFill';
 import {convertCoin} from '~/common/func/convertCoin';
 import {AiOutlineMinus, AiOutlinePlus} from 'react-icons/ai';
 import clsx from 'clsx';
 import Link from 'next/link';
-import {ContextCart} from '../context';
+import {ContextCart, TypeContext} from '../context';
 import {TypeCart} from '~/constants/mocks/data';
-import Dialog from '~/components/controls/Dialog/Dialog';
+import {ICart} from '../MainListCart/interfaces';
 
-function CartItem({data, plusNumber, minusNumber, deleteCart}: PropsCartItem) {
+function CartItem({data, plusNumber, minusNumber}: PropsCartItem) {
 	// Gọi context
-	const context = useContext<any>(ContextCart);
-
-	const [openDeteleCart, setOpenDeleteCart] = useState<boolean>(false);
+	const context = useContext<TypeContext>(ContextCart);
 
 	// Tính giá theo giá gốc và khuyến mãi
-	const priceSale = useMemo(() => {
-		return data.unitPrice - data.unitPrice * (data.sale / 100);
+	const totalPrice = useMemo(() => {
+		const priceSale = (data?.productId?.price * data?.productId?.sale) / 100;
+
+		const price = data?.productId?.price - priceSale;
+
+		return price * data?.quality;
 	}, [data]);
 
-	// Tính thành tiền theo giá đã khuyến mãi và số lượng
-	const totalPrice = useMemo(() => {
-		return priceSale * data?.qlt;
+	// Tính giá đã sale
+	const priceSale = useMemo(() => {
+		const priceSale = (data?.productId?.price * data?.productId?.sale) / 100;
+
+		const price = data?.productId?.price - priceSale;
+
+		return price;
 	}, [data]);
 
 	// Hàm chọn sản phẩm vào giỏ hàng
-	const chosseCart = (item: TypeCart) => {
-		const isHave = context?.listCart?.some((v: any) => v.id == item.id);
+	const chosseCart = (item: ICart) => {
+		const isHave = context?.listCart?.some((v) => v._id == item._id);
 
 		if (!isHave) {
 			context.setListCart((prev: any) => [...prev, {...item}]);
 		} else {
-			context.setListCart((prev: any) => prev.filter((v: any) => v.id != item.id));
+			context.setListCart((prev: any) => prev.filter((v: any) => v._id != item._id));
 		}
 	};
-
-	const handleDeleteCart = () => {};
 
 	return (
 		<>
@@ -52,40 +55,40 @@ function CartItem({data, plusNumber, minusNumber, deleteCart}: PropsCartItem) {
 							onChange={() => null}
 							defaultChecked={false}
 							onClick={() => chosseCart(data)}
-							checked={context?.listCart?.some((v: any) => v.id == data.id)}
+							checked={context?.listCart?.some((v) => v._id == data._id)}
 						/>
 						<div className={styles.info}>
 							<div className={styles.box_image}>
-								<ImageFill fullHeight className={styles.image} src={data?.image} />
+								<ImageFill fullHeight className={styles.image} src={data?.productId?.images?.[0]} />
 							</div>
 							<Link href={'/product/123'} className={styles.name}>
-								{data?.name}
+								{data?.productId?.name}
 							</Link>
 						</div>
 					</div>
 				</div>
 				<div className={styles.right}>
 					<div className={styles.box_price}>
-						<p className={styles.text_sale}>{convertCoin(data?.unitPrice)}đ</p>
+						<p className={styles.text_sale}>{convertCoin(data?.productId?.price)}đ</p>
 						<p className={styles.text}>{convertCoin(priceSale)}đ</p>
 					</div>
 					<div className={styles.box_size}>
-						<p className={styles.text}>{data.size}</p>
+						<p className={styles.text}>{data?.sizeId?.size}</p>
 					</div>
 					<div className={styles.quantity}>
 						<div
-							onClick={() => minusNumber(data.id)}
+							onClick={() => minusNumber(data._id)}
 							className={clsx(styles.quantity_item, {
-								[styles.disabled]: data?.qlt == 1,
+								[styles.disabled]: data?.quality == 1,
 							})}
 						>
 							<AiOutlineMinus color='#00000' size={16} />
 						</div>
-						<div className={clsx(styles.qlt)}>{data?.qlt}</div>
+						<div className={clsx(styles.qlt)}>{data?.quality}</div>
 						<div
-							onClick={() => plusNumber(data.id)}
+							onClick={() => plusNumber(data._id)}
 							className={clsx(styles.quantity_item, {
-								[styles.disabled]: data?.qlt == 10,
+								[styles.disabled]: data?.quality == 10,
 							})}
 						>
 							<AiOutlinePlus color='#00000' size={16} />
@@ -93,28 +96,8 @@ function CartItem({data, plusNumber, minusNumber, deleteCart}: PropsCartItem) {
 					</div>
 
 					<p className={styles.price}>{convertCoin(totalPrice)}đ</p>
-					<div>
-						<div
-							className={styles.icon}
-							onClick={() => {
-								// deleteCart(data.id);
-								setOpenDeleteCart(true);
-							}}
-						>
-							<Trash className={styles.trash} />
-						</div>
-					</div>
 				</div>
 			</div>
-
-			{/* Popup */}
-			<Dialog
-				open={openDeteleCart}
-				onClose={() => setOpenDeleteCart(false)}
-				onSubmit={handleDeleteCart}
-				title='Xóa đơn hàng'
-				note='Bạn có chắc chắn muốn xóa đơn hàng này khỏi giỏ hàng?'
-			/>
 		</>
 	);
 }

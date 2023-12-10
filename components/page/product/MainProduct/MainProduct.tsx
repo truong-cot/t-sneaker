@@ -11,40 +11,46 @@ import {convertCoin} from '~/common/func/convertCoin';
 import Button from '~/components/controls/Button/Button';
 import {DollarCircle} from 'iconsax-react';
 import ImageFill from '~/components/common/ImageFill/ImageFill';
-import {TbLoader} from 'react-icons/tb';
 import ListImage from '~/components/controls/ListImage';
 import DescriptionProduct from '../DescriptionProduct';
 import ReviewsProduct from '../ReviewsProduct';
 import MayLikeProduct from '../MayLikeProduct';
-import {signJWT} from '~/common/func/jwt';
 import {useRouter} from 'next/router';
 import {httpRequest} from '~/services';
 import productServices from '~/services/productServices';
 import {useSelector} from 'react-redux';
 import {RootState} from '~/redux/store';
+import cartServices from '~/services/cartServices';
+import {toastText, toastWarn} from '~/common/func/toast';
+import LoadingScreen from '~/components/protected/LoadingScreen';
+import {signJWT} from '~/common/func/jwt';
+import {DISCOUNT_MONEY, MONEY_CART} from '~/constants/mocks/enum';
 
 function MainProduct({}: PropsMainProduct) {
 	const router = useRouter();
 
 	const {id_product} = router.query;
 	const {token} = useSelector((state: RootState) => state.auth);
+	const {infoUser} = useSelector((state: RootState) => state.user);
 
 	const [data, setData] = useState<IData>();
-	const [size, setSize] = useState<number>(0);
-	const [number, setNumber] = useState<number>(1);
+	const [quality, setQuality] = useState<number>(1);
+
+	const [sizeId, setSizeId] = useState<string>('');
 	const [care, setCare] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
 
 	const arr = [1, 2, 3, 4, 5];
 
 	const plusNumber = () => {
-		if (number <= 10) {
-			setNumber(number + 1);
+		if (quality <= 10) {
+			setQuality(quality + 1);
 		}
 	};
 
 	const minusNumber = () => {
-		if (number >= 1) {
-			setNumber(number - 1);
+		if (quality >= 1) {
+			setQuality(quality - 1);
 		}
 	};
 
@@ -76,25 +82,108 @@ function MainProduct({}: PropsMainProduct) {
 		if (data) {
 			return data?.price - (data?.price * data?.sale) / 100;
 		}
+
+		return 0;
 	}, [data]);
 
+	const totalPriceCart = useMemo(() => {
+		return price * quality;
+	}, [price, quality]);
+
+	const discount = useMemo(() => {
+		if (totalPriceCart == 0) {
+			return 0;
+		}
+
+		if (totalPriceCart > MONEY_CART.MONEY_50 && totalPriceCart < MONEY_CART.MONEY_150) {
+			return DISCOUNT_MONEY.DISCOUNT_01;
+		}
+
+		if (totalPriceCart >= MONEY_CART.MONEY_150 && totalPriceCart < MONEY_CART.MONEY_300) {
+			return DISCOUNT_MONEY.DISCOUNT_02;
+		}
+
+		if (totalPriceCart >= MONEY_CART.MONEY_300) {
+			return DISCOUNT_MONEY.DISCOUNT_03;
+		}
+
+		return 0;
+	}, [totalPriceCart]);
+
+	const dataCart = useMemo(() => {
+		return [
+			{
+				userId: infoUser?._id as string,
+				productId: {
+					_id: id_product as string,
+					images: data?.images || [],
+					name: data?.name || '',
+					price: data?.price || 0,
+					sale: data?.sale || 0,
+				},
+				quality: quality,
+				sizeId: {
+					_id: sizeId,
+					size: data?.sizes?.find((v) => v?.sizeId?._id == sizeId)?.sizeId?.size || 0,
+					description: data?.sizes?.find((v) => v?.sizeId?._id == sizeId)?.sizeId?.description || '',
+				},
+				_id: null,
+				createdAt: '',
+				updatedAt: '',
+			},
+		];
+	}, [data, quality, sizeId, infoUser, id_product]);
+
 	// Hàm xử lý mua sản phẩm
-	// Hàm submit
 	const handleSubmit = () => {
-		// if (context.listCart.length > 0) {
-		// const dataSubmit = signJWT({
-		// 	listProduct: listCart,
-		// 	temporaryPrice: totalPriceChosseCart,
-		// 	freeShipping: priceShipping,
-		// });
-		// router.push(`/payment?cart=${dataSubmit}`, undefined);
-		// } else {
-		// 	return toastWarn({msg: 'Vui lòng chọn sản phẩm để thanh toán!'});
-		// }
+		if (!token) {
+			return toastWarn({msg: 'Vui lòng đăng nhập vào hệ thống!'});
+		}
+
+		if (!sizeId) {
+			return toastText({msg: 'Vui lòng chọn size!'});
+		}
+
+		const dataSubmit = signJWT({
+			discount: discount,
+			listProduct: dataCart,
+			totalPriceCart: totalPriceCart,
+		});
+		router.push(`/payment?cart=${dataSubmit}`, undefined);
+	};
+
+	const handleAddToCart = () => {
+		if (!token) {
+			return toastWarn({msg: 'Bạn chưa đăng nhập!'});
+		}
+
+		if (!sizeId) {
+			return toastText({msg: 'Vui lòng chọn size!'});
+		}
+
+		httpRequest({
+			setLoading: setLoading,
+			showMessage: true,
+			http: cartServices.createCart({
+				token: token!,
+				productId: id_product as string,
+				userId: infoUser?._id as string,
+				sizeId: sizeId,
+				quality: quality,
+			}),
+		}).then((data) => {
+			if (data) {
+				setQuality(1);
+				setSizeId('');
+				router.replace(router.asPath, undefined, {scroll: false});
+			}
+		});
 	};
 
 	return (
 		<div className={styles.container}>
+			<LoadingScreen isLoading={loading} />
+
 			<Breadcrumb
 				titles={['Trang chủ', 'Cửa hàng', `${data?.categoryId?.name}`, `${data?.name}`]}
 				listHref={['/', '/shop', `/shop?_category=${data?.categoryId?._id}`]}
@@ -144,9 +233,9 @@ function MainProduct({}: PropsMainProduct) {
 							{data?.sizes?.map((v) => (
 								<div
 									key={v?._id}
-									onClick={() => setSize(v?.sizeId?.size)}
+									onClick={() => setSizeId(v?.sizeId?._id)}
 									className={clsx(styles.size, {
-										[styles.active]: v?.sizeId?.size == size,
+										[styles.active]: v?.sizeId?._id == sizeId,
 										[styles.disabled]: v?.quantity == 0,
 									})}
 								>
@@ -164,16 +253,16 @@ function MainProduct({}: PropsMainProduct) {
 							<div
 								onClick={minusNumber}
 								className={clsx(styles.quantity_item, {
-									[styles.disabled]: number == 1,
+									[styles.disabled]: quality == 1,
 								})}
 							>
 								<AiOutlineMinus color='#00000' size={18} />
 							</div>
-							<div className={clsx(styles.qlt)}>{number}</div>
+							<div className={clsx(styles.qlt)}>{quality}</div>
 							<div
 								onClick={plusNumber}
 								className={clsx(styles.quantity_item, {
-									[styles.disabled]: number == 10,
+									[styles.disabled]: quality == 10,
 								})}
 							>
 								<AiOutlinePlus color='#00000' size={18} />
@@ -182,30 +271,26 @@ function MainProduct({}: PropsMainProduct) {
 					</div>
 
 					<div className={styles.box_btn}>
-						<Button purple bold>
+						<Button purple bold onClick={handleAddToCart}>
 							Thêm vào giỏ hàng
 						</Button>
 						<Button bright_red bold onClick={handleSubmit}>
 							Mua ngay
 						</Button>
-						<div className={styles.box_like} onClick={() => setCare(!care)}>
+						{/* <div className={styles.box_like} onClick={() => setCare(!care)}>
 							{care ? (
 								<BsSuitHeart size={18} color='#EE1212' />
 							) : (
 								<BsSuitHeartFill size={18} color='#EE1212' />
 							)}
-
-							{/* <div className={styles.load}>
-								<TbLoader color='#b255fb' />
-							</div> */}
-						</div>
+						</div> */}
 					</div>
 				</div>
 				<ContactShop />
 			</div>
 			<DescriptionProduct des={data?.detailDescription || ''} />
 			<ReviewsProduct />
-			<MayLikeProduct />
+			<MayLikeProduct _category={data?.categoryId?._id || ''} />
 		</div>
 	);
 }

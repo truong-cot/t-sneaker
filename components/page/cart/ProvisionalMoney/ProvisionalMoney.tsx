@@ -5,55 +5,35 @@ import {PropsProvisionalMoney} from './interfaces';
 import {convertCoin} from '~/common/func/convertCoin';
 import Button from '~/components/controls/Button/Button';
 import {ContextCart, TypeContext} from '../context';
-import {MONEY, PRICE_SHIPPING} from '~/constants/mocks/enum';
 import {toastWarn} from '~/common/func/toast';
 import {useRouter} from 'next/router';
 import {signJWT} from '~/common/func/jwt';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/redux/store';
 
 function ProvisionalMoney({}: PropsProvisionalMoney) {
 	const router = useRouter();
 
+	const {token} = useSelector((state: RootState) => state.auth);
+
 	// Gọi context
 	const context = useContext<TypeContext>(ContextCart);
 
-	// Tính khuyến mãi vận chuyển
-	const priceShipping = useMemo(() => {
-		if (context.totalPriceChosseCart == 0) {
-			return 0;
-		}
-
-		// Đơn hàng từ 500 - 1tr5 ==> phí ship = 15k
-		if (
-			context.totalPriceChosseCart > MONEY.FREE_00 &&
-			context.totalPriceChosseCart < MONEY.FREE_15
-		) {
-			return PRICE_SHIPPING.SHIPPING_01;
-		}
-		// Đơn hàng từ 1tr5 - 3tr ==> phí ship = 25k
-		else if (
-			context.totalPriceChosseCart > MONEY.FREE_15 &&
-			context.totalPriceChosseCart < MONEY.FREE_25
-		) {
-			return PRICE_SHIPPING.SHIPPING_02;
-		}
-		// Đơn hàng từ 3tr ==> free ship
-		else {
-			return PRICE_SHIPPING.SHIPPING_03;
-		}
-	}, [context.listCart]);
-
-	// Tính tổng tiền tạm tính
-	const totalPrice = useMemo(() => {
-		return context.totalPriceChosseCart - priceShipping;
-	}, [context.totalPriceChosseCart, priceShipping]);
+	const temporaryMoney = useMemo(() => {
+		return context?.totalPriceCart - context?.discount;
+	}, [context?.discount, context?.totalPriceCart]);
 
 	// Hàm submit
 	const handleSubmit = () => {
+		if (!token) {
+			return toastWarn({msg: 'Vui lòng đăng nhập vào hệ thống!'});
+		}
+
 		if (context.listCart.length > 0) {
 			const dataSubmit = signJWT({
+				discount: context?.discount,
 				listProduct: context.listCart,
-				temporaryPrice: context.totalPriceChosseCart,
-				freeShipping: priceShipping,
+				totalPriceCart: context?.totalPriceCart,
 			});
 			router.push(`/payment?cart=${dataSubmit}`, undefined);
 		} else {
@@ -66,22 +46,15 @@ function ProvisionalMoney({}: PropsProvisionalMoney) {
 			<h4 className={styles.title}>Tổng tiền tạm tính</h4>
 			<div className={styles.item}>
 				<p className={styles.text_1}>Thành tiền: </p>
-				<p className={styles.text_2}>
-					{convertCoin(context.totalPriceChosseCart)}đ
-				</p>
+				<p className={styles.text_2}>{convertCoin(context.totalPriceCart)}đ</p>
 			</div>
 			<div className={styles.item}>
-				<p className={styles.text_1}>Khuyến mãi vận chuyển: </p>
-				<p className={styles.text_2}>{convertCoin(priceShipping)}đ</p>
+				<p className={styles.text_1}>Giảm giá: </p>
+				<p className={styles.text_2}>{convertCoin(context?.discount)}đ</p>
 			</div>
 			<div className={styles.item}>
 				<p className={styles.text_1}>Tổng tạm tính: </p>
-				<p className={styles.text_3}>{convertCoin(totalPrice)}đ</p>
-				{priceShipping == PRICE_SHIPPING.SHIPPING_03 && (
-					<span className={styles.note}>
-						(Chưa tính phí vận chuyển)
-					</span>
-				)}
+				<p className={styles.text_3}>{convertCoin(temporaryMoney)}đ</p>
 			</div>
 			<div className={styles.btn}>
 				<Button purple bold onClick={handleSubmit}>

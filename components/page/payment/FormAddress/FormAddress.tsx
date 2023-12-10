@@ -9,7 +9,7 @@ import {PATHS} from '~/constants/mocks/paths';
 import {removeVietnameseTones} from '~/common/func/optionConvert';
 import styles from './FormAddress.module.scss';
 
-function FormAddress({address, setAddress}: PropsFormAddress) {
+function FormAddress({infoReceiver, setInfoReceiver, address, setAddress}: PropsFormAddress) {
 	const router = useRouter();
 
 	// Keyword search list
@@ -89,13 +89,35 @@ function FormAddress({address, setAddress}: PropsFormAddress) {
 						<p className={styles.lable}>
 							Họ tên người nhận: <span style={{color: 'red'}}>*</span>
 						</p>
-						<input type='text' placeholder='Họ tên người nhận hàng' className={styles.input} />
+						<input
+							type='text'
+							placeholder='Họ tên người nhận hàng'
+							className={styles.input}
+							value={infoReceiver?.name}
+							onChange={(e) =>
+								setInfoReceiver((prev: any) => ({
+									...prev,
+									name: e.target.value,
+								}))
+							}
+						/>
 					</div>
 					<div className={styles.item}>
 						<p className={styles.lable}>
 							Số điện thoại người nhận hàng: <span style={{color: 'red'}}>*</span>
 						</p>
-						<input type='number' placeholder='Số điện thoại người nhận hàng' className={styles.input} />
+						<input
+							type='number'
+							placeholder='Số điện thoại người nhận hàng'
+							className={styles.input}
+							value={infoReceiver?.phone}
+							onChange={(e) =>
+								setInfoReceiver((prev: any) => ({
+									...prev,
+									phone: e.target.value,
+								}))
+							}
+						/>
 					</div>
 				</div>
 
@@ -200,7 +222,7 @@ function FormAddress({address, setAddress}: PropsFormAddress) {
 								<div className={styles.list}>
 									<input
 										type='text'
-										placeholder='Tìm kiếm thành phố'
+										placeholder='Tìm kiếm quận/huyên'
 										className={styles.input_search}
 										value={_q_district}
 										autoFocus={openDistrict}
@@ -271,7 +293,7 @@ function FormAddress({address, setAddress}: PropsFormAddress) {
 								<div className={styles.list}>
 									<input
 										type='text'
-										placeholder='Tìm kiếm thành phố'
+										placeholder='Tìm kiếm xã/phường'
 										className={styles.input_search}
 										value={_q_ward}
 										autoFocus={openWard}
@@ -321,7 +343,35 @@ function FormAddress({address, setAddress}: PropsFormAddress) {
 						<p className={styles.lable}>
 							Địa chỉ cụ thể: <span style={{color: 'red'}}>*</span>
 						</p>
-						<input type='text' placeholder='Địa chỉ cụ thể' className={styles.input} />
+						<input
+							type='text'
+							placeholder='Địa chỉ cụ thể'
+							className={styles.input}
+							value={address?.specific}
+							onChange={(e) =>
+								setAddress((prev: any) => ({
+									...prev,
+									specific: e.target.value,
+								}))
+							}
+						/>
+					</div>
+					<div className={styles.note}>
+						<p className={styles.lable}>
+							Ghi chú đơn hàng: <span style={{color: 'red'}}>*</span>
+						</p>
+						<input
+							type='text'
+							placeholder='Nhập ghi chú đơn hàng'
+							className={styles.input}
+							value={infoReceiver?.note}
+							onChange={(e) =>
+								setInfoReceiver((prev: any) => ({
+									...prev,
+									note: e.target.value,
+								}))
+							}
+						/>
 					</div>
 				</div>
 			</div>

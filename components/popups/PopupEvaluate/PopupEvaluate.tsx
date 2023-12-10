@@ -5,11 +5,23 @@ import Button from '~/components/controls/Button';
 import {IoMdClose} from 'react-icons/io';
 import clsx from 'clsx';
 import {useState} from 'react';
-import {toastText} from '~/common/func/toast';
+import {toastText, toastWarn} from '~/common/func/toast';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/redux/store';
+import {httpRequest} from '~/services';
+import evaluateServices from '~/services/evaluateServices';
+import {useRouter} from 'next/router';
+import LoadingScreen from '~/components/protected/LoadingScreen';
 
-function PopupEvaluate({onClose}: PropsPopupEvaluate) {
+function PopupEvaluate({onClose, idProduct}: PropsPopupEvaluate) {
+	const router = useRouter();
+
+	const {token} = useSelector((state: RootState) => state.auth);
+	const {infoUser} = useSelector((state: RootState) => state.user);
+
 	const [numberStar, setNumberStar] = useState<number | null>(null);
 	const [content, setContent] = useState<string>('');
+	const [loading, setLoading] = useState<boolean>(false);
 
 	const listStar: Array<any> = [
 		{
@@ -35,6 +47,13 @@ function PopupEvaluate({onClose}: PropsPopupEvaluate) {
 	];
 
 	const handleSubmit = async () => {
+		if (!token) {
+			return toastWarn({msg: 'Bạn chưa đăng nhập!'});
+		}
+		if (!infoUser?._id) {
+			return toastWarn({msg: 'Không tìm thấy người dùng!'});
+		}
+
 		if (!numberStar) {
 			return toastText({msg: 'Vui lòng chọn số sao bạn muốn đánh giá!'});
 		}
@@ -42,10 +61,28 @@ function PopupEvaluate({onClose}: PropsPopupEvaluate) {
 		if (!content) {
 			return toastText({msg: 'Vui lòng nhập nội dung đánh giá!'});
 		}
+
+		httpRequest({
+			setLoading: setLoading,
+			showMessage: true,
+			http: evaluateServices.createEvaluate({
+				token: token!,
+				user: infoUser?._id!,
+				product: idProduct,
+				content: content,
+				numberStar: numberStar,
+			}),
+		}).then((data) => {
+			if (data) {
+				onClose();
+				router.replace(router.asPath, undefined, {scroll: false});
+			}
+		});
 	};
 
 	return (
 		<div className={clsx(styles.container, 'effectZoom')}>
+			<LoadingScreen isLoading={loading} />
 			<p className={styles.title}>Đánh giá cho sản phẩm</p>
 			<p className={styles.des}>Bạn có cảm nhận gì sau khi sử dụng sản phẩm của chúng tôi</p>
 			<p className={styles.des_2}>Bạn hài lòng về chất lượng sản phẩm</p>

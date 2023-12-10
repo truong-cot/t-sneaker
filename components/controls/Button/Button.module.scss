@@ -222,6 +222,15 @@
 	color: $t_light;
 }
 
+.warn {
+	background-color: rgba(251, 165, 0, 1);
+	color: $t_light;
+}
+.green {
+	background-color: rgb(40, 209, 40);
+	color: $t_light;
+}
+
 @media screen and (max-width: 764px) {
 	.btn.rps_small {
 		padding: 6px 12px;

@@ -1,0 +1,47 @@
+.main {
+	width: 100%;
+}
+
+.container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	font-weight: 500;
+	padding: 12px 24px;
+	min-height: 42px;
+	cursor: pointer;
+	user-select: none;
+	font-size: 16px;
+	font-weight: 500;
+	border: 1px solid #dcdfe6;
+	background-color: #fff;
+	border-radius: 8px;
+	transition: 0.2s;
+
+	.textValue {
+		color: #000;
+
+		&.placeholder {
+			color: rgba(0, 0, 0, 0.5);
+		}
+	}
+
+	&.show {
+		background-color: #fff;
+		border: 1px solid #0060af;
+	}
+
+	&.disabled {
+		color: rgba(0, 0, 0, 0.7);
+		background-color: var(--light-grey);
+		border: 1px solid transparent;
+	}
+}
+
+.label {
+	font-size: 16px;
+	font-weight: 500;
+	margin-bottom: 8px;
+	display: block;
+}

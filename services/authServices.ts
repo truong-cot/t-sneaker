@@ -27,6 +27,22 @@ const authServices = {
 			cancelToken: tokenAxios,
 		});
 	},
+	changePass: (
+		data: {
+			token: string;
+			uuidAccount: string;
+			oldPass: string;
+			newPass: string;
+		},
+		tokenAxios?: any
+	) => {
+		return axiosClient.post(`/${router}/change-pass`, data, {
+			cancelToken: tokenAxios,
+			headers: {
+				Authorization: 'Bearer ' + data.token,
+			},
+		});
+	},
 };
 
 export default authServices;

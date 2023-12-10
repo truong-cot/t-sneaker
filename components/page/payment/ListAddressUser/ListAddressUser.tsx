@@ -1,11 +1,14 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {PropsListAddressUser} from './interfaces';
 import styles from './ListAddressUser.module.scss';
 import clsx from 'clsx';
 import Popup from '~/components/common/Popup';
 import PopupAddAddress from '~/components/popups/PopupAddAddress';
+import {ContextPayment, TypeContextPayment} from '../context';
 
-function ListAddressUser({onCLoseListAddress}: PropsListAddressUser) {
+function ListAddressUser({listAddress, onCLoseListAddress}: PropsListAddressUser) {
+	const context = useContext<TypeContextPayment>(ContextPayment);
+
 	const [openPopup, setOpenPopup] = useState<boolean>(false);
 
 	return (
@@ -24,32 +27,28 @@ function ListAddressUser({onCLoseListAddress}: PropsListAddressUser) {
 					</p>
 				</div>
 				<div className={styles.list}>
-					<div className={clsx(styles.item, {[styles.active]: true})} onClick={onCLoseListAddress}>
-						<div className={styles.top}>
-							<h5 className={styles.name}>Đặng Bá Trường</h5>
-							<div className={styles.line}></div>
-							<h6 className={styles.phone}>0123456789</h6>
-						</div>
-						<div className={styles.bottom}>
-							<div className={styles.category}>
-								<p className={styles.text}>Nhà riêng</p>
+					{listAddress?.map((v) => (
+						<div
+							key={v?._id}
+							className={clsx(styles.item, {[styles.active]: context?.addressUser?._id == v?._id})}
+							onClick={() => {
+								onCLoseListAddress();
+								context?.setAddressUser(v);
+							}}
+						>
+							<div className={styles.top}>
+								<h5 className={styles.name}>{v?.nameReceiver}</h5>
+								<div className={styles.line}></div>
+								<h6 className={styles.phone}>{v?.phoneReceiver}</h6>
 							</div>
-							<p className={styles.address}>Thôn Khánh Sơn, Xã Sơn Lộc, Huyện Can Lộc, Tỉnh Hà Tĩnh</p>
-						</div>
-					</div>
-					<div className={styles.item} onClick={onCLoseListAddress}>
-						<div className={styles.top}>
-							<h5 className={styles.name}>Đặng Bá Trường</h5>
-							<div className={styles.line}></div>
-							<h6 className={styles.phone}>0123456789</h6>
-						</div>
-						<div className={styles.bottom}>
-							<div className={styles.category}>
-								<p className={styles.text}>Nhà riêng</p>
+							<div className={styles.bottom}>
+								<p className={styles.address}>
+									<span style={{fontWeight: '400', marginRight: '4px'}}>Địa chỉ: </span>
+									{v?.address}
+								</p>
 							</div>
-							<p className={styles.address}>Thôn Khánh Sơn, Xã Sơn Lộc, Huyện Can Lộc, Tỉnh Hà Tĩnh</p>
 						</div>
-					</div>
+					))}
 				</div>
 			</div>
 

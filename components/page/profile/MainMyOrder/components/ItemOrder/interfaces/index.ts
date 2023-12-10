@@ -1,30 +1,41 @@
 export interface TypeOrder {
-	// address: string;
-	// createdAt: string | null;
-	// idUser: string;
-	// nameReceiver: string;
-	// nameUser: string;
-	// note: string;
-	// phone: number;
-	// products: Array<TypeProductOrder>;
-	// shippingMethod: number;
-	// statusOrder: number;
-	// totalPrice: number;
-	// transportFee: number;
-	// updatedAt: string | null;
-	// _id: string;
+	_id: string;
+	userId: string;
+	nameReceiver: string;
+	phoneReceiver: string;
+	address: string;
+	transportId: {
+		_id: string;
+		name: string;
+		price: number;
+	};
+	note: string;
+	listProduct: {
+		_id: string;
+		idCart: string;
+		productId: {
+			_id: string;
+			name: string;
+			images: string[];
+		};
+		nameProduct: string;
+		price: number;
+		sale: number;
+		quality: number;
+		sizeId: {
+			_id: string;
+			size: number;
+			description: string;
+		};
+	}[];
+	totalPriceCart: number;
+	discount: number;
+	totalOrder: number;
+	statusOrder: number;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export interface TypeProductOrder {
-	// data: {
-	// 	amount: number;
-	// 	idProduct: string;
-	// 	image: string;
-	// 	nameProduct: string;
-	// 	price: number;
-	// 	orderPrice: number;
-	// 	sale: number;
-	// 	size: string;
-	// };
-	// check?: boolean;
+	data: TypeOrder;
 }

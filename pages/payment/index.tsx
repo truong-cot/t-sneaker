@@ -4,14 +4,17 @@ import BaseLayout from '~/components/layouts/BaseLayout';
 import LayoutGrid from '~/components/layouts/LayoutGrid';
 import Page from '~/components/layouts/Page';
 import MainPayment from '~/components/page/payment/MainPayment';
+import RequireAuth from '~/components/protected/RequiredAuth';
 
 function Payment() {
 	return (
-		<Page disabledEffect title='Thanh toán'>
-			<LayoutGrid>
-				<MainPayment />
-			</LayoutGrid>
-		</Page>
+		<RequireAuth>
+			<Page disabledEffect title='Thanh toán'>
+				<LayoutGrid>
+					<MainPayment />
+				</LayoutGrid>
+			</Page>
+		</RequireAuth>
 	);
 }
 

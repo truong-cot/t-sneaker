@@ -1,19 +1,50 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
 import styles from './MainProfile.module.scss';
-import {PropsMainProfile} from './interfaces';
+import {IUser, PropsMainProfile} from './interfaces';
 import Form from '~/components/controls/Form/Form';
 import clsx from 'clsx';
-import {toastError, toastWarn} from '~/common/func/toast';
+import {toastError, toastText, toastWarn} from '~/common/func/toast';
 import Avatar from './components/Avatar';
 import Button from '~/components/controls/Button';
 import InputForm from '~/components/controls/Form/components/InputForm/InputForm';
 import {CallIncoming, DirectboxNotif, SecurityUser, UserTick} from 'iconsax-react';
 import {GENDER} from '~/constants/mocks/enum';
-import Select, {Option} from '~/components/controls/Select';
+import {httpRequest} from '~/services';
+import userServices from '~/services/userServices';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '~/redux/store';
+import InputDatePicker from '~/components/controls/InputDatePicker';
+import {useRouter} from 'next/router';
+import LoadingScreen from '~/components/protected/LoadingScreen';
+import uploadFileService from '~/services/uploadService';
+import {setInfoUser} from '~/redux/reducer/user';
+import DataWrapper from '~/components/common/DataWrapper';
+import Noti from '~/components/common/DataWrapper/components/Noti';
 
 function MainProfile({}: PropsMainProfile) {
-	const [form, setForm] = useState<any>({});
+	const router = useRouter();
+	const dispatch = useDispatch();
+
+	const {token} = useSelector((state: RootState) => state.auth);
+	const {infoUser} = useSelector((state: RootState) => state.user);
+
+	const [loadingDetail, setLoadingDetail] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [form, setForm] = useState<IUser>({
+		_id: '',
+		account: '',
+		avatar: '',
+		dateOfBirth: null,
+		email: '',
+		fullname: '',
+		gender: null,
+		phone: '',
+		uuid: '',
+		uuidAccount: '',
+		file: '',
+		imageBase64: '',
+	});
 
 	function getBase64(file: any) {
 		var reader = new FileReader();
@@ -53,158 +84,275 @@ function MainProfile({}: PropsMainProfile) {
 	const handleChange = useCallback((e: any) => {
 		const {name, value} = e.target;
 
-		setForm((prev: any) => ({...prev, [name]: value})); //=> add value form interface
-	}, []); //on
+		setForm((prev: any) => ({...prev, [name]: value}));
+	}, []);
 
-	const handleSubmit = () => {};
+	useEffect(() => {
+		httpRequest({
+			setLoading: setLoadingDetail,
+			http: userServices.getDetail({
+				token: token!,
+				userId: infoUser?._id as string,
+			}),
+		}).then((data) => {
+			if (data) {
+				setForm({
+					...data,
+					dateOfBirth: data?.dateOfBirth ? new Date(data?.dateOfBirth) : null,
+				});
+			}
+		});
+	}, [token, infoUser?._id, router]);
+
+	const handleSubmit = async () => {
+		if (!form.fullname) {
+			return toastText({msg: 'Tên không được bỏ trống!'});
+		}
+
+		if (form?.file) {
+			const {file} = form;
+			const data: any = new FormData();
+			data.append('file', file);
+
+			const {url} = await httpRequest({
+				setLoading: setLoading,
+				http: uploadFileService.singleFile(data),
+			});
+
+			httpRequest({
+				setLoading: setLoading,
+				showMessage: true,
+				http: userServices.updateUser({
+					token: token!,
+					userId: infoUser?._id as string,
+					avatar: url,
+					dateOfBirth: new Date(form?.dateOfBirth!),
+					email: form?.email,
+					fullname: form?.fullname,
+					gender: form?.gender!,
+					phone: form?.phone!,
+				}),
+			}).then((data) => {
+				if (data) {
+					dispatch(
+						setInfoUser({
+							_id: form?._id,
+							account: form?.account,
+							avatar: url,
+							dateOfBirth: new Date(form?.dateOfBirth!),
+							email: form?.email,
+							fullname: form?.fullname,
+							gender: form?.gender!,
+							phone: form?.phone,
+							token: token!,
+							uuid: form?.uuid,
+							uuidAccount: form?.uuidAccount,
+						})
+					);
+					router.replace(router.pathname, undefined, {
+						scroll: false,
+						shallow: false,
+					});
+				}
+			});
+		} else {
+			httpRequest({
+				setLoading: setLoading,
+				showMessage: true,
+				http: userServices.updateUser({
+					token: token!,
+					userId: infoUser?._id as string,
+					avatar: form?.avatar!,
+					dateOfBirth: new Date(form?.dateOfBirth!),
+					email: form?.email,
+					fullname: form?.fullname,
+					gender: form?.gender!,
+					phone: form?.phone!,
+				}),
+			}).then((data) => {
+				if (data) {
+					dispatch(
+						setInfoUser({
+							_id: form?._id,
+							account: form?.account,
+							avatar: form?.avatar,
+							dateOfBirth: new Date(form?.dateOfBirth!),
+							email: form?.email,
+							fullname: form?.fullname,
+							gender: form?.gender!,
+							phone: form?.phone,
+							token: token!,
+							uuid: form?.uuid,
+							uuidAccount: form?.uuidAccount,
+						})
+					);
+					router.replace(router.pathname, undefined, {
+						scroll: false,
+						shallow: false,
+					});
+				}
+			});
+		}
+	};
 
 	return (
 		<div className={styles.container}>
-			<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
-				<div className={clsx(styles.avatar, 'effectShow')}>
-					<Avatar src={form?.imageBase64 || ''} name='avatar' onChange={handleSelectImg} />
-					<div className={styles.text}>
-						<p>Upload image với dung lượng &lt; 15MB</p>
-						<p>Định dạng hỗ trợ: JPG, JPEG, PNG</p>
+			<LoadingScreen isLoading={loading} />
+			<DataWrapper data={form ? [1] : []} loading={loadingDetail}>
+				<Form form={form} setForm={setForm} onSubmit={handleSubmit}>
+					<div className={clsx(styles.avatar, 'effectShow')}>
+						<Avatar src={form?.imageBase64 || form?.avatar} name='avatar' onChange={handleSelectImg} />
+						<div className={styles.text}>
+							<p>Upload image với dung lượng &lt; 15MB</p>
+							<p>Định dạng hỗ trợ: JPG, JPEG, PNG</p>
+						</div>
 					</div>
-				</div>
 
-				<div className={clsx(styles.form, 'effectShow')}>
-					<h3 className={styles.titleGroup}>Thông tin hồ sơ</h3>
-					<div className={styles.col_1}>
-						<InputForm
-							type='text'
-							name='name'
-							label='Họ tên đầy đủ'
-							placeholder='Nhập họ tên đầy đủ'
-							textRequired='Vui lòng nhập họ và tên'
-							iconInput={<SecurityUser />}
-							onClean
-							showDone
-							isRequired
-						/>
-					</div>
-					<div className={styles.col_2}>
-						<InputForm
-							type='text'
-							name='username'
-							placeholder='Nhập tên đăng nhập'
-							iconInput={<UserTick />}
-							label='Tên đăng nhập'
-							textRequired='Vui lòng nhập tên đăng nhập'
-							onClean
-							showDone
-							isRequired
-						/>
-
-						<div className={styles.inputElement}>
-							<label className={styles.label}>
-								Giới tính <span style={{color: 'red'}}>*</span>
-							</label>
-							<div className={styles.groupInputRadio}>
-								<label className={styles.groupRadio}>
-									<input
-										onChange={handleChange}
-										type='radio'
-										value={GENDER.NAM}
-										name='genderId'
-										checked={form.genderId == 1}
-									/>
-									<p>Nam</p>
+					<div className={clsx(styles.form, 'effectShow')}>
+						<h3 className={styles.titleGroup}>Thông tin hồ sơ</h3>
+						<div className={styles.col_2}>
+							<div>
+								<InputForm
+									type='text'
+									name='account'
+									value={form?.account}
+									isDisabled
+									placeholder='Nhập tên đăng nhập'
+									iconInput={<UserTick />}
+									label='Tên đăng nhập'
+									textRequired='Vui lòng nhập tên đăng nhập'
+									onClean
+									isRequired
+								/>
+							</div>
+							<InputForm
+								type='text'
+								label='Họ tên đầy đủ'
+								placeholder='Nhập họ tên đầy đủ'
+								textRequired='Vui lòng nhập họ và tên'
+								iconInput={<SecurityUser />}
+								onClean
+								isRequired
+								name='fullname'
+								value={form?.fullname}
+							/>
+						</div>
+						<div className={styles.col_2}>
+							<div className={styles.inputElement}>
+								<label className={styles.label}>
+									Ngày sinh <span style={{color: 'red'}}>*</span>
 								</label>
-								<label className={styles.groupRadio}>
-									<input
-										onChange={handleChange}
-										type='radio'
-										value={GENDER.NU}
-										name='genderId'
-										checked={form.genderId == 2}
-									/>
-									<p>Nữ</p>
+								<InputDatePicker
+									date={form?.dateOfBirth}
+									setDate={(date) =>
+										setForm((prev) => ({
+											...prev,
+											dateOfBirth: date,
+										}))
+									}
+									placeholder='Ngày sinh'
+								/>
+							</div>
+							<div className={styles.inputElement}>
+								<label className={styles.label}>
+									Giới tính <span style={{color: 'red'}}>*</span>
 								</label>
-								<label className={styles.groupRadio}>
-									<input
-										onChange={handleChange}
-										type='radio'
-										value={GENDER.KHAC}
-										name='genderId'
-										checked={form.genderId == 3}
-									/>
-									<p>Giới tính khác</p>
-								</label>
+								<div className={styles.groupInputRadio}>
+									<label className={styles.groupRadio}>
+										<input
+											type='radio'
+											value={GENDER.NAM}
+											name='gender'
+											checked={form?.gender?.id == 1}
+											onChange={(e) =>
+												setForm((prev) => ({
+													...prev,
+													gender: {
+														id: 1,
+														name: 'Nam',
+													},
+												}))
+											}
+										/>
+										<p>Nam</p>
+									</label>
+									<label className={styles.groupRadio}>
+										<input
+											type='radio'
+											value={GENDER.NU}
+											name='gender'
+											checked={form?.gender?.id == 2}
+											onChange={(e) =>
+												setForm((prev) => ({
+													...prev,
+													gender: {
+														id: 2,
+														name: 'Nữ',
+													},
+												}))
+											}
+										/>
+										<p>Nữ</p>
+									</label>
+									<label className={styles.groupRadio}>
+										<input
+											type='radio'
+											value={GENDER.KHAC}
+											name='gender'
+											checked={form?.gender?.id == 3}
+											onChange={(e) =>
+												setForm((prev) => ({
+													...prev,
+													gender: {
+														id: 3,
+														name: 'Khác',
+													},
+												}))
+											}
+										/>
+										<p>Giới tính khác</p>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div className={styles.col_2}>
+							<InputForm
+								name='phone'
+								value={form?.phone}
+								placeholder='Nhập số điện thoại'
+								iconInput={<CallIncoming />}
+								isPhone
+								onClean
+								label='Số điện thoại'
+								type='number'
+								textRequired='Vui lòng nhập số điện thoại'
+							/>
+							<div>
+								<InputForm
+									name='email'
+									value={form?.email}
+									placeholder='Nhập email'
+									iconInput={<DirectboxNotif />}
+									isEmail
+									isRequired
+									onClean
+									label='Email của bạn'
+									type='text'
+									textRequired='Vui lòng nhập địa chỉ email'
+								/>
 							</div>
 						</div>
 					</div>
-					<div className={styles.col_3}>
-						<Select
-							label='Ngày sinh'
-							placeholder='Ngày sinh'
-							name='date'
-							onChange={handleChange}
-							value={form.date}
-						>
-							<Option title='1' value={1} />
-						</Select>
 
-						<Select
-							label='Tháng sinh'
-							placeholder='Tháng sinh'
-							name='month'
-							onChange={handleChange}
-							value={form.month}
-						>
-							<Option title='1' value={1} />
-						</Select>
-
-						<Select
-							label='Năm sinh'
-							placeholder='Năm sinh'
-							name='year'
-							onChange={handleChange}
-							value={form.year}
-						>
-							<Option title='1' value={1} />
-						</Select>
-					</div>
-					<div className={styles.col_2}>
-						<InputForm
-							name='phone'
-							placeholder='Nhập số điện thoại'
-							iconInput={<CallIncoming />}
-							isPhone
-							isRequired
-							onClean
-							showDone
-							label='Số điện thoại'
-							type='number'
-							textRequired='Vui lòng nhập số điện thoại'
-						/>
-						<div>
-							<InputForm
-								name='email'
-								placeholder='Nhập email'
-								iconInput={<DirectboxNotif />}
-								isEmail
-								isRequired
-								onClean
-								showDone
-								label='Email của bạn'
-								type='text'
-								textRequired='Vui lòng nhập địa chỉ email'
-							/>
+					<div className={styles.box_btn}>
+						<div className={styles.list_btn}>
+							<Button w_fit secondary rounded_8>
+								Chỉnh sửa
+							</Button>
 						</div>
 					</div>
-				</div>
-
-				<div className={styles.box_btn}>
-					<div className={styles.list_btn}>
-						<Button rounded_8>Hủy</Button>
-						<Button secondary rounded_8>
-							Chỉnh sửa
-						</Button>
-					</div>
-				</div>
-			</Form>
+				</Form>
+			</DataWrapper>
 		</div>
 	);
 }

@@ -10,10 +10,15 @@ import {listMenuSidebarProfile} from '~/constants/mocks/data';
 import {useRouter} from 'next/router';
 import {LogoutCurve} from 'iconsax-react';
 import Dialog from '~/components/controls/Dialog/Dialog';
+import {useSelector} from 'react-redux';
+import {RootState} from '~/redux/store';
+import convertDate from '~/common/func/convertDate';
 
 function SideBarProfile({}: PropsSideBarProfile) {
 	const router = useRouter();
 	const [showLogout, setShowLogout] = useState<boolean>(false);
+
+	const {infoUser} = useSelector((state: RootState) => state.user);
 
 	const checkActive = useCallback(
 		(pathname: string) => {
@@ -31,12 +36,17 @@ function SideBarProfile({}: PropsSideBarProfile) {
 				<div className={styles.box_info}>
 					<div className={styles.left}>
 						<div className={styles.box_avatar}>
-							<Avatar className={styles.avatar} />
+							<Avatar className={styles.avatar} src={infoUser?.avatar!} />
 						</div>
 						<div className={styles.right}>
-							<p className={styles.name}>Đặng Bá Trường</p>
+							<p className={styles.name}>{infoUser?.fullname}</p>
 							<p className={styles.info}>
-								Nam <span>16/09/2000</span>
+								{infoUser?.gender?.name || '--'}{' '}
+								<span>
+									{infoUser?.dateOfBirth
+										? convertDate(infoUser?.dateOfBirth).getDateFormat()
+										: 'Chưa cập nhật'}
+								</span>
 							</p>
 						</div>
 					</div>

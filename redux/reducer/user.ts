@@ -1,16 +1,17 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 
 interface InfoUser {
+	_id: string;
 	account: string;
 	avatar: string | null;
-	createdAt: string;
-	dateOfBirth: string | null;
+	createdAt?: string;
+	dateOfBirth: Date | null;
 	email: string;
 	fullname: string;
 	gender: {id: number | null; name: string | null};
 	phone: string | null;
 	token: string;
-	updatedAt: string;
+	updatedAt?: string;
 	uuid: string;
 	uuidAccount: string;
 }

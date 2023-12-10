@@ -7,6 +7,7 @@ import giasoc from '../../public/static/images/giasoc.svg';
 import homnay from '../../public/static/images/homnay.svg';
 import dealFlashIcon from '../../public/static/images/dealFlashIcon.svg';
 import NoItemsCart from '../../public/static/images/NoItemsCart.png';
+import NoItemsCart_removebg from '../../public/static/images/NoItemsCart_removebg.png';
 
 export default {
 	logo,
@@ -17,4 +18,5 @@ export default {
 	homnay,
 	dealFlashIcon,
 	NoItemsCart,
+	NoItemsCart_removebg,
 };

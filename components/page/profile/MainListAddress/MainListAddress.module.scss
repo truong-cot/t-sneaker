@@ -86,7 +86,8 @@
 }
 
 .delete,
-.update {
+.update,
+.default {
 	cursor: pointer;
 	user-select: none;
 	padding: 4px 6px;
@@ -105,6 +106,10 @@
 
 .update {
 	color: #0b74e5;
+}
+
+.default {
+	color: #52f033;
 }
 
 .key {

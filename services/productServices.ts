@@ -11,8 +11,8 @@ const productServices = {
 			limit: number | null;
 			categoryId: string;
 			statusId: string;
-			priceFrom: number;
-			priceTo: number;
+			priceFrom: number | null;
+			priceTo: number | null;
 			sort?: {
 				sortList: number | null;
 				sortType: number | null;
@@ -39,6 +39,21 @@ const productServices = {
 			headers: {
 				Authorization: 'Bearer ' + data.token,
 			},
+		});
+	},
+	getBestSellers: (data: {}, tokenAxios?: any) => {
+		return axiosClient.get(`/${router}/get-best-sellers`, {
+			cancelToken: tokenAxios,
+		});
+	},
+	getNewProducts: (data: {}, tokenAxios?: any) => {
+		return axiosClient.get(`/${router}/get-new-product`, {
+			cancelToken: tokenAxios,
+		});
+	},
+	getSaleProducts: (data: {}, tokenAxios?: any) => {
+		return axiosClient.get(`/${router}/get-sale-product`, {
+			cancelToken: tokenAxios,
 		});
 	},
 };

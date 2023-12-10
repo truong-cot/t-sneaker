@@ -1,13 +1,13 @@
-export enum MONEY {
-	FREE_00 = 500000,
-	FREE_15 = 1500000,
-	FREE_25 = 3000000,
+export enum MONEY_CART {
+	MONEY_50 = 500000,
+	MONEY_150 = 1500000,
+	MONEY_300 = 3000000,
 }
 
-export enum PRICE_SHIPPING {
-	SHIPPING_01 = 15000,
-	SHIPPING_02 = 25000,
-	SHIPPING_03 = 0,
+export enum DISCOUNT_MONEY {
+	DISCOUNT_01 = 15000,
+	DISCOUNT_02 = 30000,
+	DISCOUNT_03 = 50000,
 }
 
 export enum TYPE_ADDRESS {
@@ -49,4 +49,12 @@ export enum SORT_LIST {
 export enum SORT_TYPE {
 	ASC = 1,
 	DESC = 2,
+}
+
+// Trạng thái đơn hàng: 1: Chờ xác nhận, 2: Đã xác nhận và đang giao, 3: Giao thành công, 4: Đã hủy
+export enum STATUS_ORDER {
+	CHO_XAC_NHAN = 1,
+	DA_XAC_NHAN,
+	DA_GIAO,
+	DA_HUY,
 }

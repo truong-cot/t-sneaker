@@ -15,3 +15,14 @@
 	font-weight: 700;
 	margin-bottom: 12px;
 }
+
+.empty {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.text_empty {
+	font-size: 16px;
+}

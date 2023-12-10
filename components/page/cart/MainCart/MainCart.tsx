@@ -5,38 +5,29 @@ import Breadcrumb from '~/components/common/Breadcrumb';
 import ProvisionalMoney from '../ProvisionalMoney';
 import MainListCart from '../MainListCart';
 import {ContextCart} from '../context';
-import {TypeCart} from '~/constants/mocks/data';
+import {ICart} from '../MainListCart/interfaces';
 
 function MainCart() {
-	const [listCart, setListCart] = useState<TypeCart[]>([]);
+	const [listCart, setListCart] = useState<ICart[]>([]);
+	const [discount, setDiscount] = useState<number>(0);
 
 	// Tính tổng giá trị đơn hàng được chọn
-	const totalPriceChosseCart = useMemo(() => {
-		let total = 0;
+	const totalPriceCart = useMemo(() => {
+		const total = listCart.reduce((accumulator, v) => {
+			const priceSale = (v?.productId?.price * v?.productId?.sale) / 100;
 
-		listCart.forEach((v) => {
-			// Tính giá theo giá gốc và khuyến mãi
-			let priceSale = v.unitPrice - v.unitPrice * (v.sale / 100);
+			const price = (v?.productId?.price - priceSale) * v?.quality;
 
-			// Tính thành tiền theo giá đã khuyến mãi và số lượng
-			let totalPrice = priceSale * v.qlt;
-
-			// Tính tổng
-			total += totalPrice;
-		});
+			return accumulator + price;
+		}, 0);
 
 		return total;
 	}, [listCart]);
 
 	return (
 		<div className={styles.container}>
-			<Breadcrumb
-				titles={['Trang chủ', 'Giỏ hàng của bạn']}
-				listHref={['/']}
-			/>
-			<ContextCart.Provider
-				value={{listCart, setListCart, totalPriceChosseCart}}
-			>
+			<Breadcrumb titles={['Trang chủ', 'Giỏ hàng của bạn']} listHref={['/']} />
+			<ContextCart.Provider value={{listCart, setListCart, totalPriceCart, discount, setDiscount}}>
 				<div className={styles.wrapper}>
 					<MainListCart />
 					<ProvisionalMoney />

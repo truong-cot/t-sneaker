@@ -1,12 +1,35 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import styles from './AddressDelivery.module.scss';
 import {PropsAddressDelivery} from './interfaces';
 import clsx from 'clsx';
 import ListAddressUser from '../ListAddressUser';
+import {ContextPayment, TypeContextPayment} from '../context';
 
-function AddressDelivery({}: PropsAddressDelivery) {
+function AddressDelivery({listAddress, infoReceiver, setInfoReceiver}: PropsAddressDelivery) {
+	const context = useContext<TypeContextPayment>(ContextPayment);
+
 	const [openListAddress, setOpenListAddress] = useState<boolean>(false);
+
+	useEffect(() => {
+		const item = listAddress?.find((v) => v.isDefault == true);
+
+		if (item) {
+			context?.setAddressUser(item);
+			setInfoReceiver((prev: any) => ({
+				...prev,
+				name: item?.nameReceiver,
+				phone: item?.phoneReceiver,
+			}));
+		} else {
+			context?.setAddressUser(listAddress?.[0]);
+			setInfoReceiver((prev: any) => ({
+				...prev,
+				name: listAddress?.[0].nameReceiver,
+				phone: listAddress?.[0].phoneReceiver,
+			}));
+		}
+	}, [listAddress]);
 
 	return (
 		<div className={styles.container}>
@@ -20,22 +43,36 @@ function AddressDelivery({}: PropsAddressDelivery) {
 						[styles.open]: openListAddress,
 					})}
 				>
-					<ListAddressUser onCLoseListAddress={() => setOpenListAddress(false)} />
+					<ListAddressUser listAddress={listAddress} onCLoseListAddress={() => setOpenListAddress(false)} />
 				</div>
 				{openListAddress && <div className={'overlay'} onClick={() => setOpenListAddress(false)}></div>}
 			</div>
 			<div className={styles.content}>
 				<div className={styles.top}>
-					<h5 className={styles.name}>Đặng Bá Trường</h5>
+					<h5 className={styles.name}>{infoReceiver?.name}</h5>
 					<div className={styles.line}></div>
-					<h6 className={styles.phone}>0123456789</h6>
+					<h6 className={styles.phone}>{infoReceiver?.phone}</h6>
 				</div>
 				<div className={styles.bottom}>
-					<div className={styles.category}>
-						<p className={styles.text}>Nhà riêng</p>
-					</div>
-					<p className={styles.address}>Thôn Khánh Sơn, Xã Sơn Lộc, Huyện Can Lộc, Tỉnh Hà Tĩnh</p>
+					<p className={styles.address}>{context?.addressUser?.address}</p>
 				</div>
+			</div>
+			<div className={styles.note}>
+				<p className={styles.lable}>
+					Ghi chú đơn hàng: <span style={{color: 'red'}}>*</span>
+				</p>
+				<input
+					type='text'
+					placeholder='Nhập ghi chú đơn hàng'
+					className={styles.input}
+					value={infoReceiver?.note}
+					onChange={(e) =>
+						setInfoReceiver((prev: any) => ({
+							...prev,
+							note: e.target.value,
+						}))
+					}
+				/>
 			</div>
 		</div>
 	);
