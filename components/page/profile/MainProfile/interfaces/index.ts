@@ -2,11 +2,15 @@ export interface PropsMainProfile {}
 
 export interface IUser {
 	_id: string;
-	uuid: string;
-	uuidAccount: string;
+	accountName: string;
+	account: {
+		_id: string;
+		account: string;
+		email: string;
+		isAdmin: boolean;
+	} | null;
 	avatar: string | null;
 	fullname: string;
-	account: string;
 	gender: {
 		id: number | null;
 		name: string | null;
@@ -14,8 +18,8 @@ export interface IUser {
 	dateOfBirth: Date | null;
 	phone: string | null;
 	email: string;
+	createdAt?: Date | null;
+	updatedAt?: Date | null;
 	file: string;
 	imageBase64: string;
-	createdAt?: string;
-	updatedAt?: string;
 }

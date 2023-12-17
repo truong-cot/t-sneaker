@@ -12,7 +12,7 @@ import LoadingScreen from '~/components/protected/LoadingScreen';
 
 function MainChangePass() {
 	const {token} = useSelector((state: RootState) => state.auth);
-	const {uuidAccount} = useSelector((state: RootState) => state.user);
+	const {infoUser} = useSelector((state: RootState) => state.user);
 
 	const [loading, setLoading] = useState<boolean>(false);
 	const [form, setForm] = useState<any>({
@@ -27,7 +27,7 @@ function MainChangePass() {
 			showMessage: true,
 			http: authServices.changePass({
 				token: token!,
-				uuidAccount: uuidAccount!,
+				accountId: infoUser?.account?._id!,
 				oldPass: form?.oldPass,
 				newPass: form?.newPass,
 			}),

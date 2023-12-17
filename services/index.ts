@@ -5,7 +5,7 @@ import {ERROR_CODE} from '~/constants/mocks/enum';
 import {delay} from '~/common/func/delay';
 import {store} from '~/redux/store';
 import {setStateLogin, setToken} from '~/redux/reducer/auth';
-import {setInfoUser, setUuidAccount, setUuidUser} from '~/redux/reducer/user';
+import {setInfoUser} from '~/redux/reducer/user';
 
 // Cấu hình axios
 const axiosClient = axios.create({
@@ -84,8 +84,6 @@ export const httpRequest = async ({
 			store.dispatch(setToken(null));
 			store.dispatch(setStateLogin(false));
 			store.dispatch(setInfoUser(null));
-			store.dispatch(setUuidUser(null));
-			store.dispatch(setUuidAccount(null));
 		}
 		// Mất mạng
 		else if (err.code == 'ERR_NETWORK' || err.code == 'ECONNABORTED') {

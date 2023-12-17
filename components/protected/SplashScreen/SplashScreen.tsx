@@ -12,7 +12,7 @@ import {getItemStorage, setItemStorage} from '~/common/func/localStorage';
 import {setCookie} from 'cookies-next';
 import {KEY_STORE} from '~/constants/configs';
 import {setStateLogin, setToken} from '~/redux/reducer/auth';
-import {setInfoUser, setUuidAccount, setUuidUser} from '~/redux/reducer/user';
+import {setInfoUser} from '~/redux/reducer/user';
 import {setLoading} from '~/redux/reducer/site';
 
 function SplashScreen({}: PropsSplashScreen) {
@@ -20,7 +20,7 @@ function SplashScreen({}: PropsSplashScreen) {
 	const {loading} = useSelector((state: RootState) => state.site);
 
 	const {token, isLogin} = useSelector((state: RootState) => state.auth);
-	const {infoUser, uuidUser, uuidAccount} = useSelector((state: RootState) => state.user);
+	const {infoUser} = useSelector((state: RootState) => state.user);
 
 	// Lấy data ===> local storage + cookie
 	useEffect(() => {
@@ -32,8 +32,6 @@ function SplashScreen({}: PropsSplashScreen) {
 				dispatch(setToken(state.token));
 				dispatch(setStateLogin(state.isLogin));
 				dispatch(setInfoUser(state.infoUser));
-				dispatch(setUuidUser(state.uuidUser));
-				dispatch(setUuidAccount(state.uuidAccount));
 			}
 
 			dispatch(setLoading(false));
@@ -47,18 +45,14 @@ function SplashScreen({}: PropsSplashScreen) {
 				token: token,
 				isLogin: isLogin,
 				infoUser: infoUser,
-				uuid: uuidUser,
-				uuidAccount: uuidAccount,
 			});
 			setCookie(KEY_STORE, {
 				token: token,
 				isLogin: isLogin,
 				infoUser: infoUser,
-				uuid: uuidUser,
-				uuidAccount: uuidAccount,
 			});
 		}
-	}, [token, isLogin, infoUser, uuidUser, uuidAccount]);
+	}, [token, isLogin, infoUser]);
 
 	return (
 		<Fragment>

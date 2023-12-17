@@ -33,15 +33,14 @@ function MainProfile({}: PropsMainProfile) {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [form, setForm] = useState<IUser>({
 		_id: '',
-		account: '',
+		account: null,
+		accountName: '',
 		avatar: '',
 		dateOfBirth: null,
 		email: '',
 		fullname: '',
 		gender: null,
 		phone: '',
-		uuid: '',
-		uuidAccount: '',
 		file: '',
 		imageBase64: '',
 	});
@@ -81,12 +80,6 @@ function MainProfile({}: PropsMainProfile) {
 		setForm((prev: any) => ({...prev, file: e.target.files[0]}));
 	};
 
-	const handleChange = useCallback((e: any) => {
-		const {name, value} = e.target;
-
-		setForm((prev: any) => ({...prev, [name]: value}));
-	}, []);
-
 	useEffect(() => {
 		httpRequest({
 			setLoading: setLoadingDetail,
@@ -98,6 +91,7 @@ function MainProfile({}: PropsMainProfile) {
 			if (data) {
 				setForm({
 					...data,
+					accountName: data?.account?.account,
 					dateOfBirth: data?.dateOfBirth ? new Date(data?.dateOfBirth) : null,
 				});
 			}
@@ -108,17 +102,14 @@ function MainProfile({}: PropsMainProfile) {
 		if (!form.fullname) {
 			return toastText({msg: 'Tên không được bỏ trống!'});
 		}
-
 		if (form?.file) {
 			const {file} = form;
 			const data: any = new FormData();
 			data.append('file', file);
-
 			const {url} = await httpRequest({
 				setLoading: setLoading,
 				http: uploadFileService.singleFile(data),
 			});
-
 			httpRequest({
 				setLoading: setLoading,
 				showMessage: true,
@@ -137,16 +128,13 @@ function MainProfile({}: PropsMainProfile) {
 					dispatch(
 						setInfoUser({
 							_id: form?._id,
-							account: form?.account,
+							account: form?.account!,
 							avatar: url,
 							dateOfBirth: new Date(form?.dateOfBirth!),
 							email: form?.email,
 							fullname: form?.fullname,
 							gender: form?.gender!,
 							phone: form?.phone,
-							token: token!,
-							uuid: form?.uuid,
-							uuidAccount: form?.uuidAccount,
 						})
 					);
 					router.replace(router.pathname, undefined, {
@@ -174,16 +162,13 @@ function MainProfile({}: PropsMainProfile) {
 					dispatch(
 						setInfoUser({
 							_id: form?._id,
-							account: form?.account,
+							account: form?.account!,
 							avatar: form?.avatar,
 							dateOfBirth: new Date(form?.dateOfBirth!),
 							email: form?.email,
 							fullname: form?.fullname,
 							gender: form?.gender!,
 							phone: form?.phone,
-							token: token!,
-							uuid: form?.uuid,
-							uuidAccount: form?.uuidAccount,
 						})
 					);
 					router.replace(router.pathname, undefined, {
@@ -214,8 +199,8 @@ function MainProfile({}: PropsMainProfile) {
 							<div>
 								<InputForm
 									type='text'
-									name='account'
-									value={form?.account}
+									name='accountName'
+									value={form?.accountName}
 									isDisabled
 									placeholder='Nhập tên đăng nhập'
 									iconInput={<UserTick />}

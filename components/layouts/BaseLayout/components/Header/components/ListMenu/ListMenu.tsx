@@ -4,13 +4,13 @@ import styles from './ListMenu.module.scss';
 import Link from 'next/link';
 import clsx from 'clsx';
 import {useRouter} from 'next/router';
-import {Logout, LogoutCurve} from 'iconsax-react';
+import {LogoutCurve} from 'iconsax-react';
 import {PropsListMenu} from './interfaces';
 import {listMenuProfile} from '~/constants/mocks/data';
 import Dialog from '~/components/controls/Dialog';
 import {useDispatch} from 'react-redux';
 import {setStateLogin, setToken} from '~/redux/reducer/auth';
-import {setInfoUser, setUuidAccount, setUuidUser} from '~/redux/reducer/user';
+import {setInfoUser} from '~/redux/reducer/user';
 
 function ListMenu({onClose}: PropsListMenu) {
 	const dispatch = useDispatch();
@@ -33,8 +33,6 @@ function ListMenu({onClose}: PropsListMenu) {
 		dispatch(setToken(null));
 		dispatch(setStateLogin(false));
 		dispatch(setInfoUser(null));
-		dispatch(setUuidUser(null));
-		dispatch(setUuidAccount(null));
 	};
 
 	return (

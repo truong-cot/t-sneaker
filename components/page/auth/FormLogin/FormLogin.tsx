@@ -13,7 +13,7 @@ import {useRouter} from 'next/router';
 import {useDispatch, useSelector} from 'react-redux';
 import {setStateLogin, setToken} from '~/redux/reducer/auth';
 import {setLoading} from '~/redux/reducer/site';
-import {setInfoUser, setUuidAccount, setUuidUser} from '~/redux/reducer/user';
+import {setInfoUser} from '~/redux/reducer/user';
 import {RootState} from '~/redux/store';
 import LoadingScreen from '~/components/protected/LoadingScreen';
 
@@ -39,15 +39,11 @@ function FormLogin({}: PropsFormLogin) {
 				dispatch(setToken(data.token));
 				dispatch(setLoading(false));
 				dispatch(setStateLogin(true));
-				dispatch(setInfoUser(data));
-				dispatch(setUuidUser(data.uuid));
-				dispatch(setUuidAccount(data.uuidAccount));
-
+				dispatch(setInfoUser(data?.dataUser));
 				setForm({
 					account: '',
 					pass: '',
 				});
-
 				router.replace(routerPrev, undefined, {scroll: false});
 			}
 		});

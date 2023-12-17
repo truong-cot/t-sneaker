@@ -30,7 +30,7 @@ const authServices = {
 	changePass: (
 		data: {
 			token: string;
-			uuidAccount: string;
+			accountId: string;
 			oldPass: string;
 			newPass: string;
 		},
